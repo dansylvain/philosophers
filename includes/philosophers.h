@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 08:59:03 by dan               #+#    #+#             */
-/*   Updated: 2024/02/19 14:36:48 by dan              ###   ########.fr       */
+/*   Updated: 2024/02/22 11:57:04 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,5 +22,15 @@
 # include <stdlib.h>
 # include "../lib/ft_printf/ft_printf.h"
 # include "../lib/libft/libft.h"
+
+/*   main.c                                             :+:      :+:    :+:   */
+int	main(int argc, char **argv);
+
+/*   check_input.c                                      :+:      :+:    :+:   */
+int	check_input(int argc, char **argv);
+int	is_valid_number(char *str);
+
+/*   utils.c                                            :+:      :+:    :+:   */
+void	display_error(char *str);
 
 #endif

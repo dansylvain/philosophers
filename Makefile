@@ -6,11 +6,11 @@
 #    By: dan <dan@student.42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/06 05:50:42 by dsylvain          #+#    #+#              #
-#    Updated: 2024/02/19 14:39:08 by dan              ###   ########.fr        #
+#    Updated: 2024/02/22 11:56:14 by dan              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = philosophers
+NAME = philo
 
 CC = cc
 
@@ -32,6 +32,8 @@ LIBS = -L$(LIBFT_DIR) -lft -L$(FT_PRINTF_DIR) -lftprintf -L$(GET_NEXT_LINE_DIR) 
 
 # Source files
 SRC =	src/main.c \
+		src/check_input.c \
+		src/utils.c
 		
 OBJ = $(SRC:.c=.o)
 
