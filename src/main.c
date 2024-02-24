@@ -6,7 +6,7 @@
 /*   By: dsylvain <dsylvain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 14:35:11 by dan               #+#    #+#             */
-/*   Updated: 2024/02/24 10:23:35 by dsylvain         ###   ########.fr       */
+/*   Updated: 2024/02/24 10:33:23 by dsylvain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,33 +46,28 @@ void	display_philo(s_Philosopher *filo)
 	ft_printf("filo->right_fork: %i\n", *filo->right_fork);
 }
 
-int	main(int argc, char **argv)
+
+s_Data	*create_and_initialize_data(s_Data *data, char **argv)
 {
-	int				fil_num;
-	int				i;
-	s_Data			*data;
-	
-	// input check
-	if (check_input(argc, argv) == 0)
-		return (display_error("Error\n"), 1);
-	
+	int	i;
+	int	fil_num;
 	// create base structs
 	fil_num = ft_atoi(argv[1]);
 	
 	data = (s_Data *)ft_calloc(1, sizeof(s_Data));
 	if(data == NULL)
-		return (display_error("mon Error\n"), 1);
+		return (display_error("mon Error\n"), NULL);
 
 	// philos creation
 	data->filos = (s_Philosopher **)ft_calloc(fil_num + 1, sizeof(s_Philosopher *));
 	if (data->filos == NULL)
-		return (free_data(data), display_error("Error\n"), 1);
+		return (free_data(data), display_error("Error\n"), NULL);
 	i = 0;
 	while (i < fil_num)
 	{
 		data->filos[i] = (s_Philosopher *)ft_calloc(1, sizeof(s_Philosopher));
 		if (data->filos[i] == NULL)
-			return (free_data(data), display_error("Error\n"), 1);
+			return (free_data(data), display_error("Error\n"), NULL);
 		i++;
 	}
 	data->filos[i] = NULL;
@@ -80,13 +75,13 @@ int	main(int argc, char **argv)
 	// tab creation
 	data->tab = (int **)ft_calloc(fil_num + 1, sizeof(int *));
 	if (data->tab == NULL)
-		return (free_data(data), display_error("Error\n"), 1);
+		return (free_data(data), display_error("Error\n"), NULL);
 	i = 0;
 	while (i < fil_num)
 	{
 		data->tab[i] = (int *)ft_calloc(fil_num + 1, sizeof(int));
 		if (data->tab[i] == NULL)
-			return (free_data(data), display_error("Error\n"), 1);
+			return (free_data(data), display_error("Error\n"), NULL);
 		data->tab[fil_num] = NULL;
 		i++;
 	}
@@ -123,6 +118,20 @@ int	main(int argc, char **argv)
 	i = 0;
 	while (i < fil_num)
 		display_philo(data->filos[i++]);
+	return (data);
+}
+
+int	main(int argc, char **argv)
+{
+	int				fil_num;
+	int				i;
+	s_Data			*data;
+	
+	// input check
+	if (check_input(argc, argv) == 0)
+		return (display_error("Error\n"), 1);
+	
+	data = create_and_initialize_data(data, argv);
 	
 	free_data(data);
 }

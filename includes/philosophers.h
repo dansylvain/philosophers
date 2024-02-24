@@ -6,7 +6,7 @@
 /*   By: dsylvain <dsylvain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 08:59:03 by dan               #+#    #+#             */
-/*   Updated: 2024/02/24 09:35:43 by dsylvain         ###   ########.fr       */
+/*   Updated: 2024/02/24 10:28:34 by dsylvain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ typedef struct s_Philosopher
 
 typedef struct s_Data
 {
+	int				fil_num;
 	int				**tab;
 	int				meal_auth;
 	s_Philosopher	**filos;
