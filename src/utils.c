@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: dsylvain <dsylvain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 11:55:07 by dan               #+#    #+#             */
-/*   Updated: 2024/02/24 11:46:18 by dan              ###   ########.fr       */
+/*   Updated: 2024/02/24 13:01:48 by dsylvain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,9 @@ void	display_filo(s_Philosopher *filo)
 	ft_printf("filo->meal_auth: %i\n", *filo->meal_auth);
 	ft_printf("filo->left_fork: %i\n", *filo->left_fork);
 	ft_printf("filo->right_fork: %i\n", *filo->right_fork);
+	ft_printf("*filo->fil_state: %i\n", *filo->fil_state);
+	ft_printf("*filo->ln_state: %i\n", *filo->ln_state);
+	ft_printf("*filo->rn_state: %i\n", *filo->rn_state);
 	ft_printf("-------------------------\n\n");
 }
 
@@ -46,6 +49,9 @@ void	display_filos(s_Data *data)
 		ft_printf("filo->meal_auth: %i\n", *data->filos[i]->meal_auth);
 		ft_printf("filo->left_fork: %i\n", *data->filos[i]->left_fork);
 		ft_printf("filo->right_fork: %i\n", *data->filos[i]->right_fork);
+		ft_printf("*filo->fil_state: %i\n", *data->filos[i]->fil_state);
+		ft_printf("*filo->ln_state: %i\n", *data->filos[i]->ln_state);
+		ft_printf("*filo->rn_state: %i\n", *data->filos[i]->rn_state);
 		ft_printf("-------------------------\n\n");
 		i++;		
 	}

@@ -6,7 +6,7 @@
 /*   By: dsylvain <dsylvain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 08:59:03 by dan               #+#    #+#             */
-/*   Updated: 2024/02/24 12:48:10 by dsylvain         ###   ########.fr       */
+/*   Updated: 2024/02/24 13:02:09 by dsylvain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ s_Data	*create_and_initialize_data(s_Data *data, char **argv);
 s_Data	*create_data(s_Data *data, char **argv);
 int		**create_tab(s_Data *data);
 s_Data	*initialize_data(s_Data *data, char **argv);
-int		get_right_fork_num(int i, int fil_num);
 int		get_rn(int	i, int	fil_num);
 int		get_ln(int	i, int	fil_num);
 

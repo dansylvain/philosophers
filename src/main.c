@@ -6,7 +6,7 @@
 /*   By: dsylvain <dsylvain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 14:35:11 by dan               #+#    #+#             */
-/*   Updated: 2024/02/24 12:33:10 by dsylvain         ###   ########.fr       */
+/*   Updated: 2024/02/24 13:10:10 by dsylvain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,11 @@ void	*filo_routine(void *arg)
 
 	filo = (s_Philosopher *)arg;
 	display_filo(filo);
+	
+	if (*filo->meal_auth == *filo->meals_taken && !*filo->ln_state && !*filo->rn_state && *filo->left_fork && *filo->right_fork)
+		ft_printf("%i: TIME TO EAT!!!\n", filo->id);
+
+	
 	return (NULL);
 }
 
@@ -43,9 +48,7 @@ int	main(int argc, char **argv)
 	data = create_and_initialize_data(data, argv);
 	if (data == NULL)
 		return (free_data(data), display_error("Error\n"), 2);
-	// display_filos(data);
 
-	ft_printf("qualitätskontrolle: %i\n", data->fil_num);
 	pthread_t	filo[data->fil_num];
 	i = 0;
 	while (i < data->fil_num)
