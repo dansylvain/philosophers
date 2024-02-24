@@ -6,7 +6,7 @@
 /*   By: dsylvain <dsylvain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 14:35:11 by dan               #+#    #+#             */
-/*   Updated: 2024/02/24 09:56:53 by dsylvain         ###   ########.fr       */
+/*   Updated: 2024/02/24 10:23:35 by dsylvain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,5 +119,11 @@ int	main(int argc, char **argv)
 		data->filos[i]->right_fork = &data->tab[0][get_right_fork_num(i, fil_num)];
 		i++;
 	}
+	
+	i = 0;
+	while (i < fil_num)
+		display_philo(data->filos[i++]);
+	
+	free_data(data);
 }
 
