@@ -6,7 +6,7 @@
 /*   By: dsylvain <dsylvain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 08:59:03 by dan               #+#    #+#             */
-/*   Updated: 2024/02/24 08:28:36 by dsylvain         ###   ########.fr       */
+/*   Updated: 2024/02/24 09:35:43 by dsylvain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,18 +28,18 @@
 typedef struct s_Philosopher
 {
 	int				id;
-	int				meals_taken;
+	int				*meals_taken;
 	int				*left_fork;
 	int				*right_fork;
 	bool			has_slept;
 	long long int	time_to_die;
-	int				*filos_meals_state;
+	int				*	meal_auth;
 } s_Philosopher;
 
 typedef struct s_Data
 {
 	int				**tab;
-	int				meals_taken;
+	int				meal_auth;
 	s_Philosopher	**filos;
 	
 } s_Data;
