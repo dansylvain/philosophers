@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: dsylvain <dsylvain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 08:59:03 by dan               #+#    #+#             */
-/*   Updated: 2024/02/24 11:46:30 by dan              ###   ########.fr       */
+/*   Updated: 2024/02/24 12:48:10 by dsylvain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,24 @@
 # include <pthread.h>
 #include <sys/time.h>
 
+typedef enum	Fil_state
+{
+	is_not_eating,
+	is_eating
+}	Fil_state;
+
 typedef struct s_Philosopher
 {
 	int				id;
 	int				*meals_taken;
 	int				*left_fork;
 	int				*right_fork;
+	int				*fil_state;
+	int				*ln_state;
+	int				*rn_state;
 	bool			has_slept;
 	long long int	time_to_die;
-	int				*	meal_auth;
+	int				*meal_auth;
 } s_Philosopher;
 
 typedef struct s_Data
@@ -66,5 +75,7 @@ s_Data	*create_data(s_Data *data, char **argv);
 int		**create_tab(s_Data *data);
 s_Data	*initialize_data(s_Data *data, char **argv);
 int		get_right_fork_num(int i, int fil_num);
+int		get_rn(int	i, int	fil_num);
+int		get_ln(int	i, int	fil_num);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: dsylvain <dsylvain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 14:35:11 by dan               #+#    #+#             */
-/*   Updated: 2024/02/24 11:47:35 by dan              ###   ########.fr       */
+/*   Updated: 2024/02/24 12:33:10 by dsylvain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void	*filo_routine(void *arg)
 
 	filo = (s_Philosopher *)arg;
 	display_filo(filo);
+	return (NULL);
 }
 
 int	main(int argc, char **argv)
