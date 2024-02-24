@@ -6,7 +6,7 @@
 /*   By: dsylvain <dsylvain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 08:59:03 by dan               #+#    #+#             */
-/*   Updated: 2024/02/24 10:47:48 by dsylvain         ###   ########.fr       */
+/*   Updated: 2024/02/24 11:03:21 by dsylvain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,10 @@ void	free_data(s_Data *data);
 void	display_philos(s_Data *data);
 
 /*   create_and_initialize_data.c                       :+:      :+:    :+:   */
-int	get_right_fork_num(int i, int fil_num);
 s_Data	*create_and_initialize_data(s_Data *data, char **argv);
+s_Data	*create_data(s_Data *data, char **argv);
+int		**create_tab(s_Data *data);
+s_Data	*initialize_data(s_Data *data, char **argv);
+int		get_right_fork_num(int i, int fil_num);
 
 #endif
