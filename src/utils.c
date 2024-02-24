@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: dsylvain <dsylvain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 11:55:07 by dan               #+#    #+#             */
-/*   Updated: 2024/02/23 21:00:53 by dan              ###   ########.fr       */
+/*   Updated: 2024/02/24 08:36:06 by dsylvain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,20 @@ void	free_data(s_Data *data)
 	if (data->tab)
 	{
 		while (data->tab[i])
-			free(data->tab[i++]);
+		{
+			if (data->tab[i])
+				free(data->tab[i++]);
+		}
 		free(data->tab);
 	}
+	i = 0;
 	if (data->filos)
 	{
 		while (data->filos[i])
-			free(data->filos[i++]);
+		{
+			if (data->filos[i])
+				free(data->filos[i++]);
+		}
 		free(data->filos);
 	}
 	free(data);
