@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsylvain <dsylvain@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 14:35:11 by dan               #+#    #+#             */
-/*   Updated: 2024/02/24 11:20:00 by dsylvain         ###   ########.fr       */
+/*   Updated: 2024/02/24 11:47:35 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,13 @@ void	update_meal_auth(s_Data **data)
 		i++;
 	}	
 }
+void	*filo_routine(void *arg)
+{
+	s_Philosopher *filo;
+
+	filo = (s_Philosopher *)arg;
+	display_filo(filo);
+}
 
 int	main(int argc, char **argv)
 {
@@ -35,8 +42,26 @@ int	main(int argc, char **argv)
 	data = create_and_initialize_data(data, argv);
 	if (data == NULL)
 		return (free_data(data), display_error("Error\n"), 2);
-	display_philos(data);
+	// display_filos(data);
 
+	ft_printf("qualitätskontrolle: %i\n", data->fil_num);
+	pthread_t	filo[data->fil_num];
+	i = 0;
+	while (i < data->fil_num)
+	{
+		if(pthread_create(&filo[i], NULL, &filo_routine, data->filos[i]) != 0)
+			return (free_data(data), display_error("Error\n"), 3);
+		usleep(500);
+		i++;
+	}
+	i = 0;
+	while (i < data->fil_num)
+	{
+		if(pthread_join(filo[i], NULL) != 0)
+			return (free_data(data), display_error("Error\n"), 3);
+		i++;
+	}
+	// pthread_create();
 	free_data(data);
 }
 

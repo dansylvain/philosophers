@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsylvain <dsylvain@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 11:55:07 by dan               #+#    #+#             */
-/*   Updated: 2024/02/24 10:48:48 by dsylvain         ###   ########.fr       */
+/*   Updated: 2024/02/24 11:46:18 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,20 @@ void	display_error(char *str)
 		perror("display_error");
 }
 
-void	display_philos(s_Data *data)
+void	display_filo(s_Philosopher *filo)
+{
+	ft_printf("-------------------------\n");
+	ft_printf("filo %i\n", filo->id);
+	ft_printf("filo->meals_taken: %i\n", *filo->meals_taken);
+	ft_printf("filo->has_slept: %i\n", filo->has_slept);
+	ft_printf("filo->time_to_die: %i\n", filo->time_to_die);
+	ft_printf("filo->meal_auth: %i\n", *filo->meal_auth);
+	ft_printf("filo->left_fork: %i\n", *filo->left_fork);
+	ft_printf("filo->right_fork: %i\n", *filo->right_fork);
+	ft_printf("-------------------------\n\n");
+}
+
+void	display_filos(s_Data *data)
 {
 	int	i;
 	
