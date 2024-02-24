@@ -6,7 +6,7 @@
 /*   By: dsylvain <dsylvain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 08:59:03 by dan               #+#    #+#             */
-/*   Updated: 2024/02/24 10:28:34 by dsylvain         ###   ########.fr       */
+/*   Updated: 2024/02/24 10:47:48 by dsylvain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ typedef struct s_Data
 
 /*   main.c                                             :+:      :+:    :+:   */
 int	main(int argc, char **argv);
+void	update_meal_auth(s_Data **data);
 
 /*   check_input.c                                      :+:      :+:    :+:   */
 int	check_input(int argc, char **argv);
@@ -56,5 +57,10 @@ int	is_valid_number(char *str);
 /*   utils.c                                            :+:      :+:    :+:   */
 void	display_error(char *str);
 void	free_data(s_Data *data);
+void	display_philos(s_Data *data);
+
+/*   create_and_initialize_data.c                       :+:      :+:    :+:   */
+int	get_right_fork_num(int i, int fil_num);
+s_Data	*create_and_initialize_data(s_Data *data, char **argv);
 
 #endif
