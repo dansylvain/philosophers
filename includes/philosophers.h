@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 08:59:03 by dan               #+#    #+#             */
-/*   Updated: 2024/02/22 11:57:04 by dan              ###   ########.fr       */
+/*   Updated: 2024/02/23 21:04:48 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,28 @@
 # include <stdlib.h>
 # include "../lib/ft_printf/ft_printf.h"
 # include "../lib/libft/libft.h"
+# include <pthread.h>
+#include <sys/time.h>
+
+typedef struct s_Philosopher
+{
+	int				id;
+	int				meals_taken;
+	int				*left_fork;
+	int				*right_fork;
+	bool			has_slept;
+	long long int	time_to_die;
+	int				*filos_meals_state;
+} s_Philosopher;
+
+typedef struct s_Data
+{
+	int				**tab;
+	int				meals_taken;
+	s_Philosopher	**filos;
+	
+} s_Data;
+
 
 /*   main.c                                             :+:      :+:    :+:   */
 int	main(int argc, char **argv);
@@ -32,5 +54,6 @@ int	is_valid_number(char *str);
 
 /*   utils.c                                            :+:      :+:    :+:   */
 void	display_error(char *str);
+void	free_data(s_Data *data);
 
 #endif
