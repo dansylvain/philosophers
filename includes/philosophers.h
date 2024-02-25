@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 08:59:03 by dan               #+#    #+#             */
-/*   Updated: 2024/02/25 10:17:36 by dan              ###   ########.fr       */
+/*   Updated: 2024/02/25 10:42:09 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,14 @@
 
 typedef struct s_Data
 {
-
+	int	*id;
+	int	fil_num;
+	int	tt_die;
+	int	tt_eat;
+	int	tt_sleep;
+	int	max_meals;
+	int	*fork;
+	int	*meal_count;
 }	t_Data;
 
 /*   main.c                                             :+:      :+:    :+:   */
@@ -40,5 +47,6 @@ int	is_valid_number(char *str);
 /*   utils.c                                            :+:      :+:    :+:   */
 void	display_error(char *str);
 void	free_data(t_Data *data);
+int		create_data_struct(t_Data **data, char **argv);
 
 #endif
