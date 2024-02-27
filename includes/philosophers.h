@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 08:59:03 by dan               #+#    #+#             */
-/*   Updated: 2024/02/25 11:05:58 by dan              ###   ########.fr       */
+/*   Updated: 2024/02/27 16:41:18 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # include <pthread.h>
 # include <sys/time.h>
 
+
 typedef struct s_Data
 {
 	int			*id;
@@ -37,6 +38,11 @@ typedef struct s_Data
 	int			*meal_count;
 	pthread_t	*filo;
 }	t_Data;
+
+typedef struct	{
+    t_Data	*data;
+    int		thread_id;
+}	t_Thread_args;
 
 /*   main.c                                             :+:      :+:    :+:   */
 int main(int argc, char **argv);

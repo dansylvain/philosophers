@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_and_initialize_data.c                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsylvain <dsylvain@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/24 10:39:09 by dsylvain          #+#    #+#             */
-/*   Updated: 2024/02/24 12:56:49 by dsylvain         ###   ########.fr       */
+/*   Updated: 2024/02/27 16:11:45 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 /**========================================================================
  *                           create_and_initialize_data
  *========================================================================**/
-s_Data	*create_and_initialize_data(s_Data *data, char **argv)
+t_Data	*create_and_initialize_data(t_Data *data, char **argv)
 {
 	int	i;
 

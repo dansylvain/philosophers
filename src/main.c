@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/24 16:54:14 by dan               #+#    #+#             */
-/*   Updated: 2024/02/26 09:04:22 by dan              ###   ########.fr       */
+/*   Updated: 2024/02/27 16:43:26 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,22 @@
 void	*filo_routine(void *arg)
 {
 	t_Data	*filo;
-
+	int *id;
+	
 	filo = (t_Data *)arg;
+	id = (int *)malloc(sizeof(int));
+	*id =  *filo->id;	
 	ft_printf("%i: hello world\n", *filo->id);
-	display_filo(filo);
+	sleep(2);
+	ft_printf("%i: hello world\n", *id);
+	// display_filo(filo);
 	return (NULL);
 }
 
 int main(int argc, char **argv)
 {
-	t_Data	*data;
-	pthread_t	*filo;
+	t_Thread_args	*filo;
+	pthread_t	*th;
 
 	if (check_input(argc, argv) == 0)
 		return (display_error("Error\n"), 1);
@@ -35,7 +40,7 @@ int main(int argc, char **argv)
 	
 	i = 0;
 	while (i < data->fil_num)
-	{
+	{		
 		*data->id = i;
 		pthread_create(&data->filo[i], NULL, &filo_routine, data);
 		usleep(10000);
