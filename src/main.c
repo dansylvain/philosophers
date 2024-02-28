@@ -23,7 +23,7 @@ void	*filo_routine(void *arg)
 	ft_printf("%i: hello world\n", *filo->id);
 	sleep(2);
 	ft_printf("%i: hello world\n", *id);
-	// display_filo(filo);
+	// display_filo(filo); 
 	return (NULL);
 }
 
