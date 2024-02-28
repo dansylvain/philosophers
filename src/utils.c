@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: dsylvain <dsylvain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 11:55:07 by dan               #+#    #+#             */
-/*   Updated: 2024/02/27 16:15:17 by dan              ###   ########.fr       */
+/*   Updated: 2024/02/28 07:04:33 by dsylvain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	create_data_struct(t_Data **data, char **argv)
 	return (1);
 }
 
-void	free_data(t_Data *data)
+void	free_data(t_Data *data, t_Thread_args **filo)
 {
 	if (data->id)
 		free(data->id);
