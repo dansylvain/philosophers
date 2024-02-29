@@ -6,7 +6,7 @@
 /*   By: dsylvain <dsylvain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/24 16:54:14 by dan               #+#    #+#             */
-/*   Updated: 2024/02/29 08:07:12 by dsylvain         ###   ########.fr       */
+/*   Updated: 2024/02/29 09:22:29 by dsylvain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,22 @@
 void	*filo_routine(void *arg)
 {
 	t_filo_th	*filo;
+	struct timeval	start;
+	struct timeval	now;
+	long	int time_passed;
 
 	filo = (t_filo_th *)arg;
-	display_filo(filo);
-	printf("%i: I am a philosopher\n", filo->id);
+	time_passed = 0;
+	gettimeofday(&start, NULL);
+	printf("%i: time now: %ld\n", filo->id, start.tv_sec * 1000000 + start.tv_usec);
+	while (time_passed < filo->data->tt_die * 1000000)
+	{
+	gettimeofday(&now, NULL);
+	time_passed = (now.tv_sec * 1000000 + now.tv_usec) - (start.tv_sec * 1000000 + start.tv_usec);
+	}
+	printf("filo %i died\n", filo->id);
+	
+	// display_filo(filo);
 	return (NULL);
 }
 
