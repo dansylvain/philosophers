@@ -6,7 +6,7 @@
 /*   By: dsylvain <dsylvain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/24 16:54:14 by dan               #+#    #+#             */
-/*   Updated: 2024/02/29 07:49:40 by dsylvain         ###   ########.fr       */
+/*   Updated: 2024/02/29 08:07:12 by dsylvain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,17 +22,16 @@ void	*filo_routine(void *arg)
 	return (NULL);
 }
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
-	t_Data		*data;
-	
+	t_Data	*data;
+	int		i;
+
 	if (check_input(argc, argv) == 0)
 		return (display_error("Error\n"), 1);
 	if (create_and_initialize_data_struct(&data, argv) == 0)
 		return (display_error("Error\n"), 2);
 	printf("welcome to the jungle\n");
-
-	int i;
 	i = 0;
 	while (i < data->fil_num)
 	{
@@ -48,6 +47,5 @@ int main(int argc, char **argv)
 		pthread_join(data->filos[i].filo, NULL);
 		i++;
 	}
-
 	free_data(data);
 }

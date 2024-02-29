@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_input.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: dsylvain <dsylvain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 11:51:59 by dan               #+#    #+#             */
-/*   Updated: 2024/02/22 12:01:21 by dan              ###   ########.fr       */
+/*   Updated: 2024/02/29 08:04:59 by dsylvain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 int	check_input(int argc, char **argv)
 {
-	int	i;
+	int			i;
 	long int	num;
-	
+
 	if (argc < 5 || argc > 6)
 		return (0);
 	i = 1;
@@ -34,8 +34,8 @@ int	check_input(int argc, char **argv)
 
 int	is_valid_number(char *str)
 {
-	int i;
-	
+	int	i;
+
 	i = 0;
 	if (str[i] == '+')
 		i++;
@@ -45,6 +45,5 @@ int	is_valid_number(char *str)
 			return (0);
 		i++;
 	}
-
 	return (1);
 }

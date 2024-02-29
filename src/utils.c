@@ -6,7 +6,7 @@
 /*   By: dsylvain <dsylvain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 11:55:07 by dan               #+#    #+#             */
-/*   Updated: 2024/02/29 07:48:53 by dsylvain         ###   ########.fr       */
+/*   Updated: 2024/02/29 08:05:53 by dsylvain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ int	create_and_initialize_data_struct(t_Data **data, char **argv)
 	if (argv[5])
 		(*data)->max_meals = ft_atoi(argv[5]);
 	(*data)->fork = (int *)ft_calloc((*data)->fil_num, sizeof(int));
-	(*data)->filos = (t_filo_th *)ft_calloc((*data)->fil_num, sizeof(t_filo_th));
+	(*data)->filos
+		= (t_filo_th *)ft_calloc((*data)->fil_num, sizeof(t_filo_th));
 	if (!(*data)->fork || !(*data)->filos)
 		return (0);
 	i = 0;
@@ -62,24 +63,7 @@ void	free_data(t_Data *data)
 	free(data->filos);
 	free(data);
 }
-/* typedef struct
-{
-	int			fil_num;
-	int			tt_die;
-	int			tt_eat;
-	int			tt_sleep;
-	int			max_meals;
-	int			*fork;
-	struct	t_filo_th	*filos;
-}	t_Data;
 
-typedef struct t_filo_th
-{
-	pthread_t	filo;
-    int			id;
-	int			meal_count;
-    t_Data		*data;
-}	t_filo_th; */
 void	display_filo(t_filo_th *filo)
 {
 	printf("id: %i\n", filo->id);

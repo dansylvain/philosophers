@@ -6,7 +6,7 @@
 /*   By: dsylvain <dsylvain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 08:59:03 by dan               #+#    #+#             */
-/*   Updated: 2024/02/29 07:46:37 by dsylvain         ###   ########.fr       */
+/*   Updated: 2024/02/29 08:11:29 by dsylvain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,26 +25,25 @@
 # include <pthread.h>
 # include <sys/time.h>
 
-typedef struct t_filo_th filos;
+typedef struct t_filo_th	t_filo_th;
 
-
-typedef struct
+typedef struct s_Data
 {
-	int			fil_num;
-	int			tt_die;
-	int			tt_eat;
-	int			tt_sleep;
-	int			max_meals;
-	int			*fork;
-	struct	t_filo_th	*filos;
+	int					fil_num;
+	int					tt_die;
+	int					tt_eat;
+	int					tt_sleep;
+	int					max_meals;
+	int					*fork;
+	struct t_filo_th	*filos;
 }	t_Data;
 
 typedef struct t_filo_th
 {
 	pthread_t	filo;
-    int			id;
+	int			id;
 	int			meal_count;
-    t_Data		*data;
+	t_Data		*data;
 }	t_filo_th;
 
 /*   main.c                                             :+:      :+:    :+:   */
