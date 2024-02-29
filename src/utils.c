@@ -6,29 +6,88 @@
 /*   By: dsylvain <dsylvain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 11:55:07 by dan               #+#    #+#             */
-/*   Updated: 2024/02/29 06:55:29 by dsylvain         ###   ########.fr       */
+/*   Updated: 2024/02/29 07:48:53 by dsylvain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
+/**========================================================================
+ *                           display_error
+ *========================================================================**/
 void	display_error(char *str)
 {
 	if (write (2, str, ft_strlen(str)) == -1)
 		perror("display_error");
 }
 
-int	create_data_struct(t_Data **data, char **argv)
+/**========================================================================
+ *                           create_data_struct
+ *! every var initialized except (*data)->filos[i].id (init at th creation)
+ *========================================================================**/
+int	create_and_initialize_data_struct(t_Data **data, char **argv)
 {
+	int			i;
+
+	*data = (t_Data *)ft_calloc(1, sizeof(t_Data));
+	if (!data)
+		return (0);
+	(*data)->fil_num = ft_atoi(argv[1]);
+	(*data)->tt_die = ft_atoi(argv[2]);
+	(*data)->tt_eat = ft_atoi(argv[3]);
+	(*data)->tt_sleep = ft_atoi(argv[4]);
+	if (argv[5])
+		(*data)->max_meals = ft_atoi(argv[5]);
+	(*data)->fork = (int *)ft_calloc((*data)->fil_num, sizeof(int));
+	(*data)->filos = (t_filo_th *)ft_calloc((*data)->fil_num, sizeof(t_filo_th));
+	if (!(*data)->fork || !(*data)->filos)
+		return (0);
+	i = 0;
+	while (i < (*data)->fil_num)
+	{
+		(*data)->fork[i] = 1;
+		(*data)->filos[i].meal_count = 0;
+		(*data)->filos[i].data = *data;
+		i++;
+	}
 	return (1);
 }
 
-void	free_data(t_Data *data, t_Thread_args **filo)
+/**========================================================================
+ *                           free_data
+ *========================================================================**/
+void	free_data(t_Data *data)
 {
-
+	free(data->fork);
+	free(data->filos);
+	free(data);
 }
-
-void	display_filo(t_Data *data)
+/* typedef struct
 {
+	int			fil_num;
+	int			tt_die;
+	int			tt_eat;
+	int			tt_sleep;
+	int			max_meals;
+	int			*fork;
+	struct	t_filo_th	*filos;
+}	t_Data;
 
+typedef struct t_filo_th
+{
+	pthread_t	filo;
+    int			id;
+	int			meal_count;
+    t_Data		*data;
+}	t_filo_th; */
+void	display_filo(t_filo_th *filo)
+{
+	printf("id: %i\n", filo->id);
+	printf("meal_count: %i\n", filo->meal_count);
+	printf("data->fil_num: %i\n", filo->data->fil_num);
+	printf("data->tt_die: %i\n", filo->data->tt_die);
+	printf("data->tt_eat: %i\n", filo->data->tt_eat);
+	printf("data->tt_sleep: %i\n", filo->data->tt_sleep);
+	if (filo->data->max_meals)
+		printf("data->max_meals: %i\n", filo->data->max_meals);
 }

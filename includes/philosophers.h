@@ -6,7 +6,7 @@
 /*   By: dsylvain <dsylvain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 08:59:03 by dan               #+#    #+#             */
-/*   Updated: 2024/02/29 06:54:45 by dsylvain         ###   ########.fr       */
+/*   Updated: 2024/02/29 07:46:37 by dsylvain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@
 # include <pthread.h>
 # include <sys/time.h>
 
+typedef struct t_filo_th filos;
+
 
 typedef struct
 {
@@ -34,24 +36,28 @@ typedef struct
 	int			tt_sleep;
 	int			max_meals;
 	int			*fork;
+	struct	t_filo_th	*filos;
 }	t_Data;
 
-typedef struct
+typedef struct t_filo_th
 {
 	pthread_t	filo;
     int			id;
 	int			meal_count;
     t_Data		*data;
-}	t_Thread_args;
+}	t_filo_th;
 
 /*   main.c                                             :+:      :+:    :+:   */
-int main(int argc, char **argv);
+int		main(int argc, char **argv);
 
 /*   check_input.c                                      :+:      :+:    :+:   */
-int	check_input(int argc, char **argv);
-int	is_valid_number(char *str);
+int		check_input(int argc, char **argv);
+int		is_valid_number(char *str);
 
 /*   utils.c                                            :+:      :+:    :+:   */
 void	display_error(char *str);
+int		create_and_initialize_data_struct(t_Data **data, char **argv);
+void	free_data(t_Data *data);
+void	display_filo(t_filo_th *filo);
 
 #endif
