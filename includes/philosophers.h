@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 08:59:03 by dan               #+#    #+#             */
-/*   Updated: 2024/03/15 16:43:22 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/15 17:04:05 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ typedef enum
 }	mssg;
 
 typedef struct t_filo_th	t_filo_th;
-typedef void (*f_ptr)(long, int, mssg, pthread_mutex_t);
 
 typedef struct s_Data
 {
@@ -49,7 +48,6 @@ typedef struct s_Data
 	pthread_mutex_t		*forks;
 	pthread_t			supervisor;
 	struct t_filo_th	*filos;
-	f_ptr				*mssg_fc;
 }	t_Data;
 
 typedef struct t_filo_th
@@ -58,7 +56,7 @@ typedef struct t_filo_th
 	int			id;
 	int			meal_count;
 	t_Data		*data;
-	f_ptr		say;
+	void		(*say)(long int, int, mssg, pthread_mutex_t *);
 }	t_filo_th;
 
 

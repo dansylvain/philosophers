@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/24 16:54:14 by dan               #+#    #+#             */
-/*   Updated: 2024/03/15 16:45:00 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/15 17:10:55 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ take_fork,
 }	mssg;
  */
 
-void	xpress_mssg(long t, int fil, mssg mssg, pthread_mutex_t mut)
+void	xpress_mssg(long int t, int fil, mssg mssg, pthread_mutex_t *mut)
 {
 	char *mssg_str;
 	
@@ -47,9 +47,9 @@ void	xpress_mssg(long t, int fil, mssg mssg, pthread_mutex_t mut)
 		mssg_str = "died";
 	if (mssg == is_born)
 		mssg_str = "is born";	
-	pthread_mutex_lock(&mut);
+	pthread_mutex_lock(mut);
 	printf("%li %i %s\n", t, fil, mssg_str);
-	pthread_mutex_unlock(&mut);
+	pthread_mutex_unlock(mut);
 	
 	
 }
@@ -71,7 +71,7 @@ void	*filo_routine(void *arg)
 	// printf("%i: time now: %ld\n", filo->id, time_to_ms(start)) ;
 	// pthread_mutex_unlock(&filo->data->print_mutex);
 	
-	filo->say(time_to_ms(now), filo->id, is_born, filo->data->print_mutex);
+	filo->say(time_to_ms(now), filo->id, is_born, &(filo->data->print_mutex));
 
 
 	// live or die loop 
@@ -82,7 +82,7 @@ void	*filo_routine(void *arg)
 	time_passed = (time_to_ms(now)) - (time_to_ms(start)) ;
 	}
 	// pthread_mutex_lock(&filo->data->print_mutex);
-	filo->say(time_to_ms(now), filo->id, dead, filo->data->print_mutex);
+	filo->say(time_to_ms(now), filo->id, dead, &(filo->data->print_mutex));
 	// pthread_mutex_unlock(&filo->data->print_mutex);	
 	// display_filo(filo);
 	return (NULL);
