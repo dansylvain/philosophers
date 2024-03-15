@@ -6,12 +6,13 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/24 16:54:14 by dan               #+#    #+#             */
-/*   Updated: 2024/03/15 07:41:08 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/15 08:28:17 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+
 #include "philosophers.h"
-long	timeval_to_ms(struct timeval time_struct)
+long	time_to_ms(struct timeval time_struct)
 {
 	return (time_struct.tv_sec * 1000 + time_struct.tv_usec / 1000);
 }
@@ -31,7 +32,7 @@ void	*filo_routine(void *arg)
 	
 	// display starting time
 	pthread_mutex_lock(&filo->data->print_mutex);
-	printf("%i: time now: %ld\n", filo->id, timeval_to_ms(start)) ;
+	printf("%i: time now: %ld\n", filo->id, time_to_ms(start)) ;
 	pthread_mutex_unlock(&filo->data->print_mutex);
 	
 	// live or die loop 
@@ -39,7 +40,7 @@ void	*filo_routine(void *arg)
 	while (time_passed < filo->data->tt_die)
 	{
 	gettimeofday(&now, NULL);
-	time_passed = (timeval_to_ms(now)) - (timeval_to_ms(start)) ;
+	time_passed = (time_to_ms(now)) - (time_to_ms(start)) ;
 	}
 	pthread_mutex_lock(&filo->data->print_mutex);
 	printf("filo %i died\n", filo->id);
