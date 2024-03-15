@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 08:59:03 by dan               #+#    #+#             */
-/*   Updated: 2024/03/15 06:53:20 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/15 09:34:12 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,24 @@ typedef struct t_filo_th
 	int			meal_count;
 	t_Data		*data;
 }	t_filo_th;
+
+/* 
+timestamp_in_ms X has taken a fork
+◦ timestamp_in_ms X is eating
+◦ timestamp_in_ms X is sleeping
+◦ timestamp_in_ms X is thinking
+◦ timestamp_in_ms X died
+ */
+
+typedef enum
+{
+	take_fork,
+	eats,
+	sleeps,
+	thinks,
+	dead
+}	mssg;
+
 
 /*   main.c                                             :+:      :+:    :+:   */
 int		main(int argc, char **argv);

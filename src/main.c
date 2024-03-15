@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/24 16:54:14 by dan               #+#    #+#             */
-/*   Updated: 2024/03/15 08:28:17 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/15 09:31:14 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,11 @@ long	time_to_ms(struct timeval time_struct)
 	return (time_struct.tv_sec * 1000 + time_struct.tv_usec / 1000);
 }
 
+
+void	xpress_mssg()
+{
+
+}
 
 void	*filo_routine(void *arg)
 {
