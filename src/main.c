@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/24 16:54:14 by dan               #+#    #+#             */
-/*   Updated: 2024/03/15 18:01:44 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/15 18:52:05 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,18 @@ void	*filo_routine(void *arg)
 	return (NULL);
 }
 
+void	*big_bro(void *arg)
+{
+	t_Data	*data;
+	
+	data = (t_Data *)arg;
+	// sleep(3);
+	pthread_mutex_lock(&data->print_mutex);
+	printf("I am watching you...\n%i\n", data->tt_die);
+	pthread_mutex_unlock(&data->print_mutex);
+	return (NULL);
+}
+
 /**========================================================================
  *                           main 
  *========================================================================**/
@@ -100,6 +112,12 @@ int	main(int argc, char **argv)
 	// welcome message
 	printf("welcome to the jungle\n");
 
+	//create supervisor thread
+	
+	if(pthread_create(&data->bb_th, NULL, big_bro, data) != 0)
+		return (free_data(data), display_error("Error\n"), 3);
+
+
 	// create philo threads
 	i = 0;
 	while (i < data->fil_num)
@@ -110,6 +128,7 @@ int	main(int argc, char **argv)
 		i++;
 	}
 	
+	
 	// join philo threads
 	i = 0;
 	while (i < data->fil_num)
@@ -118,6 +137,9 @@ int	main(int argc, char **argv)
 			return (free_data(data), display_error("Error\n"), 4);
 		i++;
 	}
+	if(pthread_join(data->bb_th, NULL) != 0)
+		return (free_data(data), display_error("Error\n"), 4);
+	
 	
 	// end application
 	free_data(data);
