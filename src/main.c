@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/24 16:54:14 by dan               #+#    #+#             */
-/*   Updated: 2024/03/15 18:52:05 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/15 20:08:44 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,26 @@ void	xpress_mssg(long int t, int fil, mssg mssg, pthread_mutex_t *mut)
 	printf("%li %i %s\n", t, fil, mssg_str);
 	pthread_mutex_unlock(mut);
 }
+t_filo_th	*eat_pasta(t_filo_th *filo)
+{
+	struct timeval	now;
+
+	gettimeofday(&now, NULL);
+	filo->meal_time = time_to_ms(now);
+	filo->say(0, filo->id, eats, &(filo->data->print_mutex));
+	filo->can_eat = false;
+	usleep(filo->data->tt_eat);
+	filo->meal_count++;
+	return (filo);	
+}
+
+t_filo_th	*sleep_for_a_while(t_filo_th *filo)
+{
+	filo->say(0, filo->id, sleeps, &(filo->data->print_mutex));
+	usleep(filo->data->tt_sleep);
+	filo->can_eat = true;
+	return (filo);
+}
 
 /**========================================================================
  *                           filo_routine 
@@ -71,8 +91,12 @@ void	*filo_routine(void *arg)
 	gettimeofday(&start, NULL);
 	while (time_passed < filo->data->tt_die)
 	{
-	gettimeofday(&now, NULL);
-	time_passed = (time_to_ms(now)) - (time_to_ms(start)) ;
+		if (filo->state == thinking && filo->can_eat == true)
+			filo = eat_pasta(filo);
+		if (filo->state == sleeping)
+			filo = sleep_for_a_while(filo);
+		gettimeofday(&now, NULL);
+		time_passed = (time_to_ms(now)) - filo->meal_time ;
 	}
 	filo->say(0, filo->id, dead, &(filo->data->print_mutex));
 	
@@ -86,10 +110,18 @@ void	*big_bro(void *arg)
 	t_Data	*data;
 	
 	data = (t_Data *)arg;
-	// sleep(3);
-	pthread_mutex_lock(&data->print_mutex);
-	printf("I am watching you...\n%i\n", data->tt_die);
-	pthread_mutex_unlock(&data->print_mutex);
+	
+	
+	
+	while(1)
+	{
+		sleep(1);
+		data->filos[1].can_eat = true;
+		pthread_mutex_lock(&data->print_mutex);
+		printf("I am watching you...\n%i\n", data->tt_die);
+		pthread_mutex_unlock(&data->print_mutex);
+		
+	}
 	return (NULL);
 }
 

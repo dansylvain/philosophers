@@ -6,13 +6,14 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 11:55:07 by dan               #+#    #+#             */
-/*   Updated: 2024/03/15 19:40:48 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/15 20:11:43 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
 void	xpress_mssg(long int t, int fil, mssg mssg, pthread_mutex_t *mut);
+long	time_to_ms(struct timeval time_struct);
 
 /**========================================================================
  *                           display_error
@@ -32,6 +33,7 @@ void	display_error(char *str)
 int	create_and_initialize_data_struct(t_Data **data, char **argv)
 {
 	int			i;
+	struct timeval	now;
 
 	*data = (t_Data *)ft_calloc(1, sizeof(t_Data));
 	if (pthread_mutex_init(&((*data)->print_mutex), NULL) != 0)
@@ -55,6 +57,9 @@ int	create_and_initialize_data_struct(t_Data **data, char **argv)
 		(*data)->filos[i].data = *data;
 		(*data)->filos[i].say = xpress_mssg;
 		(*data)->filos[i].state = thinking;
+		(*data)->filos[i].can_eat = false;
+		gettimeofday(&now, NULL);
+		(*data)->filos[i].meal_time = time_to_ms(now);
 		i++;
 	}
 	return (1);

@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 08:59:03 by dan               #+#    #+#             */
-/*   Updated: 2024/03/15 19:35:41 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/15 20:04:51 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,9 @@ typedef struct t_filo_th
 	int			meal_count;
 	t_Data		*data;
 	void		(*say)(long int, int, mssg, pthread_mutex_t *);
+	bool		can_eat;
 	fil_state	state;
+	long int	meal_time;
 }	t_filo_th;
 
 
