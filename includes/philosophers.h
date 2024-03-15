@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsylvain <dsylvain@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 08:59:03 by dan               #+#    #+#             */
-/*   Updated: 2024/02/29 08:11:29 by dsylvain         ###   ########.fr       */
+/*   Updated: 2024/03/15 06:03:30 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,13 @@ typedef struct t_filo_th	t_filo_th;
 
 typedef struct s_Data
 {
+	pthread_mutex_t 	print_mutex;
 	int					fil_num;
 	int					tt_die;
 	int					tt_eat;
 	int					tt_sleep;
 	int					max_meals;
-	int					*fork;
+	pthread_mutex_t		*forks;
 	struct t_filo_th	*filos;
 }	t_Data;
 

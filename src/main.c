@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsylvain <dsylvain@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/24 16:54:14 by dan               #+#    #+#             */
-/*   Updated: 2024/02/29 09:22:29 by dsylvain         ###   ########.fr       */
+/*   Updated: 2024/03/15 06:22:26 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,22 @@ void	*filo_routine(void *arg)
 	struct timeval	start;
 	struct timeval	now;
 	long	int time_passed;
+	char *message;
 
 	filo = (t_filo_th *)arg;
 	time_passed = 0;
 	gettimeofday(&start, NULL);
+	pthread_mutex_lock(&filo->data->print_mutex);
 	printf("%i: time now: %ld\n", filo->id, start.tv_sec * 1000000 + start.tv_usec);
+	pthread_mutex_unlock(&filo->data->print_mutex);
 	while (time_passed < filo->data->tt_die * 1000000)
 	{
 	gettimeofday(&now, NULL);
 	time_passed = (now.tv_sec * 1000000 + now.tv_usec) - (start.tv_sec * 1000000 + start.tv_usec);
 	}
+	pthread_mutex_lock(&filo->data->print_mutex);
 	printf("filo %i died\n", filo->id);
-	
+	pthread_mutex_unlock(&filo->data->print_mutex);	
 	// display_filo(filo);
 	return (NULL);
 }
@@ -49,15 +53,14 @@ int	main(int argc, char **argv)
 	{
 		data->filos[i].id = i;
 		pthread_create(&data->filos[i].filo, NULL, filo_routine, &data->filos[i]);
-		usleep(500);
 		i++;
 	}
 	i = 0;
 	while (i < data->fil_num)
 	{
-		data->filos[i].id = i;
 		pthread_join(data->filos[i].filo, NULL);
 		i++;
 	}
 	free_data(data);
 }
+	
