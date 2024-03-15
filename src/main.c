@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/24 16:54:14 by dan               #+#    #+#             */
-/*   Updated: 2024/03/15 06:22:26 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/15 07:34:36 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,27 @@
 
 void	*filo_routine(void *arg)
 {
-	t_filo_th	*filo;
+	t_filo_th		*filo;
 	struct timeval	start;
 	struct timeval	now;
-	long	int time_passed;
-	char *message;
+	long int		time_passed;
 
+	// initialize / reassign variables/structs
 	filo = (t_filo_th *)arg;
 	time_passed = 0;
 	gettimeofday(&start, NULL);
+	
+	// display starting time
 	pthread_mutex_lock(&filo->data->print_mutex);
-	printf("%i: time now: %ld\n", filo->id, start.tv_sec * 1000000 + start.tv_usec);
+	printf("%i: time now: %ld\n", filo->id, start.tv_sec * 1000 + start.tv_usec / 1000) ;
 	pthread_mutex_unlock(&filo->data->print_mutex);
-	while (time_passed < filo->data->tt_die * 1000000)
+	
+	// live or die loop 
+	// reinitialise time_passed to 0 at each meal start
+	while (time_passed < filo->data->tt_die)
 	{
 	gettimeofday(&now, NULL);
-	time_passed = (now.tv_sec * 1000000 + now.tv_usec) - (start.tv_sec * 1000000 + start.tv_usec);
+	time_passed = (now.tv_sec * 1000 + now.tv_usec / 1000) - (start.tv_sec * 1000 + start.tv_usec / 1000) ;
 	}
 	pthread_mutex_lock(&filo->data->print_mutex);
 	printf("filo %i died\n", filo->id);
@@ -43,24 +48,40 @@ int	main(int argc, char **argv)
 	t_Data	*data;
 	int		i;
 
+	// initial checks
 	if (check_input(argc, argv) == 0)
 		return (display_error("Error\n"), 1);
+	
+	//data creation and initialization
 	if (create_and_initialize_data_struct(&data, argv) == 0)
-		return (display_error("Error\n"), 2);
+		return (free_data(data), display_error("Error\n"), 2);
+		
+	// welcome message
 	printf("welcome to the jungle\n");
+	
+	
+	// create philo threads
 	i = 0;
 	while (i < data->fil_num)
 	{
 		data->filos[i].id = i;
-		pthread_create(&data->filos[i].filo, NULL, filo_routine, &data->filos[i]);
+		if(pthread_create(&data->filos[i].filo, NULL, filo_routine, &data->filos[i]) != 0)
+			return (free_data(data), display_error("Error\n"), 3);
 		i++;
 	}
+	
+
+	// join philo threads
 	i = 0;
 	while (i < data->fil_num)
 	{
-		pthread_join(data->filos[i].filo, NULL);
+		if(pthread_join(data->filos[i].filo, NULL) != 0)
+			return (free_data(data), display_error("Error\n"), 4);
 		i++;
 	}
+	
+	// end application
 	free_data(data);
+	return (0);
 }
 	
