@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 08:59:03 by dan               #+#    #+#             */
-/*   Updated: 2024/03/15 18:07:21 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/15 19:35:41 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,13 @@ typedef enum
 	dead
 }	mssg;
 
+typedef enum
+{
+	eating,
+	sleeping,
+	thinking
+}	fil_state;
+
 typedef struct t_filo_th	t_filo_th;
 
 typedef struct s_Data
@@ -57,6 +64,7 @@ typedef struct t_filo_th
 	int			meal_count;
 	t_Data		*data;
 	void		(*say)(long int, int, mssg, pthread_mutex_t *);
+	fil_state	state;
 }	t_filo_th;
 
 
