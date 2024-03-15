@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 08:59:03 by dan               #+#    #+#             */
-/*   Updated: 2024/03/15 09:50:46 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/15 10:53:29 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,17 @@
 # include <pthread.h>
 # include <sys/time.h>
 
+typedef enum
+{
+	take_fork,
+	eats,
+	sleeps,
+	thinks,
+	dead
+}	mssg;
+
 typedef struct t_filo_th	t_filo_th;
+typedef void (*f_ptr)(long, int, mssg, pthread_mutex_t);
 
 typedef struct s_Data
 {
@@ -38,6 +48,7 @@ typedef struct s_Data
 	pthread_mutex_t		*forks;
 	pthread_t			supervisor;
 	struct t_filo_th	*filos;
+	f_ptr				*mssg_fc;
 }	t_Data;
 
 typedef struct t_filo_th
@@ -46,6 +57,7 @@ typedef struct t_filo_th
 	int			id;
 	int			meal_count;
 	t_Data		*data;
+	f_ptr		say;
 }	t_filo_th;
 
 
@@ -64,14 +76,7 @@ take_fork,
 }	mssg;
  */
 
-typedef enum
-{
-	take_fork,
-	eats,
-	sleeps,
-	thinks,
-	dead
-}	mssg;
+
 
 
 /*   main.c                                             :+:      :+:    :+:   */

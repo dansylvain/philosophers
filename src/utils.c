@@ -6,11 +6,12 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 11:55:07 by dan               #+#    #+#             */
-/*   Updated: 2024/03/15 09:50:38 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/15 11:10:26 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
+void	xpress_mssg(long t, int fil, mssg mssg, pthread_mutex_t mut);
 
 /**========================================================================
  *                           display_error
@@ -44,7 +45,8 @@ int	create_and_initialize_data_struct(t_Data **data, char **argv)
 		(*data)->max_meals = ft_atoi(argv[5]);
 	(*data)->forks = (pthread_mutex_t *)ft_calloc((*data)->fil_num, sizeof(pthread_mutex_t));
 	(*data)->filos = (t_filo_th *)ft_calloc((*data)->fil_num, sizeof(t_filo_th));
-	if (!(*data)->forks || !(*data)->filos)
+	(*data)->mssg_fc = (f_ptr *)ft_calloc((*data)->fil_num, sizeof(f_ptr));
+	if (!(*data)->forks || !(*data)->filos || !(*data)->mssg_fc)
 		return (0);
 	i = 0;
 	while (i < (*data)->fil_num)
@@ -53,6 +55,7 @@ int	create_and_initialize_data_struct(t_Data **data, char **argv)
 			return (0);
 		(*data)->filos[i].meal_count = 0;
 		(*data)->filos[i].data = *data;
+		(*data)->filos[i].say = xpress_mssg;
 		i++;
 	}
 	return (1);

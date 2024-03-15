@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/24 16:54:14 by dan               #+#    #+#             */
-/*   Updated: 2024/03/15 09:51:11 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/15 11:11:46 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,8 @@ void	*filo_routine(void *arg)
 	printf("%i: time now: %ld\n", filo->id, time_to_ms(start)) ;
 	pthread_mutex_unlock(&filo->data->print_mutex);
 	
-	// xpress_mssg(time_to_ms(now), filo->id, 0, filo->data->print_mutex);
+	// filo->say(time_to_ms(now), filo->id, 0, filo->data->print_mutex);
+
 
 	// live or die loop 
 	// reinitialise time_passed to 0 at each meal start
