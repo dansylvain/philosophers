@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 11:55:07 by dan               #+#    #+#             */
-/*   Updated: 2024/03/15 06:06:18 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/15 06:34:18 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	create_and_initialize_data_struct(t_Data **data, char **argv)
 	int			i;
 
 	*data = (t_Data *)ft_calloc(1, sizeof(t_Data));
-	if (!data)
+	if (!*data)
 		return (0);
 	if (pthread_mutex_init(&((*data)->print_mutex), NULL) != 0)
 		return (free(*data), 0);
@@ -43,11 +43,12 @@ int	create_and_initialize_data_struct(t_Data **data, char **argv)
 	(*data)->forks = (pthread_mutex_t *)ft_calloc((*data)->fil_num, sizeof(pthread_mutex_t));
 	(*data)->filos = (t_filo_th *)ft_calloc((*data)->fil_num, sizeof(t_filo_th));
 	if (!(*data)->forks || !(*data)->filos)
-		return (0);
+		return (free_data(*data), 0);
 	i = 0;
 	while (i < (*data)->fil_num)
 	{
-	    pthread_mutex_init(&((*data)->forks[i]), NULL);
+	    if(pthread_mutex_init(&((*data)->forks[i]), NULL) != 0)
+			return (free_data(*data), 0);
 		(*data)->filos[i].meal_count = 0;
 		(*data)->filos[i].data = *data;
 		i++;
@@ -60,8 +61,10 @@ int	create_and_initialize_data_struct(t_Data **data, char **argv)
  *========================================================================**/
 void	free_data(t_Data *data)
 {
-	free(data->forks);
-	free(data->filos);
+	if (data->forks)
+		free(data->forks);
+	if (data->filos)
+		free(data->filos);
 	free(data);
 }
 
