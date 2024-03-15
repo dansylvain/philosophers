@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 08:59:03 by dan               #+#    #+#             */
-/*   Updated: 2024/03/15 17:04:05 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/15 18:02:42 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,24 +58,6 @@ typedef struct t_filo_th
 	t_Data		*data;
 	void		(*say)(long int, int, mssg, pthread_mutex_t *);
 }	t_filo_th;
-
-
-/* 
-timestamp_in_ms X has taken a fork
-◦ timestamp_in_ms X is eating
-◦ timestamp_in_ms X is sleeping
-◦ timestamp_in_ms X is thinking
-◦ timestamp_in_ms X died
-
-take_fork,
-	eats,
-	sleeps,
-	thinks,
-	dead
-}	mssg;
- */
-
-
 
 
 /*   main.c                                             :+:      :+:    :+:   */
