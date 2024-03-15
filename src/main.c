@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/24 16:54:14 by dan               #+#    #+#             */
-/*   Updated: 2024/03/15 09:31:14 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/15 09:51:11 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,32 @@ long	time_to_ms(struct timeval time_struct)
 {
 	return (time_struct.tv_sec * 1000 + time_struct.tv_usec / 1000);
 }
+/* 
+timestamp_in_ms X has taken a fork
+◦ timestamp_in_ms X is eating
+◦ timestamp_in_ms X is sleeping
+◦ timestamp_in_ms X is thinking
+◦ timestamp_in_ms X died
 
+take_fork,
+	eats,
+	sleeps,
+	thinks,
+	dead
+}	mssg;
+ */
 
-void	xpress_mssg()
+void	xpress_mssg(long t, int fil, mssg mssg, pthread_mutex_t mut)
 {
-
+	char *mssg_str;
+	
+	mssg_str = "test";
+	
+	pthread_mutex_lock(&mut);
+	printf("%li %i %s\n", t, fil, mssg_str);
+	pthread_mutex_unlock(&mut);
+	
+	
 }
 
 void	*filo_routine(void *arg)
@@ -40,6 +61,8 @@ void	*filo_routine(void *arg)
 	printf("%i: time now: %ld\n", filo->id, time_to_ms(start)) ;
 	pthread_mutex_unlock(&filo->data->print_mutex);
 	
+	// xpress_mssg(time_to_ms(now), filo->id, 0, filo->data->print_mutex);
+
 	// live or die loop 
 	// reinitialise time_passed to 0 at each meal start
 	while (time_passed < filo->data->tt_die)
