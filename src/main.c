@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/24 16:54:14 by dan               #+#    #+#             */
-/*   Updated: 2024/03/15 11:11:46 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/15 16:45:00 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,18 @@ void	xpress_mssg(long t, int fil, mssg mssg, pthread_mutex_t mut)
 {
 	char *mssg_str;
 	
-	mssg_str = "test";
-	
+	if (mssg == take_fork)
+		mssg_str = "has taken a fork";
+	if (mssg == eats)
+		mssg_str = "is eating";
+	if (mssg == sleeps)
+		mssg_str = "is sleeping";
+	if (mssg == thinks)
+		mssg_str = "is thinking";
+	if (mssg == dead)
+		mssg_str = "died";
+	if (mssg == is_born)
+		mssg_str = "is born";	
 	pthread_mutex_lock(&mut);
 	printf("%li %i %s\n", t, fil, mssg_str);
 	pthread_mutex_unlock(&mut);
@@ -57,11 +67,11 @@ void	*filo_routine(void *arg)
 	gettimeofday(&start, NULL);
 	
 	// display starting time
-	pthread_mutex_lock(&filo->data->print_mutex);
-	printf("%i: time now: %ld\n", filo->id, time_to_ms(start)) ;
-	pthread_mutex_unlock(&filo->data->print_mutex);
+	// pthread_mutex_lock(&filo->data->print_mutex);
+	// printf("%i: time now: %ld\n", filo->id, time_to_ms(start)) ;
+	// pthread_mutex_unlock(&filo->data->print_mutex);
 	
-	// filo->say(time_to_ms(now), filo->id, 0, filo->data->print_mutex);
+	filo->say(time_to_ms(now), filo->id, is_born, filo->data->print_mutex);
 
 
 	// live or die loop 
@@ -71,9 +81,9 @@ void	*filo_routine(void *arg)
 	gettimeofday(&now, NULL);
 	time_passed = (time_to_ms(now)) - (time_to_ms(start)) ;
 	}
-	pthread_mutex_lock(&filo->data->print_mutex);
-	printf("filo %i died\n", filo->id);
-	pthread_mutex_unlock(&filo->data->print_mutex);	
+	// pthread_mutex_lock(&filo->data->print_mutex);
+	filo->say(time_to_ms(now), filo->id, dead, filo->data->print_mutex);
+	// pthread_mutex_unlock(&filo->data->print_mutex);	
 	// display_filo(filo);
 	return (NULL);
 }
