@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 11:55:07 by dan               #+#    #+#             */
-/*   Updated: 2024/03/15 20:11:43 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/15 20:46:08 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,17 @@ int	create_and_initialize_data_struct(t_Data **data, char **argv)
 	{
 	    if(pthread_mutex_init(&((*data)->forks[i]), NULL) != 0)
 			return (0);
+		if(pthread_mutex_init(&((*data)->filos[i].can_eat_mutex), NULL) != 0)
+			return (0);
+	
+			
 		(*data)->filos[i].meal_count = 0;
 		(*data)->filos[i].data = *data;
 		(*data)->filos[i].say = xpress_mssg;
 		(*data)->filos[i].state = thinking;
+		pthread_mutex_lock(&(*data)->filos[i].can_eat_mutex);
 		(*data)->filos[i].can_eat = false;
+		pthread_mutex_unlock(&(*data)->filos[i].can_eat_mutex);
 		gettimeofday(&now, NULL);
 		(*data)->filos[i].meal_time = time_to_ms(now);
 		i++;

@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/24 16:54:14 by dan               #+#    #+#             */
-/*   Updated: 2024/03/15 20:08:44 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/15 21:04:00 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,9 @@ t_filo_th	*eat_pasta(t_filo_th *filo)
 	gettimeofday(&now, NULL);
 	filo->meal_time = time_to_ms(now);
 	filo->say(0, filo->id, eats, &(filo->data->print_mutex));
+	pthread_mutex_lock(&filo->can_eat_mutex);
 	filo->can_eat = false;
+	pthread_mutex_unlock(&filo->can_eat_mutex);
 	usleep(filo->data->tt_eat);
 	filo->meal_count++;
 	return (filo);	
@@ -64,7 +66,9 @@ t_filo_th	*eat_pasta(t_filo_th *filo)
 t_filo_th	*sleep_for_a_while(t_filo_th *filo)
 {
 	filo->say(0, filo->id, sleeps, &(filo->data->print_mutex));
+	pthread_mutex_lock(&filo->can_eat_mutex);
 	usleep(filo->data->tt_sleep);
+	pthread_mutex_unlock(&filo->can_eat_mutex);
 	filo->can_eat = true;
 	return (filo);
 }
@@ -91,8 +95,10 @@ void	*filo_routine(void *arg)
 	gettimeofday(&start, NULL);
 	while (time_passed < filo->data->tt_die)
 	{
+		pthread_mutex_lock(&filo->can_eat_mutex);
 		if (filo->state == thinking && filo->can_eat == true)
 			filo = eat_pasta(filo);
+		pthread_mutex_unlock(&filo->can_eat_mutex);
 		if (filo->state == sleeping)
 			filo = sleep_for_a_while(filo);
 		gettimeofday(&now, NULL);
@@ -116,7 +122,9 @@ void	*big_bro(void *arg)
 	while(1)
 	{
 		sleep(1);
-		data->filos[1].can_eat = true;
+		pthread_mutex_lock(&data->filos[1].can_eat_mutex);
+		data->filos[3].can_eat = true;
+		pthread_mutex_unlock(&data->filos[1].can_eat_mutex);
 		pthread_mutex_lock(&data->print_mutex);
 		printf("I am watching you...\n%i\n", data->tt_die);
 		pthread_mutex_unlock(&data->print_mutex);

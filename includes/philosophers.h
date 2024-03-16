@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 08:59:03 by dan               #+#    #+#             */
-/*   Updated: 2024/03/15 20:04:51 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/15 20:25:35 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,14 +59,15 @@ typedef struct s_Data
 
 typedef struct t_filo_th
 {
-	pthread_t	filo;
-	int			id;
-	int			meal_count;
-	t_Data		*data;
-	void		(*say)(long int, int, mssg, pthread_mutex_t *);
-	bool		can_eat;
-	fil_state	state;
-	long int	meal_time;
+	pthread_t		filo;
+	int				id;
+	int				meal_count;
+	t_Data			*data;
+	void			(*say)(long int, int, mssg, pthread_mutex_t *);
+	pthread_mutex_t	can_eat_mutex;
+	bool			can_eat;
+	fil_state		state;
+	long int		meal_time;
 }	t_filo_th;
 
 
