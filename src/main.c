@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/24 16:54:14 by dan               #+#    #+#             */
-/*   Updated: 2024/03/15 21:04:00 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/16 18:52:59 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,19 +116,15 @@ void	*big_bro(void *arg)
 	t_Data	*data;
 	
 	data = (t_Data *)arg;
-	
-	
-	
 	while(1)
 	{
 		sleep(1);
 		pthread_mutex_lock(&data->filos[1].can_eat_mutex);
-		data->filos[3].can_eat = true;
+		data->filos[1].can_eat = true;
 		pthread_mutex_unlock(&data->filos[1].can_eat_mutex);
 		pthread_mutex_lock(&data->print_mutex);
 		printf("I am watching you...\n%i\n", data->tt_die);
-		pthread_mutex_unlock(&data->print_mutex);
-		
+		pthread_mutex_unlock(&data->print_mutex);	
 	}
 	return (NULL);
 }
