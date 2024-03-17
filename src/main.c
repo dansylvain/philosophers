@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/24 16:54:14 by dan               #+#    #+#             */
-/*   Updated: 2024/03/17 05:40:59 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/17 05:59:56 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,27 +49,27 @@ void	xpress_mssg(long int t, int fil, mssg mssg, pthread_mutex_t *mut)
 	pthread_mutex_unlock(mut);
 }
 
-t_filo_th	*sleep_for_a_while(t_filo_th *filo)
-{
-	filo->say(0, filo->id, sleeps, &(filo->data->print_mutex));
-	pthread_mutex_lock(&filo->can_eat_mutex);
-	usleep(filo->data->tt_sleep);
-	pthread_mutex_unlock(&filo->can_eat_mutex);
-	filo->can_eat = true;
-	return (filo);
-}
-
-t_filo_th	*eat_pasta(t_filo_th *filo)
+t_filo_th	*eat_pasta_and_sleep(t_filo_th *filo)
 {
 	struct timeval	now;
 
 	gettimeofday(&now, NULL);
 	filo->meal_time = time_to_ms(now);
+	
 	filo->say(0, filo->id, eats, &(filo->data->print_mutex));
-	pthread_mutex_lock(&filo->can_eat_mutex);
-	filo->can_eat = false;
-	pthread_mutex_unlock(&filo->can_eat_mutex);
+	filo->state = eats;
+	
 	usleep(filo->data->tt_eat);
+	
+	filo->say(0, filo->id, sleeps, &(filo->data->print_mutex));
+	filo->state = sleeping;
+	
+	usleep(filo->data->tt_sleep);
+	
+	filo->say(0, filo->id, thinks, &(filo->data->print_mutex));
+	filo->state = thinking;
+	
+	filo->can_eat = false;
 	filo->meal_count++;
 	return (filo);	
 }
@@ -100,16 +100,14 @@ void	*filo_routine(void *arg)
 	{
 		pthread_mutex_lock(&filo->can_eat_mutex);
 		if (filo->state == thinking && filo->can_eat == true)
-			filo = eat_pasta(filo);
+			filo = eat_pasta_and_sleep(filo);
 		pthread_mutex_unlock(&filo->can_eat_mutex);
-		if (filo->state == sleeping)
-			filo = sleep_for_a_while(filo);
 		gettimeofday(&now, NULL);
 		time_passed = (time_to_ms(now)) - filo->meal_time ;
 	}
+	// display filo's death
 	filo->say(0, filo->id, dead, &(filo->data->print_mutex));
 	
-	// display filo's death
 	
 	return (NULL);
 }
@@ -121,7 +119,7 @@ void	*big_bro(void *arg)
 	data = (t_Data *)arg;
 	while(1)
 	{
-		sleep(1);
+		usleep(500);
 		pthread_mutex_lock(&data->filos[1].can_eat_mutex);
 		data->filos[1].can_eat = true;
 		pthread_mutex_unlock(&data->filos[1].can_eat_mutex);
