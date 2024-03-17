@@ -3,14 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   check_input.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsylvain <dsylvain@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 11:51:59 by dan               #+#    #+#             */
-/*   Updated: 2024/02/29 08:04:59 by dsylvain         ###   ########.fr       */
+/*   Updated: 2024/03/17 07:42:04 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
+#include "libft.h"
+
+int	is_valid_number(char *str);
+
 
 int	check_input(int argc, char **argv)
 {

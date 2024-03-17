@@ -1,21 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philosophers.h                                     :+:      :+:    :+:   */
+/*   create_and_initialize_data.c                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/17 07:24:57 by dan               #+#    #+#             */
-/*   Updated: 2024/03/17 07:25:44 by dan              ###   ########.fr       */
+/*   Created: 2024/03/17 07:29:16 by dan               #+#    #+#             */
+/*   Updated: 2024/03/17 07:30:58 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILOSOPHERS_H
-# define PHILOSOPHERS_H
+#include "philosophers.h"
 
-typedef struct s_Data
+int	create_and_initialize_data(t_Data **data, char **argv)
 {
-	
-}	t_Data;
 
-#endif
+	return (1);
+}
