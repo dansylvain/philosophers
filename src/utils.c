@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 07:27:02 by dan               #+#    #+#             */
-/*   Updated: 2024/03/17 10:23:29 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/17 10:36:32 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ void	xpress_mssg(t_filo *filo, mssg mssg)
 		mssg_str = "is thinking";
 	if (mssg == dead)
 		mssg_str = "died";
+	if (mssg == got_born)
+		mssg_str = "got born";
 	mut = &filo->data->print_mutex;
 	pthread_mutex_lock(mut);
 	gettimeofday(&now, NULL);

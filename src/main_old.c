@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/24 16:54:14 by dan               #+#    #+#             */
-/*   Updated: 2024/03/17 09:59:52 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/17 10:26:07 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,41 +15,7 @@
 #include "philosophers.h"
 void	suscribe_to_auth_lst(int filo_id, int **auth_lst, int fil_num);
 
-/**========================================================================
- *                           time_to_ms 
- *========================================================================**/
-long	time_to_ms(struct timeval time_struct)
-{
-	return (time_struct.tv_sec * 1000 + time_struct.tv_usec / 1000);
-}
 
-/**========================================================================
- *                           xpress_mssg 
- *========================================================================**/
-void	xpress_mssg(long int t, int fil, mssg mssg, pthread_mutex_t *mut)
-{
-	char *mssg_str;
-	struct timeval	now;
-
-	if (mssg == take_fork)
-		mssg_str = "has taken a fork";
-	if (mssg == eats)
-		mssg_str = "is eating";
-	if (mssg == sleeps)
-		mssg_str = "is sleeping";
-	if (mssg == thinks)
-		mssg_str = "is thinking";
-	if (mssg == dead)
-		mssg_str = "died";
-	if (mssg == is_born)
-		mssg_str = "is born";	
-	pthread_mutex_lock(mut);
-	gettimeofday(&now, NULL);
-	if (t == 0)
-		t = time_to_ms(now);
-	printf("%li %i %s\n", t, fil, mssg_str);
-	pthread_mutex_unlock(mut);
-}
 
 t_filo_th	*eat_pasta_and_sleep(t_filo_th *filo)
 {

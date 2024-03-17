@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:47:37 by dan               #+#    #+#             */
-/*   Updated: 2024/03/17 10:03:55 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/17 10:36:41 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ typedef enum
 	thinking,
 	dead,
 	take_fork,
+	got_born
 }	mssg;
 
 typedef struct s_Data t_Data;
@@ -26,6 +27,7 @@ typedef struct s_Data t_Data;
 typedef struct s_filo
 {
 	int			id;
+	long int	meal_time;
 	pthread_t	filo;
 	t_Data		*data;
 }	t_filo;

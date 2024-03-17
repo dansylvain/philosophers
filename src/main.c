@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:45:27 by dan               #+#    #+#             */
-/*   Updated: 2024/03/17 10:24:16 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/17 10:36:56 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,18 +21,24 @@ void	display_error(char *str);
 int		create_and_initialize_data(t_Data **data, char **argv);
 t_Data	*run_threads(t_Data *data);
 void	xpress_mssg(t_filo *filo, mssg mssg);
+long	time_to_ms(struct timeval time_struct);
 
 
 
 void	*filo_routine(void *arg)
 {
-	t_filo *filo;
+	t_filo 		*filo;
+	long int	time_now;
+	struct timeval now;
 
 	filo = (t_filo *)arg;
-	// pthread_mutex_lock(&filo->data->print_mutex);
-	xpress_mssg(filo, eating);
-	// printf("%i: hello!\n", filo->id);
-	// pthread_mutex_unlock(&filo->data->print_mutex);
+	xpress_mssg(filo, got_born);
+	while (time_now < filo->meal_time + filo->data->tt_die)
+	{
+		gettimeofday(&now, NULL);
+		time_now = time_to_ms(now);
+	}
+	xpress_mssg(filo, dead);
 	return (NULL);
 }
 
