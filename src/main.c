@@ -6,18 +6,47 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:45:27 by dan               #+#    #+#             */
-/*   Updated: 2024/03/17 09:57:02 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/17 10:04:13 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include "philosophers.h"
 #include <pthread.h>
+# include <sys/time.h>
 
 int		check_input(int argc, char **argv);
 void	free_data(t_Data *data);
 void	display_error(char *str);
 int		create_and_initialize_data(t_Data **data, char **argv);
+
+long	time_to_ms(struct timeval time_struct)
+{
+	return (time_struct.tv_sec * 1000 + time_struct.tv_usec / 1000);
+}
+
+void	xpress_mssg(long int t, int fil, mssg mssg, pthread_mutex_t *mut)
+{
+	char *mssg_str;
+	struct timeval	now;
+
+	if (mssg == take_fork)
+		mssg_str = "has taken a fork";
+	if (mssg == eating)
+		mssg_str = "is eating";
+	if (mssg == sleeping)
+		mssg_str = "is sleeping";
+	if (mssg == thinking)
+		mssg_str = "is thinking";
+	if (mssg == dead)
+		mssg_str = "died";	
+	pthread_mutex_lock(mut);
+	gettimeofday(&now, NULL);
+	if (t == 0)
+		t = time_to_ms(now);
+	printf("%li %i %s\n", t, fil, mssg_str);
+	pthread_mutex_unlock(mut);
+}
 
 void	*filo_routine(void *arg)
 {

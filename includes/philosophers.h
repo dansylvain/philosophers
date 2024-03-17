@@ -6,14 +6,22 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:47:37 by dan               #+#    #+#             */
-/*   Updated: 2024/03/17 09:54:51 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/17 10:03:55 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <pthread.h>
 
-typedef struct s_Data t_Data;
+typedef enum
+{
+	eating,
+	sleeping,
+	thinking,
+	dead,
+	take_fork,
+}	mssg;
 
+typedef struct s_Data t_Data;
 
 typedef struct s_filo
 {

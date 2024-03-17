@@ -6,10 +6,11 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/24 16:54:14 by dan               #+#    #+#             */
-/*   Updated: 2024/03/17 09:34:17 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/17 09:59:52 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+# include <sys/time.h>
 
 #include "philosophers.h"
 void	suscribe_to_auth_lst(int filo_id, int **auth_lst, int fil_num);
