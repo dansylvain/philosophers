@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:45:27 by dan               #+#    #+#             */
-/*   Updated: 2024/03/17 09:42:00 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/17 09:57:02 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,5 +59,7 @@ int main(int argc, char **argv)
 			return (free_data(data), display_error("Error\n"), 4);
 		i++;
 	}
+	pthread_mutex_destroy(&data->print_mutex);
+	free_data(data);
 	return (0);
 }
