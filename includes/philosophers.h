@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 08:59:03 by dan               #+#    #+#             */
-/*   Updated: 2024/03/15 20:25:35 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/17 05:42:05 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ typedef struct s_Data
 	int					max_meals;
 	pthread_mutex_t		*forks;
 	pthread_t			bb_th;
+	int					*auth_lst;
 	struct t_filo_th	*filos;
 }	t_Data;
 

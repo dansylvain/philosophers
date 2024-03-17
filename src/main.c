@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/24 16:54:14 by dan               #+#    #+#             */
-/*   Updated: 2024/03/16 18:52:59 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/17 05:40:59 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,17 @@ void	xpress_mssg(long int t, int fil, mssg mssg, pthread_mutex_t *mut)
 	printf("%li %i %s\n", t, fil, mssg_str);
 	pthread_mutex_unlock(mut);
 }
+
+t_filo_th	*sleep_for_a_while(t_filo_th *filo)
+{
+	filo->say(0, filo->id, sleeps, &(filo->data->print_mutex));
+	pthread_mutex_lock(&filo->can_eat_mutex);
+	usleep(filo->data->tt_sleep);
+	pthread_mutex_unlock(&filo->can_eat_mutex);
+	filo->can_eat = true;
+	return (filo);
+}
+
 t_filo_th	*eat_pasta(t_filo_th *filo)
 {
 	struct timeval	now;
@@ -63,15 +74,7 @@ t_filo_th	*eat_pasta(t_filo_th *filo)
 	return (filo);	
 }
 
-t_filo_th	*sleep_for_a_while(t_filo_th *filo)
-{
-	filo->say(0, filo->id, sleeps, &(filo->data->print_mutex));
-	pthread_mutex_lock(&filo->can_eat_mutex);
-	usleep(filo->data->tt_sleep);
-	pthread_mutex_unlock(&filo->can_eat_mutex);
-	filo->can_eat = true;
-	return (filo);
-}
+
 
 /**========================================================================
  *                           filo_routine 

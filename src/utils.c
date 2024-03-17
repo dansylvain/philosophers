@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 11:55:07 by dan               #+#    #+#             */
-/*   Updated: 2024/03/15 20:46:08 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/17 05:44:55 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,8 @@ int	create_and_initialize_data_struct(t_Data **data, char **argv)
 		(*data)->max_meals = ft_atoi(argv[5]);
 	(*data)->forks = (pthread_mutex_t *)ft_calloc((*data)->fil_num, sizeof(pthread_mutex_t));
 	(*data)->filos = (t_filo_th *)ft_calloc((*data)->fil_num, sizeof(t_filo_th));
-	if (!(*data) || !(*data)->forks || !(*data)->filos)
+	(*data)->auth_lst = (int *)ft_calloc((*data)->fil_num + 1, sizeof(int));
+	if (!(*data) || !(*data)->forks || !(*data)->filos || !(*data)->auth_lst)
 		return (0);
 	i = 0;
 	while (i < (*data)->fil_num)
