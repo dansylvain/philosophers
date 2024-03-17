@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 07:24:28 by dan               #+#    #+#             */
-/*   Updated: 2024/03/17 07:40:31 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/17 08:34:04 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,17 @@ void	display_error(char *str);
 void	free_data(t_Data *data);
 int	create_and_initialize_data(t_Data **data, char **argv);
 
+
+void	*filo_routine(void *arg)
+{
+	t_filo	*filo;
+	
+	filo = (t_filo *)arg;
+	pthread_mutex_lock(&filo->data->stdout_mtx);
+	printf("%i: hi!\n", filo->id);
+	pthread_mutex_unlock(&filo->data->stdout_mtx);
+	return (NULL);
+}
 
 int	main(int argc, char **argv)
 {
@@ -44,25 +55,25 @@ int	main(int argc, char **argv)
 	// 	return (free_data(data), display_error("Error\n"), 3);
 
 
-	// // create philo threads
-	// i = 0;
-	// while (i < data->fil_num)
-	// {
-	// 	data->filos[i].id = i;
-	// 	if(pthread_create(&data->filos[i].filo, NULL, filo_routine, &data->filos[i]) != 0)
-	// 		return (free_data(data), display_error("Error\n"), 3);
-	// 	i++;
-	// }
+	// create philo threads
+	i = 0;
+	while (i < data->fil_nbr)
+	{
+		data->filo[i].id = i;
+		if(pthread_create(&data->filo[i].filo, NULL, filo_routine, &data->filo[i]) != 0)
+			return (free_data(data), display_error("Error\n"), 3);
+		i++;
+	}
 	
 	
-	// // join philo threads
-	// i = 0;
-	// while (i < data->fil_num)
-	// {
-	// 	if(pthread_join(data->filos[i].filo, NULL) != 0)
-	// 		return (free_data(data), display_error("Error\n"), 4);
-	// 	i++;
-	// }
+	// join philo threads
+	i = 0;
+	while (i < data->fil_nbr)
+	{
+		if(pthread_join(data->filo[i].filo, NULL) != 0)
+			return (free_data(data), display_error("Error\n"), 4);
+		i++;
+	}
 	// if(pthread_join(data->bb_th, NULL) != 0)
 	// 	return (free_data(data), display_error("Error\n"), 4);
 	
