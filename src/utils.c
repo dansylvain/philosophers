@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 11:55:07 by dan               #+#    #+#             */
-/*   Updated: 2024/03/17 05:46:07 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/17 06:51:18 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ int	create_and_initialize_data_struct(t_Data **data, char **argv)
 
 	*data = (t_Data *)ft_calloc(1, sizeof(t_Data));
 	if (pthread_mutex_init(&((*data)->print_mutex), NULL) != 0)
+		return (0);
+	if (pthread_mutex_init(&((*data)->auth_lst_mutex), NULL) != 0)
 		return (0);
 	(*data)->fil_num = ft_atoi(argv[1]);
 	(*data)->tt_die = ft_atoi(argv[2]);

@@ -6,12 +6,13 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/24 16:54:14 by dan               #+#    #+#             */
-/*   Updated: 2024/03/17 05:59:56 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/17 07:07:08 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "philosophers.h"
+void	suscribe_to_auth_lst(int filo_id, int **auth_lst, int fil_num);
 
 /**========================================================================
  *                           time_to_ms 
@@ -55,26 +56,28 @@ t_filo_th	*eat_pasta_and_sleep(t_filo_th *filo)
 
 	gettimeofday(&now, NULL);
 	filo->meal_time = time_to_ms(now);
-	
 	filo->say(0, filo->id, eats, &(filo->data->print_mutex));
-	filo->state = eats;
-	
+	filo->state = eating;
 	usleep(filo->data->tt_eat);
-	
 	filo->say(0, filo->id, sleeps, &(filo->data->print_mutex));
 	filo->state = sleeping;
-	
 	usleep(filo->data->tt_sleep);
-	
 	filo->say(0, filo->id, thinks, &(filo->data->print_mutex));
 	filo->state = thinking;
-	
 	filo->can_eat = false;
 	filo->meal_count++;
 	return (filo);	
 }
 
-
+void	suscribe_to_auth_lst(int filo_id, int **auth_lst, int fil_num)
+{
+	int	i;
+	i = 0;
+	while(i < fil_num)
+		i++;
+	printf("%i: enter suscribe_to_auth_lst\n", fil_num);
+	(*auth_lst)[i] = filo_id;
+}
 
 /**========================================================================
  *                           filo_routine 
@@ -98,6 +101,10 @@ void	*filo_routine(void *arg)
 	gettimeofday(&start, NULL);
 	while (time_passed < filo->data->tt_die)
 	{
+		pthread_mutex_lock(&filo->data->auth_lst_mutex);
+		suscribe_to_auth_lst(filo->id, &(filo->data->auth_lst), filo->id);
+		pthread_mutex_unlock(&filo->data->auth_lst_mutex);
+
 		pthread_mutex_lock(&filo->can_eat_mutex);
 		if (filo->state == thinking && filo->can_eat == true)
 			filo = eat_pasta_and_sleep(filo);
@@ -112,19 +119,52 @@ void	*filo_routine(void *arg)
 	return (NULL);
 }
 
+void	display_auth_lst(int *auth_lst, int fil_num)
+{
+	int i;
+
+	i = 0;
+	printf("auth_lst :\n");
+	while (i < fil_num)
+		printf("%i ", auth_lst[i++]);
+	printf("\n");
+}
+
+int	get_nxt_fil_to_eat(int **auth_lst)
+{
+	int i;
+	int	nxt_fil_to_eat;
+	while ((*auth_lst)[0] == 0)
+		usleep(1);
+	printf("enter get_nxt_fil_to_eat\n");
+	nxt_fil_to_eat = (*auth_lst)[0];
+	i = 1;
+	while ((*auth_lst)[i])
+	{
+		(*auth_lst)[i - 1] = (*auth_lst)[i];
+		i++;
+	}
+	return (nxt_fil_to_eat);
+}
+
 void	*big_bro(void *arg)
 {
 	t_Data	*data;
-	
+	int		nxt_fil_to_eat;
+
+	usleep(50000);
 	data = (t_Data *)arg;
 	while(1)
 	{
-		usleep(500);
-		pthread_mutex_lock(&data->filos[1].can_eat_mutex);
-		data->filos[1].can_eat = true;
-		pthread_mutex_unlock(&data->filos[1].can_eat_mutex);
+		display_auth_lst(data->auth_lst, data->fil_num);
+		pthread_mutex_lock(&data->auth_lst_mutex);
+		nxt_fil_to_eat = get_nxt_fil_to_eat(&data->auth_lst);
+		pthread_mutex_unlock(&data->auth_lst_mutex);
+		pthread_mutex_lock(&data->filos[nxt_fil_to_eat].can_eat_mutex);
+		data->filos[nxt_fil_to_eat].can_eat = true;
+		pthread_mutex_unlock(&data->filos[nxt_fil_to_eat].can_eat_mutex);
 		pthread_mutex_lock(&data->print_mutex);
-		printf("I am watching you...\n%i\n", data->tt_die);
+		printf("*****\nI am watching you...\n*****\n");
 		pthread_mutex_unlock(&data->print_mutex);	
 	}
 	return (NULL);

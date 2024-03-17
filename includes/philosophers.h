@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 08:59:03 by dan               #+#    #+#             */
-/*   Updated: 2024/03/17 05:42:05 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/17 06:31:53 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,12 @@
 
 typedef enum
 {
-	is_born,
-	take_fork,
 	eats,
 	sleeps,
 	thinks,
-	dead
+	dead,
+	is_born,
+	take_fork,
 }	mssg;
 
 typedef enum
@@ -55,6 +55,7 @@ typedef struct s_Data
 	pthread_mutex_t		*forks;
 	pthread_t			bb_th;
 	int					*auth_lst;
+	pthread_mutex_t		auth_lst_mutex;
 	struct t_filo_th	*filos;
 }	t_Data;
 
