@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:45:27 by dan               #+#    #+#             */
-/*   Updated: 2024/03/17 10:36:56 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/18 07:11:22 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "philosophers.h"
 #include <pthread.h>
 # include <sys/time.h>
+#include <unistd.h>
 
 int		check_input(int argc, char **argv);
 void	free_data(t_Data *data);
@@ -22,10 +23,10 @@ int		create_and_initialize_data(t_Data **data, char **argv);
 t_Data	*run_threads(t_Data *data);
 void	xpress_mssg(t_filo *filo, mssg mssg);
 long	time_to_ms(struct timeval time_struct);
+t_Data *run_threads(t_Data *data);
 
 
-
-void	*filo_routine(void *arg)
+void	*filo_rtn(void *arg)
 {
 	t_filo 		*filo;
 	long int	time_now;
@@ -42,6 +43,23 @@ void	*filo_routine(void *arg)
 	return (NULL);
 }
 
+void	*coor_rtn(void *arg)
+{
+	t_Data *data;
+	int	i;
+	
+	data = (t_Data *)arg;
+	while (i < 5)
+	{
+		sleep(1);
+		pthread_mutex_lock(&data->print_mtx);
+		printf("%i: I'm watching you...\n", data->fil_nbr);
+		pthread_mutex_unlock(&data->print_mtx);	
+		i++;
+	}
+	return (NULL);
+}
+
 int main(int argc, char **argv)
 {
 	t_Data	*data;
@@ -53,31 +71,14 @@ int main(int argc, char **argv)
 		return (free_data(data), display_error("Error\n"), 2);
 	
 	printf("welcome to the jungle\n");
+	
 	data = run_threads(data);
 	if (data == NULL)
 		return (free_data(data), display_error("Error\n"), 3);
 	
-	pthread_mutex_destroy(&data->print_mutex);
+	pthread_mutex_destroy(&data->print_mtx);
 	free_data(data);
 	return (0);
 }
 
-t_Data *run_threads(t_Data *data)
-{
-	int	i;
-	
-	i = 0;
-	while (i < data->fil_nbr)
-	{
-		data->filo[i].id = i;
-		if(pthread_create(&data->filo[i++].filo, NULL, filo_routine, &data->filo[i]) != 0)
-			return (NULL);
-	}
-	i = 0;
-	while (i < data->fil_nbr)
-	{
-		if(pthread_join(data->filo[i++].filo, NULL) != 0)
-			return (NULL);
-	}
-	return (data);	
-}
+

@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 08:59:03 by dan               #+#    #+#             */
-/*   Updated: 2024/03/17 07:25:13 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/18 06:25:22 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ typedef struct t_filo_th	t_filo_th;
 
 typedef struct s_Data
 {
-	pthread_mutex_t 	print_mutex;
+	pthread_mutex_t 	print_mtx;
 	int					fil_num;
 	int					tt_die;
 	int					tt_eat;

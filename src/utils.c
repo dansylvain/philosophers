@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 07:27:02 by dan               #+#    #+#             */
-/*   Updated: 2024/03/17 10:36:32 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/18 07:12:38 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,13 @@
 #include <errno.h>
 # include <sys/time.h>
 
+void	*coor_rtn(void *arg);
+void	*filo_rtn(void *arg);
+
 void	free_data(t_Data *data)
 {
+	free(data->auth_tab);
+	free(data->fork);
 	free(data->filo);
 	free(data);
 }
@@ -53,10 +58,36 @@ void	xpress_mssg(t_filo *filo, mssg mssg)
 		mssg_str = "died";
 	if (mssg == got_born)
 		mssg_str = "got born";
-	mut = &filo->data->print_mutex;
-	pthread_mutex_lock(mut);
 	gettimeofday(&now, NULL);
 	t = time_to_ms(now);
+	mut = &filo->data->print_mtx;
+	pthread_mutex_lock(mut);
 	printf("%li %i %s\n", t, filo->id, mssg_str);
 	pthread_mutex_unlock(mut);
+}
+
+t_Data *run_threads(t_Data *data)
+{
+	int	i;
+	
+	if(pthread_create(&data->coor, NULL, coor_rtn, data) != 0)
+		return (NULL);
+	i = 0;
+	while (i < data->fil_nbr)
+	{
+		data->filo[i].id = i;
+		if(pthread_create(&data->filo[i].filo, NULL, filo_rtn, &data->filo[i]) != 0)
+			return (NULL);
+		i++;
+	}
+	i = 0;
+	while (i < data->fil_nbr)
+	{
+		if(pthread_join(data->filo[i].filo, NULL) != 0)
+			return (NULL);
+		i++;
+	}
+	if(pthread_join(data->coor, NULL) != 0)
+			return (NULL);
+	return (data);	
 }

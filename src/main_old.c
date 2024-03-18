@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/24 16:54:14 by dan               #+#    #+#             */
-/*   Updated: 2024/03/17 10:26:07 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/18 06:25:22 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,13 @@ t_filo_th	*eat_pasta_and_sleep(t_filo_th *filo)
 
 	gettimeofday(&now, NULL);
 	filo->meal_time = time_to_ms(now);
-	filo->say(0, filo->id, eats, &(filo->data->print_mutex));
+	filo->say(0, filo->id, eats, &(filo->data->print_mtx));
 	filo->state = eating;
 	usleep(filo->data->tt_eat);
-	filo->say(0, filo->id, sleeps, &(filo->data->print_mutex));
+	filo->say(0, filo->id, sleeps, &(filo->data->print_mtx));
 	filo->state = sleeping;
 	usleep(filo->data->tt_sleep);
-	filo->say(0, filo->id, thinks, &(filo->data->print_mutex));
+	filo->say(0, filo->id, thinks, &(filo->data->print_mtx));
 	filo->state = thinking;
 	filo->can_eat = false;
 	filo->meal_count++;
@@ -47,9 +47,9 @@ void	suscribe_to_auth_lst(int filo_id, int **auth_lst, int fil_num)
 }
 
 /**========================================================================
- *                           filo_routine 
+ *                           filo_rtn 
  *========================================================================**/
-void	*filo_routine(void *arg)
+void	*filo_rtn(void *arg)
 {
 	t_filo_th		*filo;
 	struct timeval	start;
@@ -61,7 +61,7 @@ void	*filo_routine(void *arg)
 	time_passed = 0;
 	
 	// display starting time	
-	filo->say(0, filo->id, is_born, &(filo->data->print_mutex));
+	filo->say(0, filo->id, is_born, &(filo->data->print_mtx));
 
 	// live or die loop 
 	// reinitialise time_passed to 0 at each meal start
@@ -80,7 +80,7 @@ void	*filo_routine(void *arg)
 		time_passed = (time_to_ms(now)) - filo->meal_time ;
 	}
 	// display filo's death
-	filo->say(0, filo->id, dead, &(filo->data->print_mutex));
+	filo->say(0, filo->id, dead, &(filo->data->print_mtx));
 	
 	
 	return (NULL);
@@ -130,9 +130,9 @@ void	*big_bro(void *arg)
 		pthread_mutex_lock(&data->filos[nxt_fil_to_eat].can_eat_mutex);
 		data->filos[nxt_fil_to_eat].can_eat = true;
 		pthread_mutex_unlock(&data->filos[nxt_fil_to_eat].can_eat_mutex);
-		pthread_mutex_lock(&data->print_mutex);
+		pthread_mutex_lock(&data->print_mtx);
 		printf("*****\nI am watching you...\n*****\n");
-		pthread_mutex_unlock(&data->print_mutex);	
+		pthread_mutex_unlock(&data->print_mtx);	
 	}
 	return (NULL);
 }
@@ -167,7 +167,7 @@ int	main(int argc, char **argv)
 	while (i < data->fil_num)
 	{
 		data->filos[i].id = i;
-		if(pthread_create(&data->filos[i].filo, NULL, filo_routine, &data->filos[i]) != 0)
+		if(pthread_create(&data->filos[i].filo, NULL, filo_rtn, &data->filos[i]) != 0)
 			return (free_data(data), display_error("Error\n"), 3);
 		i++;
 	}
