@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:45:27 by dan               #+#    #+#             */
-/*   Updated: 2024/03/18 07:11:22 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/18 07:27:30 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	*coor_rtn(void *arg)
 	int	i;
 	
 	data = (t_Data *)arg;
-	while (i < 5)
+	while (i < 3)
 	{
 		sleep(1);
 		pthread_mutex_lock(&data->print_mtx);

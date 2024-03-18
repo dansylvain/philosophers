@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:49:03 by dan               #+#    #+#             */
-/*   Updated: 2024/03/18 07:10:17 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/18 07:33:39 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,9 @@
 
 long	time_to_ms(struct timeval time_struct);
 
-
+/**========================================================================
+ *                           add_argv_data
+ *========================================================================**/
 void	add_argv_data(t_Data **data, char **argv)
 {
 	(*data)->fil_nbr = ft_atoi(argv[1]);
@@ -30,11 +32,11 @@ void	add_argv_data(t_Data **data, char **argv)
 		(*data)->max_meals = INT_MAX;	
 }
 
-int	create_and_initialize_data(t_Data **data, char **argv)
+/**========================================================================
+ *                           alloc_memory_for_data
+ *========================================================================**/
+int	alloc_memory_for_data(t_Data **data, char **argv)
 {
-	int	i;
-	struct timeval	now;
-
 	(*data) = (t_Data *)ft_calloc(1, sizeof(t_Data));
 	add_argv_data(data, argv);
 	(*data)->filo = (t_filo *)ft_calloc((*data)->fil_nbr, sizeof(t_filo));
@@ -42,6 +44,16 @@ int	create_and_initialize_data(t_Data **data, char **argv)
 	(*data)->fork = (pthread_mutex_t *)ft_calloc((*data)->fil_nbr, sizeof(pthread_mutex_t));
 	if (!*data || !(*data)->filo || !(*data)->auth_tab || !(*data)->fork)
 		return (0);
+	return (1);
+}
+
+/**========================================================================
+ *                           initialize_mutex
+ *========================================================================**/
+int	initialize_mutex(t_Data **data)
+{
+	int	i;
+	
 	if (pthread_mutex_init(&((*data)->auth_mtx), NULL) != 0)
 		return (0);
 	if (pthread_mutex_init(&((*data)->print_mtx), NULL) != 0)
@@ -53,10 +65,35 @@ int	create_and_initialize_data(t_Data **data, char **argv)
 			return (0);
 		if (pthread_mutex_init(&((*data)->filo[i].can_eat_mtx), NULL) != 0)
 			return (0);
+		i++;
+	}
+	return (1);
+}
+
+void	initialize_filos(t_Data **data)
+{
+	int				i;
+	struct timeval	now;
+
+	i = 0;
+	while (i < (*data)->fil_nbr)
+	{
 		gettimeofday(&now, NULL);
 		(*data)->filo[i].meal_time = time_to_ms(now);
 		(*data)->filo[i].data = *data;
 		i++;
 	}
+}
+
+/**========================================================================
+ *                           create_and_initialize_data
+ *========================================================================**/
+int	create_and_initialize_data(t_Data **data, char **argv)
+{
+	if (alloc_memory_for_data(data, argv) == 0)
+		return (0);
+	if (initialize_mutex(data) == 0)
+		return (0);
+	initialize_filos(data);
 	return (1);	
 }
