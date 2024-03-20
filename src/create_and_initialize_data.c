@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:49:03 by dan               #+#    #+#             */
-/*   Updated: 2024/03/18 07:38:35 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/20 07:06:08 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	alloc_memory_for_data(t_Data **data, char **argv)
 	(*data) = (t_Data *)ft_calloc(1, sizeof(t_Data));
 	add_argv_data(data, argv);
 	(*data)->filo = (t_filo *)ft_calloc((*data)->fil_nbr, sizeof(t_filo));
-	(*data)->auth_tab = (int *)ft_calloc((*data)->fil_nbr + 1, sizeof(int));
+	(*data)->auth_tab = (int *)ft_calloc((*data)->fil_nbr, sizeof(int));
 	(*data)->fork = (pthread_mutex_t *)ft_calloc((*data)->fil_nbr,
 			sizeof(pthread_mutex_t));
 	if (!*data || !(*data)->filo || !(*data)->auth_tab || !(*data)->fork)
@@ -103,6 +103,7 @@ void	initialize_filos(t_Data **data)
 		gettimeofday(&now, NULL);
 		(*data)->filo[i].meal_time = time_to_ms(now);
 		(*data)->filo[i].data = *data;
+		(*data)->filo[i].can_eat = false;
 		i++;
 	}
 }
