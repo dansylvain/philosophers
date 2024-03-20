@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:49:03 by dan               #+#    #+#             */
-/*   Updated: 2024/03/20 07:06:08 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/20 07:44:38 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ int	create_and_initialize_data(t_Data **data, char **argv)
 
 /**========================================================================
  *                           alloc_memory_for_data
+ *! there could be a problem with the size of ath_tab
+ *! depending on execution... to be watched after... 
  *========================================================================**/
 int	alloc_memory_for_data(t_Data **data, char **argv)
 {
@@ -91,6 +93,7 @@ int	initialize_mutex(t_Data **data)
 
 /**========================================================================
  *                           initialize_filos
+ *!  (*data)->auth_tab may be overkill, since ft_calloc'd
  *========================================================================**/
 void	initialize_filos(t_Data **data)
 {
@@ -104,6 +107,8 @@ void	initialize_filos(t_Data **data)
 		(*data)->filo[i].meal_time = time_to_ms(now);
 		(*data)->filo[i].data = *data;
 		(*data)->filo[i].can_eat = false;
+		(*data)->filo[i].is_signed_in = false;
+		(*data)->auth_tab[i] = 0;
 		i++;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:45:27 by dan               #+#    #+#             */
-/*   Updated: 2024/03/20 07:16:01 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/20 08:02:04 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,29 @@ int	check_if_filo_can_eat(t_filo *filo)
 	return (filo_auth);
 }
 
+
+/**========================================================================
+ *                           sign_in_to_auth_lst
+ *? commented text to be tested. could reduce code qtty 
+ *========================================================================**/
+void	sign_in_to_auth_lst(t_filo *filo)
+{
+	int				i;
+	int				*tab;
+	pthread_mutex_t	*mtx;
+	
+	mtx = &filo->data->auth_tab_mtx;
+	tab = filo->data->auth_tab;
+	pthread_mutex_lock(mtx);
+	i = 0;
+	while (tab[i] && i < filo->data->fil_nbr)
+		i++;
+	tab[i] = filo->id;
+	pthread_mutex_unlock(mtx);
+	filo->is_signed_in = true;
+
+}
+
 void	*filo_rtn(void *arg)
 {
 	t_filo 		*filo;
@@ -72,6 +95,8 @@ void	*filo_rtn(void *arg)
 	xpress_mssg(filo, got_born);
 	while (time_now < (filo->meal_time + filo->data->tt_die))
 	{
+		if (!filo->is_signed_in)
+			sign_in_to_auth_lst(filo);
 		if (check_if_filo_can_eat(filo))
 			filo = eat_and_sleep(filo);
 		gettimeofday(&now, NULL);
@@ -90,11 +115,15 @@ void	*coor_rtn(void *arg)
 	while (1)
 	{
 		sleep(1);
-		pthread_mutex_lock(&data->filo[0].can_eat_mtx);
-		data->filo[0].can_eat = true;
-		pthread_mutex_unlock(&data->filo[0].can_eat_mtx);
+		pthread_mutex_lock(&data->filo[1].can_eat_mtx);
+		data->filo[1].can_eat = true;
+		pthread_mutex_unlock(&data->filo[1].can_eat_mtx);
 		pthread_mutex_lock(&data->print_mtx);
-		printf("%i: I'm watching you...\n", data->fil_nbr);
+		printf("Auth tab: \n");
+		i = 0;
+		while (i < data->fil_nbr)
+			printf("%i ", data->auth_tab[i++]);
+		printf("\n");
 		pthread_mutex_unlock(&data->print_mtx);	
 		i++;
 	}
