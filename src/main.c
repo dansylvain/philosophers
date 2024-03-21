@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:45:27 by dan               #+#    #+#             */
-/*   Updated: 2024/03/21 09:45:07 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/21 10:14:35 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	*filo_rtn(void *arg)
 	xpress_mssg(filo, got_born);
 	while (time_now < filo->meal_time + filo->data->tt_die)
 	{
+		
 		get_time_now(&time_now);
 	}
 	xpress_mssg(filo, dead);

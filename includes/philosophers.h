@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:47:37 by dan               #+#    #+#             */
-/*   Updated: 2024/03/21 09:35:33 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/21 10:11:56 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ typedef enum mssg
 	thinking,
 	dead,
 	take_fork,
-	got_born
+	got_born,
 }	t_mssg;
 
 typedef struct s_Data	t_data;
