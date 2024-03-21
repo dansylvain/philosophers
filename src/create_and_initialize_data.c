@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:49:03 by dan               #+#    #+#             */
-/*   Updated: 2024/03/21 11:58:55 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/21 19:41:52 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "libft.h"
 #include <limits.h>
 #include <sys/time.h>
+#include <stdio.h>
 
 int		create_and_initialize_data(t_data **data, char **argv);
 int		alloc_memory_for_data(t_data **data, char **argv);
@@ -57,9 +58,9 @@ int	alloc_memory_for_data(t_data **data, char **argv)
 void	add_argv_data(t_data **data, char **argv)
 {
 	(*data)->fil_nbr = ft_atoi(argv[1]);
-	(*data)->tt_die = ft_atoi(argv[2]) * 1000;
-	(*data)->tt_eat = ft_atoi(argv[3]) * 1000;
-	(*data)->tt_sleep = ft_atoi(argv[4]) * 1000;
+	(*data)->tt_die = ft_atoi(argv[2]);
+	(*data)->tt_eat = ft_atoi(argv[3]);
+	(*data)->tt_sleep = ft_atoi(argv[4]);
 	if (argv[5])
 		(*data)->max_meals = ft_atoi(argv[5]);
 	else
@@ -101,6 +102,7 @@ void	initialize_filos(t_data **data)
 	while (i < (*data)->fil_nbr)
 	{
 		gettimeofday(&now, NULL);
+		printf("time now: %li\n", time_to_ms(now));
 		(*data)->filo[i].meal_time = time_to_ms(now);
 		(*data)->filo[i].data = *data;
 		i++;

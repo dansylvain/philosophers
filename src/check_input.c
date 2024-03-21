@@ -6,11 +6,10 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 11:51:59 by dan               #+#    #+#             */
-/*   Updated: 2024/03/18 07:43:32 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/21 19:10:15 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosophers.h"
 #include "libft.h"
 
 int	is_valid_number(char *str);

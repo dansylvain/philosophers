@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:45:27 by dan               #+#    #+#             */
-/*   Updated: 2024/03/21 12:19:26 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/21 19:42:51 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,20 +25,7 @@ void	xpress_mssg(t_filo *filo, t_mssg mssg);
 long	time_to_ms(struct timeval time_struct);
 t_data	*run_threads(t_data *data);
 void	get_time_now(long int	*time_now);
-
-t_filo *eat_and_sleep(t_filo *filo)
-{
-	if (filo->id == 0)
-	{
-		get_time_now(&filo->meal_time);
-		// printf("filo->meal_time: %li\n", filo->meal_time);
-		// xpress_mssg(filo, eating);
-		usleep(filo->data->tt_eat);
-		// xpress_mssg(filo, sleeping);
-		usleep(filo->data->tt_sleep);
-	}
-	return (filo);
-}
+void	destroy_mutexes(t_data *data);
 
 void	*filo_rtn(void *arg)
 {
@@ -51,10 +38,6 @@ void	*filo_rtn(void *arg)
 	while (time_now < filo->meal_time + filo->data->tt_die)
 	{
 		get_time_now(&time_now);
-		eat_and_sleep(filo);
-		printf("filo->meal_time: %li\n", filo->meal_time);
-		printf("filo->data->tt_die: %i\n", filo->data->tt_die);
-		printf("time_now: %li\n", time_now);
 	}
 	xpress_mssg(filo, dead);
 	return (NULL);
@@ -89,7 +72,7 @@ int	main(int argc, char **argv)
 	data = run_threads(data);
 	if (data == NULL)
 		return (free_data(data), display_error("Error\n"), 3);
-	pthread_mutex_destroy(&data->print_mtx);
+	destroy_mutexes(data);
 	free_data(data);
 	return (0);
 }

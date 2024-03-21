@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 07:27:02 by dan               #+#    #+#             */
-/*   Updated: 2024/03/21 11:55:39 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/21 19:29:28 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,14 @@ void	display_error(char *str)
 long	time_to_ms(struct timeval time_struct)
 {
 	return (time_struct.tv_sec * 1000 + time_struct.tv_usec / 1000);
+}
+
+void	get_time_now(long int	*time_now)
+{
+	struct timeval	now;
+
+	gettimeofday(&now, NULL);
+	*time_now = time_to_ms(now);
 }
 
 void	xpress_mssg(t_filo *filo, t_mssg mssg)
@@ -93,10 +101,17 @@ t_data	*run_threads(t_data *data)
 	return (data);
 }
 
-void	get_time_now(long int	*time_now)
+void	destroy_mutexes(t_data *data)
 {
-	struct timeval	now;
-
-	gettimeofday(&now, NULL);
-	*time_now = now.tv_sec * 1000 + now.tv_usec;
+	int	i;
+	
+	pthread_mutex_destroy(&data->print_mtx);
+	pthread_mutex_destroy(&data->auth_mtx);
+	i = 0;
+	while (i < data->fil_nbr)
+	{
+		pthread_mutex_destroy(&data->filo[i].can_eat_mtx);
+		// add forks mutexes !!!
+		i++;
+	}
 }
