@@ -6,14 +6,14 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:47:37 by dan               #+#    #+#             */
-/*   Updated: 2024/03/18 07:09:38 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/21 09:35:33 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <pthread.h>
 #include <stdbool.h>
 
-typedef enum
+typedef enum mssg
 {
 	eating,
 	sleeping,
@@ -21,9 +21,9 @@ typedef enum
 	dead,
 	take_fork,
 	got_born
-}	mssg;
+}	t_mssg;
 
-typedef struct s_Data t_Data;
+typedef struct s_Data	t_data;
 
 typedef struct s_filo
 {
@@ -32,9 +32,8 @@ typedef struct s_filo
 	int				id;
 	long int		meal_time;
 	pthread_t		filo;
-	t_Data			*data;
+	t_data			*data;
 }	t_filo;
-
 
 typedef struct s_Data
 {
@@ -48,5 +47,5 @@ typedef struct s_Data
 	pthread_t		coor;
 	pthread_mutex_t	print_mtx;
 	pthread_mutex_t	auth_mtx;
-	pthread_mutex_t *fork;
-} t_Data;
+	pthread_mutex_t	*fork;
+}	t_data;

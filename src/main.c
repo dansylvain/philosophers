@@ -6,31 +6,30 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:45:27 by dan               #+#    #+#             */
-/*   Updated: 2024/03/18 07:27:30 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/21 09:40:00 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include "philosophers.h"
 #include <pthread.h>
-# include <sys/time.h>
+#include <sys/time.h>
 #include <unistd.h>
 
 int		check_input(int argc, char **argv);
-void	free_data(t_Data *data);
+void	free_data(t_data *data);
 void	display_error(char *str);
-int		create_and_initialize_data(t_Data **data, char **argv);
-t_Data	*run_threads(t_Data *data);
-void	xpress_mssg(t_filo *filo, mssg mssg);
+int		create_and_initialize_data(t_data **data, char **argv);
+t_data	*run_threads(t_data *data);
+void	xpress_mssg(t_filo *filo, t_mssg mssg);
 long	time_to_ms(struct timeval time_struct);
-t_Data *run_threads(t_Data *data);
-
+t_data	*run_threads(t_data *data);
 
 void	*filo_rtn(void *arg)
 {
-	t_filo 		*filo;
-	long int	time_now;
-	struct timeval now;
+	t_filo			*filo;
+	long int		time_now;
+	struct timeval	now;
 
 	filo = (t_filo *)arg;
 	xpress_mssg(filo, got_born);
@@ -45,40 +44,35 @@ void	*filo_rtn(void *arg)
 
 void	*coor_rtn(void *arg)
 {
-	t_Data *data;
-	int	i;
-	
-	data = (t_Data *)arg;
+	t_data	*data;
+	int		i;
+
+	data = (t_data *)arg;
 	while (i < 3)
 	{
 		sleep(1);
 		pthread_mutex_lock(&data->print_mtx);
 		printf("%i: I'm watching you...\n", data->fil_nbr);
-		pthread_mutex_unlock(&data->print_mtx);	
+		pthread_mutex_unlock(&data->print_mtx);
 		i++;
 	}
 	return (NULL);
 }
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
-	t_Data	*data;
+	t_data	*data;
 	int		i;
-	
+
 	if (check_input(argc, argv) == 0)
 		return (display_error("Error\n"), 1);
 	if (create_and_initialize_data(&data, argv) == 0)
 		return (free_data(data), display_error("Error\n"), 2);
-	
 	printf("welcome to the jungle\n");
-	
 	data = run_threads(data);
 	if (data == NULL)
 		return (free_data(data), display_error("Error\n"), 3);
-	
 	pthread_mutex_destroy(&data->print_mtx);
 	free_data(data);
 	return (0);
 }
-
-
