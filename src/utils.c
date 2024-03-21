@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 07:27:02 by dan               #+#    #+#             */
-/*   Updated: 2024/03/21 10:18:22 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/21 11:55:39 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,5 +98,5 @@ void	get_time_now(long int	*time_now)
 	struct timeval	now;
 
 	gettimeofday(&now, NULL);
-	*time_now = time_to_ms(now);
+	*time_now = now.tv_sec * 1000 + now.tv_usec;
 }
