@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 07:27:02 by dan               #+#    #+#             */
-/*   Updated: 2024/03/21 19:29:28 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/21 19:44:40 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,24 +29,7 @@ void	free_data(t_data *data)
 	free(data);
 }
 
-void	display_error(char *str)
-{
-	if (write (2, str, ft_strlen(str)) == -1)
-		perror("display_error");
-}
 
-long	time_to_ms(struct timeval time_struct)
-{
-	return (time_struct.tv_sec * 1000 + time_struct.tv_usec / 1000);
-}
-
-void	get_time_now(long int	*time_now)
-{
-	struct timeval	now;
-
-	gettimeofday(&now, NULL);
-	*time_now = time_to_ms(now);
-}
 
 void	xpress_mssg(t_filo *filo, t_mssg mssg)
 {
