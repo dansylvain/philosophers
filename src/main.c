@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:45:27 by dan               #+#    #+#             */
-/*   Updated: 2024/03/21 09:40:00 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/21 09:45:07 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,19 +24,18 @@ t_data	*run_threads(t_data *data);
 void	xpress_mssg(t_filo *filo, t_mssg mssg);
 long	time_to_ms(struct timeval time_struct);
 t_data	*run_threads(t_data *data);
+void	get_time_now(long int	*time_now);
 
 void	*filo_rtn(void *arg)
 {
 	t_filo			*filo;
 	long int		time_now;
-	struct timeval	now;
 
 	filo = (t_filo *)arg;
 	xpress_mssg(filo, got_born);
 	while (time_now < filo->meal_time + filo->data->tt_die)
 	{
-		gettimeofday(&now, NULL);
-		time_now = time_to_ms(now);
+		get_time_now(&time_now);
 	}
 	xpress_mssg(filo, dead);
 	return (NULL);

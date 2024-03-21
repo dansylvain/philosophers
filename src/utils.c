@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 07:27:02 by dan               #+#    #+#             */
-/*   Updated: 2024/03/21 09:38:07 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/21 09:44:15 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 
 void	*coor_rtn(void *arg);
 void	*filo_rtn(void *arg);
+void	get_time_now(long int	*time_now);
 
 void	free_data(t_data *data)
 {
@@ -58,8 +59,7 @@ void	xpress_mssg(t_filo *filo, t_mssg mssg)
 		mssg_str = "died";
 	if (mssg == got_born)
 		mssg_str = "got born";
-	gettimeofday(&now, NULL);
-	t = time_to_ms(now);
+	get_time_now(&t);
 	mut = &filo->data->print_mtx;
 	pthread_mutex_lock(mut);
 	printf("%li %i %s\n", t, filo->id, mssg_str);
@@ -91,4 +91,12 @@ t_data	*run_threads(t_data *data)
 	if (pthread_join(data->coor, NULL) != 0)
 		return (NULL);
 	return (data);
+}
+
+void	get_time_now(long int	*time_now)
+{
+	struct timeval	now;
+
+	gettimeofday(&now, NULL);
+	*time_now = time_to_ms(now);
 }
