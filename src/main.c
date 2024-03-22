@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:45:27 by dan               #+#    #+#             */
-/*   Updated: 2024/03/22 08:05:44 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/22 08:16:33 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,13 @@ t_data	*authorize_next_thread_to_eat(t_data *data)
 		pthread_mutex_lock(&data->filo[data->auth_tab[0]].can_eat_mtx);
 		data->filo[data->auth_tab[0]].can_eat = true;
 		pthread_mutex_unlock(&data->filo[data->auth_tab[0]].can_eat_mtx);
+		i = 1;
+		while (i < data->fil_nbr + 1)
+		{
+			data->auth_tab[i - 1] = data->auth_tab[i];
+			i++;
+		}
+		data->auth_tab[i] = -1;
 	}
 	pthread_mutex_unlock(&data->auth_tab_mtx);
 	return (data);
@@ -117,6 +124,10 @@ void	*coor_rtn(void *arg)
 	while (1)
 	{
 		sleep(1);
+		int i = 0;
+		while (i < data->fil_nbr)
+			printf("%i ", data->auth_tab[i++]);
+		printf("\n");
 		data = authorize_next_thread_to_eat(data);
 		// pthread_mutex_lock(&data->filo[2].can_eat_mtx);
 		// data->filo[2].can_eat = true;
@@ -125,7 +136,7 @@ void	*coor_rtn(void *arg)
 		pthread_mutex_lock(&data->print_mtx);
 		pthread_mutex_lock(&data->auth_tab_mtx);
 
-		int i = 0;
+		i = 0;
 		while (i < data->fil_nbr)
 			printf("%i ", data->auth_tab[i++]);
 		printf("\n");
