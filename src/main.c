@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:45:27 by dan               #+#    #+#             */
-/*   Updated: 2024/03/22 08:16:33 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/22 09:34:25 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ t_filo	*eat_and_sleep(t_filo *filo)
 	usleep(filo->data->tt_eat * 1000);
 	xpress_mssg(filo, sleeping);
 	usleep(filo->data->tt_sleep * 1000);
+	filo->is_subscribed = false;
 	return (filo);
 }
 
