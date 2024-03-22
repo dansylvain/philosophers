@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:49:03 by dan               #+#    #+#             */
-/*   Updated: 2024/03/22 09:31:16 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/22 10:02:29 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,9 +85,9 @@ int	initialize_mutex(t_data **data)
 			return (0);
 		if (pthread_mutex_init(&((*data)->filo[i].can_eat_mtx), NULL) != 0)
 			return (0);
-		if (pthread_mutex_init(&((*data)->filo[i].is_subscribed_mtx), NULL) != 0)
+		if (pthread_mutex_init(&((*data)->filo[i].is_subscribed_mtx),
+				NULL) != 0)
 			return (0);
-		
 		i++;
 	}
 	return (1);

@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 07:27:02 by dan               #+#    #+#             */
-/*   Updated: 2024/03/22 08:00:34 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/22 09:54:11 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,6 @@ void	free_data(t_data *data)
 	free(data->filo);
 	free(data);
 }
-
-
 
 void	xpress_mssg(t_filo *filo, t_mssg mssg)
 {
@@ -87,14 +85,13 @@ t_data	*run_threads(t_data *data)
 void	destroy_mutexes(t_data *data)
 {
 	int	i;
-	
+
 	pthread_mutex_destroy(&data->print_mtx);
 	pthread_mutex_destroy(&data->auth_tab_mtx);
 	i = 0;
 	while (i < data->fil_nbr)
 	{
 		pthread_mutex_destroy(&data->filo[i].can_eat_mtx);
-		// add forks mutexes !!!
 		i++;
 	}
 }

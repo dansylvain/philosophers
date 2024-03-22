@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:45:27 by dan               #+#    #+#             */
-/*   Updated: 2024/03/22 09:34:25 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/22 10:01:47 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ long	time_to_ms(struct timeval time_struct);
 t_data	*run_threads(t_data *data);
 void	get_time_now(long int	*time_now);
 void	destroy_mutexes(t_data *data);
+
 /**========================================================================
  *                             DON'T FORGET!!!
  *! beware of units!!!  
@@ -38,7 +39,7 @@ t_filo	*eat_and_sleep(t_filo *filo)
 	pthread_mutex_lock(&filo->can_eat_mtx);
 	filo->can_eat = false;
 	pthread_mutex_unlock(&filo->can_eat_mtx);
-	get_time_now(&filo->meal_time);	
+	get_time_now(&filo->meal_time);
 	xpress_mssg(filo, eating);
 	usleep(filo->data->tt_eat * 1000);
 	xpress_mssg(filo, sleeping);
@@ -50,7 +51,7 @@ t_filo	*eat_and_sleep(t_filo *filo)
 int	filo_can_eat(t_filo *filo)
 {
 	int	yes_or_no;
-	
+
 	yes_or_no = 0;
 	pthread_mutex_lock(&filo->can_eat_mtx);
 	if (filo->can_eat == true)
@@ -62,7 +63,7 @@ int	filo_can_eat(t_filo *filo)
 void	subscribe_to_auth_tab(t_filo *filo)
 {
 	int	i;
-	
+
 	pthread_mutex_lock(&filo->data->auth_tab_mtx);
 	i = 0;
 	while (filo->data->auth_tab[i] > -1 && i < filo->data->fil_nbr)
@@ -95,7 +96,7 @@ void	*filo_rtn(void *arg)
 t_data	*authorize_next_thread_to_eat(t_data *data)
 {
 	int	i;
-	
+
 	i = 0;
 	pthread_mutex_lock(&data->auth_tab_mtx);
 	if (data->auth_tab[0] > -1)
@@ -104,7 +105,7 @@ t_data	*authorize_next_thread_to_eat(t_data *data)
 		data->filo[data->auth_tab[0]].can_eat = true;
 		pthread_mutex_unlock(&data->filo[data->auth_tab[0]].can_eat_mtx);
 		i = 1;
-		while (i < data->fil_nbr + 1)
+		while (i < data->fil_nbr + 1 && data->auth_tab[i] != -1)
 		{
 			data->auth_tab[i - 1] = data->auth_tab[i];
 			i++;
@@ -115,34 +116,28 @@ t_data	*authorize_next_thread_to_eat(t_data *data)
 	return (data);
 }
 
-
 void	*coor_rtn(void *arg)
 {
 	t_data	*data;
 	int		i;
+	int		j;
 
 	data = (t_data *)arg;
-	while (1)
+	j = 0;
+	while (j < 4)
 	{
 		sleep(1);
-		int i = 0;
-		while (i < data->fil_nbr)
-			printf("%i ", data->auth_tab[i++]);
-		printf("\n");
+		i = 0;
 		data = authorize_next_thread_to_eat(data);
-		// pthread_mutex_lock(&data->filo[2].can_eat_mtx);
-		// data->filo[2].can_eat = true;
-		// pthread_mutex_unlock(&data->filo[2].can_eat_mtx);
-
 		pthread_mutex_lock(&data->print_mtx);
 		pthread_mutex_lock(&data->auth_tab_mtx);
-
 		i = 0;
 		while (i < data->fil_nbr)
 			printf("%i ", data->auth_tab[i++]);
 		printf("\n");
 		pthread_mutex_unlock(&data->auth_tab_mtx);
 		pthread_mutex_unlock(&data->print_mtx);
+		j++;
 	}
 	return (NULL);
 }
