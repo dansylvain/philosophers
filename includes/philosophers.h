@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:47:37 by dan               #+#    #+#             */
-/*   Updated: 2024/03/22 09:53:03 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/22 10:31:44 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ typedef struct s_Data	t_data;
 
 typedef struct s_filo
 {
+	bool			is_signed_in;
 	bool			can_eat;
 	bool			is_subscribed;
 	pthread_mutex_t	is_subscribed_mtx;

@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:45:27 by dan               #+#    #+#             */
-/*   Updated: 2024/03/22 10:28:22 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/22 10:32:40 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 #include <pthread.h>
 #include <sys/time.h>
 #include <unistd.h>
+
+#define LAST_LONGER 5000
 
 int		check_input(int argc, char **argv);
 void	free_data(t_data *data);
@@ -81,7 +83,7 @@ void	*filo_rtn(void *arg)
 	time_now = 0;
 	filo = (t_filo *)arg;
 	xpress_mssg(filo, got_born);
-	while (time_now < filo->meal_time + filo->data->tt_die)
+	while (time_now < (filo->meal_time + filo->data->tt_die))
 	{
 		if (filo->is_subscribed == false)
 			subscribe_to_auth_tab(filo);
