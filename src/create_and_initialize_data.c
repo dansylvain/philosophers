@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:49:03 by dan               #+#    #+#             */
-/*   Updated: 2024/03/21 20:00:35 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/22 07:53:07 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,8 @@ void	initialize_filos(t_data **data)
 		(*data)->filo[i].meal_time = time_to_ms(now);
 		(*data)->filo[i].data = *data;
 		(*data)->filo[i].can_eat = false;
+		(*data)->filo[i].is_subscribed = false;
+		(*data)->auth_tab[i] = -1;
 		i++;
 	}
 }

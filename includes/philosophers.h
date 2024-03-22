@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:47:37 by dan               #+#    #+#             */
-/*   Updated: 2024/03/21 10:11:56 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/22 07:45:24 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ typedef struct s_Data	t_data;
 typedef struct s_filo
 {
 	bool			can_eat;
+	bool			is_subscribed;
 	pthread_mutex_t	can_eat_mtx;
 	int				id;
 	long int		meal_time;
