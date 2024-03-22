@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:45:27 by dan               #+#    #+#             */
-/*   Updated: 2024/03/21 20:57:33 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/22 07:03:27 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,15 +87,14 @@ void	*coor_rtn(void *arg)
 	data = (t_data *)arg;
 	while (1)
 	{
+		sleep(1);
 		pthread_mutex_lock(&data->filo[0].can_eat_mtx);
 		data->filo[0].can_eat = true;
-		// printf("data->filo[0].can_eat: %i\n", data->filo[0].can_eat);
 		pthread_mutex_unlock(&data->filo[0].can_eat_mtx);
 
-		// pthread_mutex_lock(&data->print_mtx);
-		// printf("%i: I'm watching you...\n", data->fil_nbr);
-		// pthread_mutex_unlock(&data->print_mtx);
-		// i++;
+		pthread_mutex_lock(&data->print_mtx);
+		printf("%i: I'm watching you...\n", data->fil_nbr);
+		pthread_mutex_unlock(&data->print_mtx);
 	}
 	return (NULL);
 }
