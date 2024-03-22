@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:45:27 by dan               #+#    #+#             */
-/*   Updated: 2024/03/22 13:56:04 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/22 18:33:37 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,73 @@ void	subscribe_to_auth_tab(t_filo *filo)
 	filo->is_subscribed = true;
 }
 
+
+t_data	*authorize_next_thread_to_eat(t_data *data)
+{
+	int	i;
+	int	id;
+	pthread_mutex_t *l_fork;
+	pthread_mutex_t *r_fork;
+	int	l_fork_status;
+	int	r_fork_status;
+
+	i = 0;
+	while (i < data->fil_nbr)
+	{
+		// get eligible filo id
+		pthread_mutex_lock(&data->auth_tab_mtx);
+		if (data->auth_tab[0] < 0)
+			return (data);
+		l_fork = &data->fork[data->auth_tab[0]];
+		r_fork = &data->fork[data->auth_tab[0] + 1 % data->fil_nbr];
+		l_fork_status = pthread_mutex_trylock(l_fork);	
+		r_fork_status = pthread_mutex_trylock(r_fork);
+		if (l_fork_status == 0)
+			pthread_mutex_unlock(l_fork);
+		if (r_fork_status == 0)
+			pthread_mutex_unlock(r_fork);
+		if (l_fork_status != 0 || r_fork_status != 0)
+			return (pthread_mutex_unlock(&data->auth_tab_mtx), data);
+		id = data->auth_tab[0];
+		pthread_mutex_unlock(&data->auth_tab_mtx);
+		
+		
+
+		// give filo authorization to eat
+		pthread_mutex_lock(&data->filo[id].can_eat_mtx);
+		data->filo[id].can_eat = true;
+		pthread_mutex_unlock(&data->filo[id].can_eat_mtx);
+
+
+		// unsign filo from auth_lst
+		i += 1;
+		while (i < data->fil_nbr + 1)
+		{
+			data->auth_tab[i - 1] = data->auth_tab[i];
+			i++;
+		}
+		
+		// cut the crap
+		return (data);
+	}
+}
+
+void	display_auth_tab(t_data *data)
+{
+	int i;
+	
+	i = 0;
+	pthread_mutex_lock(&data->print_mtx);
+	while (i < data->fil_nbr)
+		printf("%i ", data->auth_tab[i++]);
+	printf("\n");
+	pthread_mutex_unlock(&data->print_mtx);
+}
+
+
+
+
+
 void	*filo_rtn(void *arg)
 {
 	t_filo			*filo;
@@ -95,29 +162,6 @@ void	*filo_rtn(void *arg)
 	return (NULL);
 }
 
-t_data	*authorize_next_thread_to_eat(t_data *data)
-{
-	int	i;
-
-	i = 0;
-	pthread_mutex_lock(&data->auth_tab_mtx);
-	if (data->auth_tab[0] > -1)
-	{
-		pthread_mutex_lock(&data->filo[data->auth_tab[0]].can_eat_mtx);
-		data->filo[data->auth_tab[0]].can_eat = true;
-		pthread_mutex_unlock(&data->filo[data->auth_tab[0]].can_eat_mtx);
-		i = 1;
-		while (i < data->fil_nbr)
-		{
-			data->auth_tab[i - 1] = data->auth_tab[i];
-			i++;
-		}
-		data->auth_tab[i] = -1;
-	}
-	pthread_mutex_unlock(&data->auth_tab_mtx);
-	return (data);
-}
-
 void	*coor_rtn(void *arg)
 {
 	t_data	*data;
@@ -126,19 +170,12 @@ void	*coor_rtn(void *arg)
 
 	data = (t_data *)arg;
 	j = 0;
-	while (j < 4)
+	while (1)
 	{
 		sleep(1);
-		data = authorize_next_thread_to_eat(data);
-		pthread_mutex_lock(&data->print_mtx);
-		pthread_mutex_lock(&data->auth_tab_mtx);
-		i = 0;
-		while (i < data->fil_nbr)
-			printf("%i ", data->auth_tab[i++]);
-		printf("\n");
-		pthread_mutex_unlock(&data->auth_tab_mtx);
-		pthread_mutex_unlock(&data->print_mtx);
-		j++;
+		data = authorize_next_thread_to_eat(data);		
+		display_auth_tab(data);
+		// j++;
 	}
 	return (NULL);
 }
