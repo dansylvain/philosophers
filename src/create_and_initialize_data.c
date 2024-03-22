@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:49:03 by dan               #+#    #+#             */
-/*   Updated: 2024/03/22 07:53:07 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/22 08:00:34 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int	initialize_mutex(t_data **data)
 {
 	int	i;
 
-	if (pthread_mutex_init(&((*data)->auth_mtx), NULL) != 0)
+	if (pthread_mutex_init(&((*data)->auth_tab_mtx), NULL) != 0)
 		return (0);
 	if (pthread_mutex_init(&((*data)->print_mtx), NULL) != 0)
 		return (0);
