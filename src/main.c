@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:45:27 by dan               #+#    #+#             */
-/*   Updated: 2024/03/22 18:33:37 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/22 18:53:12 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,11 @@ t_filo	*eat_and_sleep(t_filo *filo)
 	pthread_mutex_unlock(&filo->can_eat_mtx);
 	get_time_now(&filo->meal_time);
 	xpress_mssg(filo, eating);
+	pthread_mutex_lock(&filo->data->fork[filo->id]);
+	pthread_mutex_lock(&filo->data->fork[filo->id + 1 % filo->data->fil_nbr]);
 	usleep(filo->data->tt_eat * 1000);
+	pthread_mutex_unlock(&filo->data->fork[filo->id]);
+	pthread_mutex_unlock(&filo->data->fork[filo->id + 1 % filo->data->fil_nbr]);
 	xpress_mssg(filo, sleeping);
 	usleep(filo->data->tt_sleep * 1000);
 	filo->is_subscribed = false;
@@ -172,7 +176,7 @@ void	*coor_rtn(void *arg)
 	j = 0;
 	while (1)
 	{
-		sleep(1);
+		usleep(data->tt_eat * 1000);
 		data = authorize_next_thread_to_eat(data);		
 		display_auth_tab(data);
 		// j++;
