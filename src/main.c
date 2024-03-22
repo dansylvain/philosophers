@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:45:27 by dan               #+#    #+#             */
-/*   Updated: 2024/03/22 10:32:40 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/22 13:56:04 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ t_data	*authorize_next_thread_to_eat(t_data *data)
 		data->filo[data->auth_tab[0]].can_eat = true;
 		pthread_mutex_unlock(&data->filo[data->auth_tab[0]].can_eat_mtx);
 		i = 1;
-		while (i < data->fil_nbr + 1)
+		while (i < data->fil_nbr)
 		{
 			data->auth_tab[i - 1] = data->auth_tab[i];
 			i++;
@@ -126,7 +126,7 @@ void	*coor_rtn(void *arg)
 
 	data = (t_data *)arg;
 	j = 0;
-	while (1)
+	while (j < 4)
 	{
 		sleep(1);
 		data = authorize_next_thread_to_eat(data);
@@ -138,6 +138,7 @@ void	*coor_rtn(void *arg)
 		printf("\n");
 		pthread_mutex_unlock(&data->auth_tab_mtx);
 		pthread_mutex_unlock(&data->print_mtx);
+		j++;
 	}
 	return (NULL);
 }

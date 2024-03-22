@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:49:03 by dan               #+#    #+#             */
-/*   Updated: 2024/03/22 10:32:08 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/22 13:55:38 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	alloc_memory_for_data(t_data **data, char **argv)
 	(*data) = (t_data *)ft_calloc(1, sizeof(t_data));
 	add_argv_data(data, argv);
 	(*data)->filo = (t_filo *)ft_calloc((*data)->fil_nbr, sizeof(t_filo));
-	(*data)->auth_tab = (int *)ft_calloc((*data)->fil_nbr, sizeof(int));
+	(*data)->auth_tab = (int *)ft_calloc((*data)->fil_nbr + 1, sizeof(int));
 	(*data)->fork = (pthread_mutex_t *)ft_calloc((*data)->fil_nbr,
 			sizeof(pthread_mutex_t));
 	if (!*data || !(*data)->filo || !(*data)->auth_tab || !(*data)->fork)
