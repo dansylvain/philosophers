@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:45:27 by dan               #+#    #+#             */
-/*   Updated: 2024/03/23 11:58:42 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/23 12:37:56 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void	get_time_now(long int	*time_now);
 void	destroy_mutexes(t_data *data);
 void	filo_dies(t_filo *filo);
 void	display_auth_tab(t_data *data);
+t_filo	*add_id_to_auth_lst(t_filo *filo);
 
 /**========================================================================
  *                             DON'T FORGET!!!
@@ -49,19 +50,7 @@ void	eat_and_sleep(t_filo *filo)
 	
 }
 
-t_filo	*add_id_to_auth_lst(t_filo *filo)
-{
-	int i;
-	
-	i = 0;
-	pthread_mutex_lock(&filo->data->auth_tab_mtx);
-	while (i < filo->data->fil_nbr && filo->data->auth_tab[1][i] != -1)
-		i++;
-	filo->data->auth_tab[1][i] = filo->id;
-	pthread_mutex_unlock(&filo->data->auth_tab_mtx);
 
-	return (filo);
-}
 
 void	*filo_rtn(void *arg)
 {
