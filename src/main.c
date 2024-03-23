@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:45:27 by dan               #+#    #+#             */
-/*   Updated: 2024/03/23 12:56:05 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/23 13:08:40 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ int	filo_can_eat(t_filo *filo)
 	int	can_eat;
 	
 	pthread_mutex_lock(&filo->data->auth_tab_mtx);
-	// printf("%i: can-eat: %i\n", filo->id, filo->data->auth_tab[0][filo->id]);
 	can_eat = filo->data->auth_tab[0][filo->id];
 	pthread_mutex_unlock(&filo->data->auth_tab_mtx);
 	return (can_eat);
@@ -75,6 +74,8 @@ void	*filo_rtn(void *arg)
 		if (filo_can_eat(filo))
 			eat_and_sleep(filo);
 		get_time_now(&time_now);
+		if (one_filo_died(filo->data))
+			return (NULL);
 	}
 	xpress_mssg(filo, dead);
 	filo_dies(filo);
@@ -97,7 +98,6 @@ void	*coor_rtn(void *arg)
 			pthread_mutex_lock(&data->auth_tab_mtx);
 			data->auth_tab[0][2] = 1;
 			pthread_mutex_unlock(&data->auth_tab_mtx);
-
 			display_auth_tab(data);
 		}
 		if (one_filo_died(data))
