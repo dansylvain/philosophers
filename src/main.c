@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:45:27 by dan               #+#    #+#             */
-/*   Updated: 2024/03/23 08:01:20 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/23 08:15:11 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,9 @@ void	*filo_rtn(void *arg)
 		get_time_now(&time_now);
 	}
 	xpress_mssg(filo, dead);
+	pthread_mutex_lock(&filo->data->all_filos_live_mtx);
 	filo->data->all_filos_live = false;
+	pthread_mutex_unlock(&filo->data->all_filos_live_mtx);
 	return (NULL);
 }
 
@@ -63,16 +65,18 @@ void	*coor_rtn(void *arg)
 
 	data = (t_data *)arg;
 	j = 0;
-	while (data->all_filos_live)
+	while (1)
 	{
+		pthread_mutex_lock(&data->all_filos_live_mtx);
+		if (data->all_filos_live == false)
+			break ;
+		pthread_mutex_unlock(&data->all_filos_live_mtx);
 		pthread_mutex_lock(&data->print_mtx);
 		printf("I'm watching you\n");
 		pthread_mutex_unlock(&data->print_mtx);
 		
-
+		
 		usleep(data->tt_eat / data->fil_nbr * 1000);
-		
-		
 		// j++;
 	}
 	return (NULL);
@@ -87,7 +91,6 @@ int	main(int argc, char **argv)
 		return (display_error("Error\n"), 1);
 	if (create_and_initialize_data(&data, argv) == 0)
 		return (free_data(data), display_error("Error\n"), 2);
-	printf("welcome to the jungle\n");
 	data = run_threads(data);
 	if (data == NULL)
 		return (free_data(data), display_error("Error\n"), 3);

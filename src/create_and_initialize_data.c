@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:49:03 by dan               #+#    #+#             */
-/*   Updated: 2024/03/23 08:00:03 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/23 08:17:49 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,19 +77,15 @@ int	initialize_mutex(t_data **data)
 {
 	int	i;
 
-	if (pthread_mutex_init(&((*data)->auth_tab_mtx), NULL) != 0)
-		return (0);
 	if (pthread_mutex_init(&((*data)->print_mtx), NULL) != 0)
 		return (0);
+	if (pthread_mutex_init(&((*data)->all_filos_live_mtx), NULL) != 0)
+		return (0);	
+
 	i = 0;
 	while (i < (*data)->fil_nbr)
 	{
 		if (pthread_mutex_init(&((*data)->fork[i]), NULL) != 0)
-			return (0);
-		if (pthread_mutex_init(&((*data)->filo[i].can_eat_mtx), NULL) != 0)
-			return (0);
-		if (pthread_mutex_init(&((*data)->filo[i].is_subscribed_mtx),
-				NULL) != 0)
 			return (0);
 		i++;
 	}
@@ -109,7 +105,6 @@ void	initialize_filos(t_data **data)
 	while (i < (*data)->fil_nbr)
 	{
 		gettimeofday(&now, NULL);
-		printf("time now: %li\n", time_to_ms(now));
 		(*data)->filo[i].meal_time = time_to_ms(now);
 		(*data)->filo[i].data = *data;
 		(*data)->filo[i].can_eat = false;

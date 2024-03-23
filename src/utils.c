@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 07:27:02 by dan               #+#    #+#             */
-/*   Updated: 2024/03/22 10:55:00 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/23 08:06:24 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,11 +87,9 @@ void	destroy_mutexes(t_data *data)
 	int	i;
 
 	pthread_mutex_destroy(&data->print_mtx);
-	pthread_mutex_destroy(&data->auth_tab_mtx);
 	i = 0;
 	while (i < data->fil_nbr)
 	{
-		pthread_mutex_destroy(&data->filo[i].can_eat_mtx);
 		i++;
 	}
 }
