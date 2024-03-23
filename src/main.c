@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:45:27 by dan               #+#    #+#             */
-/*   Updated: 2024/03/23 11:24:59 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/23 11:58:42 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ t_data	*run_threads(t_data *data);
 void	get_time_now(long int	*time_now);
 void	destroy_mutexes(t_data *data);
 void	filo_dies(t_filo *filo);
+void	display_auth_tab(t_data *data);
 
 /**========================================================================
  *                             DON'T FORGET!!!
@@ -48,6 +49,20 @@ void	eat_and_sleep(t_filo *filo)
 	
 }
 
+t_filo	*add_id_to_auth_lst(t_filo *filo)
+{
+	int i;
+	
+	i = 0;
+	pthread_mutex_lock(&filo->data->auth_tab_mtx);
+	while (i < filo->data->fil_nbr && filo->data->auth_tab[1][i] != -1)
+		i++;
+	filo->data->auth_tab[1][i] = filo->id;
+	pthread_mutex_unlock(&filo->data->auth_tab_mtx);
+
+	return (filo);
+}
+
 void	*filo_rtn(void *arg)
 {
 	t_filo			*filo;
@@ -58,38 +73,13 @@ void	*filo_rtn(void *arg)
 	xpress_mssg(filo, got_born);
 	while (time_now < (filo->meal_time + filo->data->tt_die))
 	{
+		filo = add_id_to_auth_lst(filo);
 		eat_and_sleep(filo);
 		get_time_now(&time_now);
 	}
 	xpress_mssg(filo, dead);
 	filo_dies(filo);
 	return (NULL);
-}
-
-void	display_auth_tab(t_data *data)
-{
-	int	i;
-	int	j;
-
-	
-	pthread_mutex_lock(&data->print_mtx);
-	pthread_mutex_lock(&data->auth_tab_mtx);
-	i = 0;
-	while (i < 2)
-	{
-		j = 0;
-		while (j < data->fil_nbr)
-		{
-			printf("%3i ", data->auth_tab[i][j]);
-			j++;
-		}
-		printf("\n");
-		i++;
-	}
-	
-	pthread_mutex_unlock(&data->auth_tab_mtx);
-	pthread_mutex_unlock(&data->print_mtx);
-	
 }
 
 void	*coor_rtn(void *arg)
@@ -102,12 +92,10 @@ void	*coor_rtn(void *arg)
 	j = 0;
 	while (1)
 	{
-		if (j == 500)
-			display_auth_tab(data);
-		// pthread_mutex_lock(&data->print_mtx);
-		// printf("%i I'm watching you\n", data->all_filos_live);
-		// pthread_mutex_unlock(&data->print_mtx);
 		usleep(500);
+
+		if (j % 1000 == 0)
+			display_auth_tab(data);
 		if (one_filo_died(data))
 			break ;
 		j++;

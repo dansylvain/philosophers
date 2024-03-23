@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 07:27:02 by dan               #+#    #+#             */
-/*   Updated: 2024/03/23 10:56:55 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/23 12:11:09 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	free_data(t_data *data)
 	int	i;
 
 	i = 0;
-	while (i < data->fil_nbr)
+	while (i < 2)
 		free(data->auth_tab[i++]);
 	free(data->auth_tab);
 	free(data->fork);
@@ -120,4 +120,27 @@ void	filo_dies(t_filo *filo)
 	pthread_mutex_lock(&filo->data->auth_tab_mtx);
 	filo->data->auth_tab[0][filo->id] = -1;
 	pthread_mutex_unlock(&filo->data->auth_tab_mtx);
+}
+
+void	display_auth_tab(t_data *data)
+{
+	int	i;
+	int	j;
+
+	pthread_mutex_lock(&data->print_mtx);
+	pthread_mutex_lock(&data->auth_tab_mtx);
+	j = 0;
+	while (j < 2)
+	{
+		i = 0;
+		while (i < data->fil_nbr)
+		{
+			printf("%3i ", data->auth_tab[j][i]);
+			i++;
+		}
+		printf("\n");
+		j++;
+	}
+	pthread_mutex_unlock(&data->auth_tab_mtx);
+	pthread_mutex_unlock(&data->print_mtx);
 }

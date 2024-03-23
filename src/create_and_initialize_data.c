@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:49:03 by dan               #+#    #+#             */
-/*   Updated: 2024/03/23 10:43:24 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/23 12:10:53 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,11 @@ int	alloc_memory_for_data(t_data **data, char **argv)
 	(*data)->filo = (t_filo *)ft_calloc((*data)->fil_nbr, sizeof(t_filo));
 	(*data)->fork = (pthread_mutex_t *)ft_calloc((*data)->fil_nbr,
 			sizeof(pthread_mutex_t));
-	(*data)->auth_tab = (int **)ft_calloc((*data)->fil_nbr, sizeof(int *));
+	(*data)->auth_tab = (int **)ft_calloc(2, sizeof(int *));
 	i = 0;
-	while (i < (*data)->fil_nbr)
+	while (i < 2)
 	{
-		(*data)->auth_tab[i] = (int *)ft_calloc((*data)->fil_nbr, sizeof(int ));
+		(*data)->auth_tab[i] = (int *)ft_calloc((*data)->fil_nbr + 1, sizeof(int));
 		if ((*data)->auth_tab[i] == NULL)
 			return (0);
 		i++;
