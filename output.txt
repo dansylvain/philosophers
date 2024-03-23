@@ -1,0 +1,2 @@
+make: Nothing to be done for 'all'.
+>>> Running with valgrind --leak-check=full --show-leak-kinds=all

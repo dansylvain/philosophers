@@ -6,7 +6,7 @@
 #    By: dan <dan@student.42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/06 05:50:42 by dsylvain          #+#    #+#              #
-#    Updated: 2024/03/23 11:47:35 by dan              ###   ########.fr        #
+#    Updated: 2024/03/23 16:18:35 by dan              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,6 +14,11 @@ NAME = philo
 
 CC = cc
 
+COMPIL1 = 
+COMPIL1 = 
+COMPIL1 = 
+COMPIL1 = 
+	
 CFLAGS = -g -Iincludes/ -pthread
 # -Wall -Wextra -Werror
 
