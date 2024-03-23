@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:45:27 by dan               #+#    #+#             */
-/*   Updated: 2024/03/23 12:37:56 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/23 12:47:01 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,7 @@ void	eat_and_sleep(t_filo *filo)
 	usleep(filo->data->tt_eat * 1000);
 	xpress_mssg(filo, sleeping);
 	usleep(filo->data->tt_sleep * 1000);
-	
 }
-
-
 
 void	*filo_rtn(void *arg)
 {
@@ -82,7 +79,6 @@ void	*coor_rtn(void *arg)
 	while (1)
 	{
 		usleep(500);
-
 		if (j % 1000 == 0)
 			display_auth_tab(data);
 		if (one_filo_died(data))
