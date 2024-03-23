@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:45:27 by dan               #+#    #+#             */
-/*   Updated: 2024/03/23 10:13:45 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/23 10:36:29 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,9 @@ void	*filo_rtn(void *arg)
 	}
 	xpress_mssg(filo, dead);
 	
-	pthread_mutex_lock(&filo->data->all_filos_live_mtx);
-	filo->data->all_filos_live = false;
-	pthread_mutex_unlock(&filo->data->all_filos_live_mtx);
+	pthread_mutex_lock(&filo->data->auth_tab_mtx);
+	filo->data->auth_tab[0][filo->id] = -1;
+	pthread_mutex_unlock(&filo->data->auth_tab_mtx);
 	return (NULL);
 }
 
@@ -68,22 +68,25 @@ void	*coor_rtn(void *arg)
 	j = 0;
 	while (1)
 	{
-		pthread_mutex_lock(&data->all_filos_live_mtx);
-		if (data->all_filos_live == false)
+		
+		// pthread_mutex_lock(&data->print_mtx);
+		// printf("%i I'm watching you\n", data->all_filos_live);
+		// pthread_mutex_unlock(&data->print_mtx);
+		
+		
+		usleep(500);
+		j++;
+		
+		// check if a filo died
+		pthread_mutex_lock(&data->auth_tab_mtx);
+		i = 0;
+		while (i < data->fil_nbr)
 		{
-			pthread_mutex_unlock(&data->all_filos_live_mtx);
-			break ;
+			if (data->auth_tab[0][i] == -1)
+				return (pthread_mutex_unlock(&data->auth_tab_mtx), NULL);
+			i++;
 		}
-		pthread_mutex_unlock(&data->all_filos_live_mtx);
-		
-		
-		pthread_mutex_lock(&data->print_mtx);
-		printf("%i I'm watching you\n", data->all_filos_live);
-		pthread_mutex_unlock(&data->print_mtx);
-		
-		
-		usleep(data->tt_eat / data->fil_nbr * 1000);
-		// j++;
+		pthread_mutex_unlock(&data->auth_tab_mtx);
 	}
 	return (NULL);
 }

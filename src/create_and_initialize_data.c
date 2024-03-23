@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:49:03 by dan               #+#    #+#             */
-/*   Updated: 2024/03/23 10:08:00 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/23 10:29:27 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,8 @@ int	initialize_mutex(t_data **data)
 	if (pthread_mutex_init(&((*data)->print_mtx), NULL) != 0)
 		return (0);
 	if (pthread_mutex_init(&((*data)->all_filos_live_mtx), NULL) != 0)
+		return (0);
+	if (pthread_mutex_init(&((*data)->auth_tab_mtx), NULL) != 0)
 		return (0);	
 
 	i = 0;
@@ -114,6 +116,7 @@ void	initialize_filos(t_data **data)
 		gettimeofday(&now, NULL);
 		(*data)->filo[i].meal_time = time_to_ms(now);
 		(*data)->filo[i].data = *data;
+		(*data)->auth_tab[1][i] = -1;
 		i++;
 	}
 }
