@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 07:27:02 by dan               #+#    #+#             */
-/*   Updated: 2024/03/23 13:15:56 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/23 13:20:34 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,12 +149,15 @@ t_filo	*add_id_to_auth_lst(t_filo *filo)
 {
 	int	i;
 	int	*fil_auth;
+	int	fil_nbr;
 
+	fil_nbr = filo->data->fil_nbr;
 	i = 0;
 	pthread_mutex_lock(&filo->data->auth_tab_mtx);
-	while (filo->data->auth_tab[1][i] != -1 && i < filo->data->fil_nbr && filo->data->auth_tab[1][i] != filo->id)
+	fil_auth = filo->data->auth_tab[1];
+	while (fil_auth[i] != -1 && i < fil_nbr && fil_auth[i] != filo->id)
 		i++;
-	filo->data->auth_tab[1][i] = filo->id;
+	fil_auth[i] = filo->id;
 	pthread_mutex_unlock(&filo->data->auth_tab_mtx);
 	return (filo);
 }
