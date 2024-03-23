@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 07:27:02 by dan               #+#    #+#             */
-/*   Updated: 2024/03/23 10:43:00 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/23 10:56:55 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,4 +113,11 @@ int	one_filo_died(t_data *data)
 	}
 	pthread_mutex_unlock(&data->auth_tab_mtx);
 	return (0);
+}
+
+void	filo_dies(t_filo *filo)
+{
+	pthread_mutex_lock(&filo->data->auth_tab_mtx);
+	filo->data->auth_tab[0][filo->id] = -1;
+	pthread_mutex_unlock(&filo->data->auth_tab_mtx);
 }

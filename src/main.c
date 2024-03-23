@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:45:27 by dan               #+#    #+#             */
-/*   Updated: 2024/03/23 10:44:10 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/23 10:59:41 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ long	time_to_ms(struct timeval time_struct);
 t_data	*run_threads(t_data *data);
 void	get_time_now(long int	*time_now);
 void	destroy_mutexes(t_data *data);
+void	filo_dies(t_filo *filo);
 
 /**========================================================================
  *                             DON'T FORGET!!!
@@ -37,6 +38,16 @@ void	destroy_mutexes(t_data *data);
  *! but funcs handle microseconds!!!  
  *  
  *========================================================================**/
+
+void	eat_and_sleep(t_filo *filo)
+{
+	xpress_mssg(filo, eating);
+	usleep(filo->data->tt_eat * 1000);
+	xpress_mssg(filo, sleeping);
+	usleep(filo->data->tt_sleep * 1000);
+	xpress_mssg(filo, thinking);
+	
+}
 
 void	*filo_rtn(void *arg)
 {
@@ -48,12 +59,11 @@ void	*filo_rtn(void *arg)
 	xpress_mssg(filo, got_born);
 	while (time_now < (filo->meal_time + filo->data->tt_die))
 	{
+		eat_and_sleep(filo);
 		get_time_now(&time_now);
 	}
 	xpress_mssg(filo, dead);
-	pthread_mutex_lock(&filo->data->auth_tab_mtx);
-	filo->data->auth_tab[0][filo->id] = -1;
-	pthread_mutex_unlock(&filo->data->auth_tab_mtx);
+	filo_dies(filo);
 	return (NULL);
 }
 
@@ -71,9 +81,9 @@ void	*coor_rtn(void *arg)
 		// printf("%i I'm watching you\n", data->all_filos_live);
 		// pthread_mutex_unlock(&data->print_mtx);
 		usleep(500);
-		j++;
 		if (one_filo_died(data))
 			break ;
+		j++;
 	}
 	return (NULL);
 }
