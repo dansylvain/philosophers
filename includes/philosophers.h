@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:47:37 by dan               #+#    #+#             */
-/*   Updated: 2024/03/22 17:57:42 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/23 07:59:54 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ typedef struct s_filo
 
 typedef struct s_Data
 {
+	bool			all_filos_live;
 	int				fil_nbr;
 	int				tt_die;
 	int				tt_eat;

@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:49:03 by dan               #+#    #+#             */
-/*   Updated: 2024/03/22 13:55:38 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/23 08:00:03 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ void	add_argv_data(t_data **data, char **argv)
 	(*data)->tt_die = ft_atoi(argv[2]);
 	(*data)->tt_eat = ft_atoi(argv[3]);
 	(*data)->tt_sleep = ft_atoi(argv[4]);
+	(*data)->all_filos_live = true;
 	if (argv[5])
 		(*data)->max_meals = ft_atoi(argv[5]);
 	else
