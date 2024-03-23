@@ -16,3 +16,7 @@ valgrind --trace-children=yes --leak-check=full --show-leak-kinds=all ./philo 4 
 
 data race:
 valgrind --tool=helgrind --tool=drd ./philo 4 800 200 200
+
+# TO BE TESTED
+
+https://nafuka11.github.io/philosophers-visualizer/

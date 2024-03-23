@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:49:03 by dan               #+#    #+#             */
-/*   Updated: 2024/03/23 08:17:49 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/23 10:08:00 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,18 +38,26 @@ int	create_and_initialize_data(t_data **data, char **argv)
 
 /**========================================================================
  *                           alloc_memory_for_data
- *! there could be a problem with the size of ath_tab
- *! depending on execution... to be watched after... 
  *========================================================================**/
 int	alloc_memory_for_data(t_data **data, char **argv)
 {
+	int	i;
+	
 	(*data) = (t_data *)ft_calloc(1, sizeof(t_data));
 	add_argv_data(data, argv);
 	(*data)->filo = (t_filo *)ft_calloc((*data)->fil_nbr, sizeof(t_filo));
-	(*data)->auth_tab = (int *)ft_calloc((*data)->fil_nbr + 1, sizeof(int));
 	(*data)->fork = (pthread_mutex_t *)ft_calloc((*data)->fil_nbr,
 			sizeof(pthread_mutex_t));
-	if (!*data || !(*data)->filo || !(*data)->auth_tab || !(*data)->fork)
+	(*data)->auth_tab = (int **)ft_calloc((*data)->fil_nbr, sizeof(int *));
+	i = 0;
+	while (i < (*data)->fil_nbr)
+	{
+		(*data)->auth_tab[i] = (int *)ft_calloc((*data)->fil_nbr, sizeof(int ));
+		if ((*data)->auth_tab[i] == NULL)
+			return (0);
+		i++;
+	}
+	if (!*data || !(*data)->filo || !(*data)->fork)
 		return (0);
 	return (1);
 }
@@ -94,7 +102,6 @@ int	initialize_mutex(t_data **data)
 
 /**========================================================================
  *                           initialize_filos
- *!  (*data)->auth_tab may be overkill, since ft_calloc'd
  *========================================================================**/
 void	initialize_filos(t_data **data)
 {
@@ -107,10 +114,6 @@ void	initialize_filos(t_data **data)
 		gettimeofday(&now, NULL);
 		(*data)->filo[i].meal_time = time_to_ms(now);
 		(*data)->filo[i].data = *data;
-		(*data)->filo[i].can_eat = false;
-		(*data)->filo[i].is_subscribed = false;
-		(*data)->auth_tab[i] = -1;
 		i++;
 	}
-	(*data)->auth_tab[i] = -1;
 }

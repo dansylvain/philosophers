@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:45:27 by dan               #+#    #+#             */
-/*   Updated: 2024/03/23 08:15:11 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/23 10:13:45 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void	*filo_rtn(void *arg)
 		get_time_now(&time_now);
 	}
 	xpress_mssg(filo, dead);
+	
 	pthread_mutex_lock(&filo->data->all_filos_live_mtx);
 	filo->data->all_filos_live = false;
 	pthread_mutex_unlock(&filo->data->all_filos_live_mtx);
@@ -69,10 +70,15 @@ void	*coor_rtn(void *arg)
 	{
 		pthread_mutex_lock(&data->all_filos_live_mtx);
 		if (data->all_filos_live == false)
+		{
+			pthread_mutex_unlock(&data->all_filos_live_mtx);
 			break ;
+		}
 		pthread_mutex_unlock(&data->all_filos_live_mtx);
+		
+		
 		pthread_mutex_lock(&data->print_mtx);
-		printf("I'm watching you\n");
+		printf("%i I'm watching you\n", data->all_filos_live);
 		pthread_mutex_unlock(&data->print_mtx);
 		
 		
