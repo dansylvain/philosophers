@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 07:27:02 by dan               #+#    #+#             */
-/*   Updated: 2024/03/23 13:20:34 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/23 19:13:41 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ void	destroy_mutexes(t_data *data)
 	i = 0;
 	while (i < data->fil_nbr)
 	{
+		pthread_mutex_destroy(&data->fork[i]);
 		i++;
 	}
 }

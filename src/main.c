@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:45:27 by dan               #+#    #+#             */
-/*   Updated: 2024/03/23 18:36:46 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/23 19:26:15 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,19 +73,19 @@ void	*filo_rtn(void *arg)
 	xpress_mssg(filo, got_born);
 	while (time_now < (filo->meal_time + filo->data->tt_die))
 	{
-		filo = add_id_to_auth_lst(filo);
-		if (filo_can_eat(filo))
-			eat_and_sleep(filo);
+		// filo = add_id_to_auth_lst(filo);
+		// if (filo_can_eat(filo))
+		// 	eat_and_sleep(filo);
+		// if (filo->meals_taken == filo->data->max_meals)
+		// {
+		// 	pthread_mutex_lock(&filo->data->auth_tab_mtx);
+		// 	filo->data->auth_tab[0][filo->id] = -2;
+		// 	pthread_mutex_unlock(&filo->data->auth_tab_mtx);
+		// 	return (NULL);
+		// }
+		// if (one_filo_died(filo->data))
+		// 	return (NULL);
 		get_time_now(&time_now);
-		if (filo->meals_taken == filo->data->max_meals)
-		{
-			pthread_mutex_lock(&filo->data->auth_tab_mtx);
-			filo->data->auth_tab[0][filo->id] = -2;
-			pthread_mutex_unlock(&filo->data->auth_tab_mtx);
-			return (NULL);
-		}
-		if (one_filo_died(filo->data))
-			return (NULL);
 	}
 	xpress_mssg(filo, dead);
 	filo_dies(filo);
@@ -158,18 +158,18 @@ void	*coor_rtn(void *arg)
 
 	data = (t_data *)arg;
 	j = 0;
-	while (1)
+	while (j < 4)
 	{
 		usleep(500);
-		authorize_filos_to_eat(data);
-		if (j % 1000 == 0)
-		{
-			display_auth_tab(data);
-		}
-		if (one_filo_died(data))
-			break ;
-		if (all_filo_are_out(data))
-			break ;
+		// authorize_filos_to_eat(data);
+		// if (j % 1000 == 0)
+		// {
+		// 	display_auth_tab(data);
+		// }
+		// if (one_filo_died(data))
+		// 	break ;
+		// if (all_filo_are_out(data))
+		// 	break ;
 		j++;
 	}
 	return (NULL);

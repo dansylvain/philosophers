@@ -6,21 +6,20 @@
 #    By: dan <dan@student.42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/06 05:50:42 by dsylvain          #+#    #+#              #
-#    Updated: 2024/03/23 16:18:35 by dan              ###   ########.fr        #
+#    Updated: 2024/03/23 19:34:51 by dan              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 
 CC = cc
-
-COMPIL1 = 
-COMPIL1 = 
-COMPIL1 = 
-COMPIL1 = 
 	
 CFLAGS = -g -Iincludes/ -pthread
 # -Wall -Wextra -Werror
+
+THREAD_SANITIZER_FLAG = -fsanitize=address
+
+
 
 # Directories
 LIBFT_DIR = lib/libft
@@ -49,6 +48,11 @@ all: $(NAME)
 $(NAME): $(OBJ) $(LIBFT) $(FT_PRINTF) $(GET_NEXT_LINE)
 	@$(CC) -o $(NAME) $(OBJ) $(CFLAGS) $(LIBS)
 	@echo "\033[0;32mCompilation successful\033[0m"
+	
+$(NAME)_tsan: $(OBJ) $(LIBFT) $(FT_PRINTF) $(GET_NEXT_LINE)
+	@$(CC) -o $(NAME)_tsan $(OBJ) $(CFLAGS) $(THREAD_SANITIZER_FLAG) $(LIBS)
+	@echo "\033[0;32mCompilation successful with Thread Sanitizer\033[0m"
+	
 $(LIBFT):
 	@make -s -C $(LIBFT_DIR)
 

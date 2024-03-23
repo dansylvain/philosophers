@@ -19,13 +19,13 @@ data race:
 
 valgrind --leak-check=full --show-leak-kinds=all ./philo 4 800 200 200
 
-valgrind --tool=drd ./philo 4 800 200 200
+	 ./philo 4 800 200 200
 
 valgrind --tool=helgrind ./philo 4 800 200 200
 # TO BE TESTED
 
 -fsanitize=thread
 
--fsanitize=addres
+-fsanitize=address
 
 https://nafuka11.github.io/philosophers-visualizer/
