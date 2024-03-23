@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 07:27:02 by dan               #+#    #+#             */
-/*   Updated: 2024/03/23 10:41:30 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/23 10:43:00 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ void	get_time_now(long int	*time_now);
 
 void	free_data(t_data *data)
 {
-	int i;
-	
+	int	i;
+
 	i = 0;
 	while (i < data->fil_nbr)
 		free(data->auth_tab[i++]);
@@ -101,7 +101,7 @@ void	destroy_mutexes(t_data *data)
 
 int	one_filo_died(t_data *data)
 {
-	int i;
+	int	i;
 
 	pthread_mutex_lock(&data->auth_tab_mtx);
 	i = 0;
@@ -114,4 +114,3 @@ int	one_filo_died(t_data *data)
 	pthread_mutex_unlock(&data->auth_tab_mtx);
 	return (0);
 }
-

@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:49:03 by dan               #+#    #+#             */
-/*   Updated: 2024/03/23 10:29:27 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/23 10:43:24 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	create_and_initialize_data(t_data **data, char **argv)
 int	alloc_memory_for_data(t_data **data, char **argv)
 {
 	int	i;
-	
+
 	(*data) = (t_data *)ft_calloc(1, sizeof(t_data));
 	add_argv_data(data, argv);
 	(*data)->filo = (t_filo *)ft_calloc((*data)->fil_nbr, sizeof(t_filo));
@@ -90,8 +90,7 @@ int	initialize_mutex(t_data **data)
 	if (pthread_mutex_init(&((*data)->all_filos_live_mtx), NULL) != 0)
 		return (0);
 	if (pthread_mutex_init(&((*data)->auth_tab_mtx), NULL) != 0)
-		return (0);	
-
+		return (0);
 	i = 0;
 	while (i < (*data)->fil_nbr)
 	{

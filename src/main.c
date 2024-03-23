@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:45:27 by dan               #+#    #+#             */
-/*   Updated: 2024/03/23 10:41:41 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/23 10:44:10 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 #define LAST_LONGER 5000
 
-int	one_filo_died(t_data *data);
+int		one_filo_died(t_data *data);
 int		check_input(int argc, char **argv);
 void	free_data(t_data *data);
 void	display_error(char *str);
@@ -48,18 +48,14 @@ void	*filo_rtn(void *arg)
 	xpress_mssg(filo, got_born);
 	while (time_now < (filo->meal_time + filo->data->tt_die))
 	{
-		
 		get_time_now(&time_now);
 	}
 	xpress_mssg(filo, dead);
-	
 	pthread_mutex_lock(&filo->data->auth_tab_mtx);
 	filo->data->auth_tab[0][filo->id] = -1;
 	pthread_mutex_unlock(&filo->data->auth_tab_mtx);
 	return (NULL);
 }
-
-
 
 void	*coor_rtn(void *arg)
 {
@@ -71,15 +67,11 @@ void	*coor_rtn(void *arg)
 	j = 0;
 	while (1)
 	{
-		
 		// pthread_mutex_lock(&data->print_mtx);
 		// printf("%i I'm watching you\n", data->all_filos_live);
 		// pthread_mutex_unlock(&data->print_mtx);
-		
-		
 		usleep(500);
 		j++;
-		
 		if (one_filo_died(data))
 			break ;
 	}

@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:47:37 by dan               #+#    #+#             */
-/*   Updated: 2024/03/23 10:28:55 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/23 10:44:31 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ typedef struct s_Data
 	int				**auth_tab;
 	t_filo			*filo;
 	pthread_t		coor;
-	pthread_mutex_t auth_tab_mtx;
+	pthread_mutex_t	auth_tab_mtx;
 	pthread_mutex_t	print_mtx;
 	pthread_mutex_t	*fork;
 }	t_data;
