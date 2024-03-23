@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:45:27 by dan               #+#    #+#             */
-/*   Updated: 2024/03/23 10:59:41 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/23 11:24:59 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ void	eat_and_sleep(t_filo *filo)
 	usleep(filo->data->tt_eat * 1000);
 	xpress_mssg(filo, sleeping);
 	usleep(filo->data->tt_sleep * 1000);
-	xpress_mssg(filo, thinking);
 	
 }
 
@@ -67,6 +66,32 @@ void	*filo_rtn(void *arg)
 	return (NULL);
 }
 
+void	display_auth_tab(t_data *data)
+{
+	int	i;
+	int	j;
+
+	
+	pthread_mutex_lock(&data->print_mtx);
+	pthread_mutex_lock(&data->auth_tab_mtx);
+	i = 0;
+	while (i < 2)
+	{
+		j = 0;
+		while (j < data->fil_nbr)
+		{
+			printf("%3i ", data->auth_tab[i][j]);
+			j++;
+		}
+		printf("\n");
+		i++;
+	}
+	
+	pthread_mutex_unlock(&data->auth_tab_mtx);
+	pthread_mutex_unlock(&data->print_mtx);
+	
+}
+
 void	*coor_rtn(void *arg)
 {
 	t_data	*data;
@@ -77,6 +102,8 @@ void	*coor_rtn(void *arg)
 	j = 0;
 	while (1)
 	{
+		if (j == 500)
+			display_auth_tab(data);
 		// pthread_mutex_lock(&data->print_mtx);
 		// printf("%i I'm watching you\n", data->all_filos_live);
 		// pthread_mutex_unlock(&data->print_mtx);
