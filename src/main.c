@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:45:27 by dan               #+#    #+#             */
-/*   Updated: 2024/03/23 10:36:29 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/23 10:41:41 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 
 #define LAST_LONGER 5000
 
+int	one_filo_died(t_data *data);
 int		check_input(int argc, char **argv);
 void	free_data(t_data *data);
 void	display_error(char *str);
@@ -58,6 +59,8 @@ void	*filo_rtn(void *arg)
 	return (NULL);
 }
 
+
+
 void	*coor_rtn(void *arg)
 {
 	t_data	*data;
@@ -77,16 +80,8 @@ void	*coor_rtn(void *arg)
 		usleep(500);
 		j++;
 		
-		// check if a filo died
-		pthread_mutex_lock(&data->auth_tab_mtx);
-		i = 0;
-		while (i < data->fil_nbr)
-		{
-			if (data->auth_tab[0][i] == -1)
-				return (pthread_mutex_unlock(&data->auth_tab_mtx), NULL);
-			i++;
-		}
-		pthread_mutex_unlock(&data->auth_tab_mtx);
+		if (one_filo_died(data))
+			break ;
 	}
 	return (NULL);
 }
