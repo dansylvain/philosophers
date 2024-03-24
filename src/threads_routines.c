@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 07:39:03 by dan               #+#    #+#             */
-/*   Updated: 2024/03/24 10:20:37 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/24 10:41:26 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,17 +43,27 @@ void	change_filo_state(t_data *data, int filo_id, int state)
 
 void	eat_and_sleep(t_filo *filo)
 {
+	pthread_mutex_t	*lfork;
+	pthread_mutex_t	*rfork;
+	
+	lfork = &filo->data->fork[filo->id];
+	rfork = &filo->data->fork[(filo->id + 1) % filo->data->fil_nbr];
+	
 	get_time_now(&filo->meal_time);
-	// display_auth_tab(filo->data);
+	
 	change_filo_state(filo->data, filo->id, 2);
-	// display_auth_tab(filo->data);
+	
 	xpress_mssg(filo, eating);
+	pthread_mutex_lock(lfork);
+	pthread_mutex_lock(rfork);
 	usleep(filo->data->tt_eat * 1000);
-
+	pthread_mutex_unlock(lfork);
+	pthread_mutex_unlock(rfork);
 	xpress_mssg(filo, sleeping);
 	usleep(filo->data->tt_sleep * 1000);
+	xpress_mssg(filo, thinking);
+	
 	change_filo_state(filo->data, filo->id, 0);
-	// display_auth_tab(filo->data);
 	filo->meals_taken++;
 }
 
@@ -95,7 +105,27 @@ void	*filo_rtn(void *arg)
 
 t_data	*authorize_filos_to_eat(t_data *data)
 {
-	change_filo_state(data, 2, 1);
+	int	i;
+	int	id;
+	
+	i = 0;
+	while (i < data->fil_nbr)
+	{
+		id = data->auth_tab[1][i];
+		
+		if (data->auth_tab[0][id] == 0 && data->auth_tab[0][(id + 1) % data->fil_nbr] != 2 && data->auth_tab[0][(id - 1) % data->fil_nbr] != 2)
+		{
+			data->auth_tab[0][id] = 1;
+			// printf("%i may eat!!!\n", id);
+		}
+
+
+
+		
+		i++;
+	}
+	// if (data->auth_tab[0][2] == 0)
+	// 	change_filo_state(data, 2, 1);
 	return (data);
 }
 
