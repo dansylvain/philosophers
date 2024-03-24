@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:49:03 by dan               #+#    #+#             */
-/*   Updated: 2024/03/23 18:25:24 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/24 07:43:44 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,8 @@ int	alloc_memory_for_data(t_data **data, char **argv)
 	i = 0;
 	while (i < 2)
 	{
-		(*data)->auth_tab[i] = (int *)ft_calloc((*data)->fil_nbr + 1, sizeof(int));
+		(*data)->auth_tab[i] = (int *)ft_calloc((*data)->fil_nbr + 1,
+				sizeof(int));
 		if ((*data)->auth_tab[i] == NULL)
 			return (0);
 		i++;

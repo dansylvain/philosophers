@@ -6,7 +6,7 @@
 #    By: dan <dan@student.42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/06 05:50:42 by dsylvain          #+#    #+#              #
-#    Updated: 2024/03/23 19:34:51 by dan              ###   ########.fr        #
+#    Updated: 2024/03/24 07:46:05 by dan              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,6 +40,8 @@ SRC =	src/main.c \
 		src/utils.c \
 		src/utils_2.c \
 		src/create_and_initialize_data.c \
+		src/threads_routines.c \
+		src/ending_conditions_funcs.c \
 		
 OBJ = $(SRC:.c=.o)
 

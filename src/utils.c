@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 07:27:02 by dan               #+#    #+#             */
-/*   Updated: 2024/03/24 07:31:53 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/24 07:44:57 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,19 +20,6 @@
 void	*coor_rtn(void *arg);
 void	*filo_rtn(void *arg);
 void	get_time_now(long int	*time_now);
-
-void	free_data(t_data *data)
-{
-	int	i;
-
-	i = 0;
-	while (i < 2)
-		free(data->auth_tab[i++]);
-	free(data->auth_tab);
-	free(data->fork);
-	free(data->filo);
-	free(data);
-}
 
 void	xpress_mssg(t_filo *filo, t_mssg mssg)
 {
@@ -98,45 +85,6 @@ void	destroy_mutexes(t_data *data)
 		pthread_mutex_destroy(&data->fork[i]);
 		i++;
 	}
-}
-
-int	one_filo_died(t_data *data)
-{
-	int	i;
-
-	pthread_mutex_lock(&data->auth_tab_mtx);
-	i = 0;
-	while (i < data->fil_nbr)
-	{
-		if (data->auth_tab[0][i] == -1)
-			return (pthread_mutex_unlock(&data->auth_tab_mtx), 1);
-		i++;
-	}
-	pthread_mutex_unlock(&data->auth_tab_mtx);
-	return (0);
-}
-
-void	filo_dies(t_filo *filo)
-{
-	pthread_mutex_lock(&filo->data->auth_tab_mtx);
-	filo->data->auth_tab[0][filo->id] = -1;
-	pthread_mutex_unlock(&filo->data->auth_tab_mtx);
-}
-
-int	all_filos_are_out(t_data *data)
-{
-	int i;
-
-	i = 0;
-	pthread_mutex_lock(&data->auth_tab_mtx);
-	while (i < data->fil_nbr)
-	{
-		if (data->auth_tab[0][i] != -2)
-			return (pthread_mutex_unlock(&data->auth_tab_mtx), 0);
-		i++;
-	}
-	pthread_mutex_unlock(&data->auth_tab_mtx);
-	return (1);
 }
 
 void	display_auth_tab(t_data *data)

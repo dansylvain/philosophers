@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 11:51:59 by dan               #+#    #+#             */
-/*   Updated: 2024/03/23 16:39:53 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/24 07:41:10 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	check_input(int argc, char **argv)
 		num = ft_atoi(argv[i]);
 		if (num < 0 || (num == 0 && ft_strlen(argv[i]) > 9))
 			return (0);
-		if (!is_valid_number(argv[i]))	
+		if (!is_valid_number(argv[i]))
 			return (0);
 		i++;
 	}

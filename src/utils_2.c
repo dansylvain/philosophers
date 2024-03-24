@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 19:44:50 by dan               #+#    #+#             */
-/*   Updated: 2024/03/22 09:54:24 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/24 07:43:02 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <unistd.h>
 #include "libft.h"
 #include <stdio.h>
+#include "philosophers.h"
 
 void	display_error(char *str)
 {
@@ -34,4 +35,17 @@ void	get_time_now(long int	*time_now)
 
 	gettimeofday(&now, NULL);
 	*time_now = time_to_ms(now);
+}
+
+void	free_data(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	while (i < 2)
+		free(data->auth_tab[i++]);
+	free(data->auth_tab);
+	free(data->fork);
+	free(data->filo);
+	free(data);
 }
