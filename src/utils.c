@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 07:27:02 by dan               #+#    #+#             */
-/*   Updated: 2024/03/24 13:21:01 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/24 17:00:59 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,6 @@ void	destroy_mutexes(t_data *data)
 		pthread_mutex_destroy(&data->fork[i]);
 		i++;
 	}
-	
-	
 }
 
 void	display_auth_tab(t_data *data)

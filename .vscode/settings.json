@@ -5,6 +5,9 @@
 		"pthread.h": "c",
 		"time.h": "c",
 		"libft.h": "c",
-		"stdio.h": "c"
+		"stdio.h": "c",
+		"array": "c",
+		"string": "c",
+		"string_view": "c"
 	}
 }
