@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 17:04:11 by dan               #+#    #+#             */
-/*   Updated: 2024/03/24 17:06:59 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/24 19:30:21 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,18 @@ int	filo_can_eat(t_filo *filo)
 	int	can_eat;
 
 	can_eat = 0;
-	pthread_mutex_lock(&filo->data->auth_tab_mtx);
-	if (filo->data->auth_tab[0][filo->id] == 1)
+	pthread_mutex_lock(&filo->state_mtx);
+	if (filo->state == 1)
 		can_eat = 1;
-	pthread_mutex_unlock(&filo->data->auth_tab_mtx);
+	pthread_mutex_unlock(&filo->state_mtx);
 	return (can_eat);
 }
 
 void	change_filo_state(t_data *data, int filo_id, int state)
 {
-	pthread_mutex_lock(&data->auth_tab_mtx);
-	data->auth_tab[0][filo_id] = state;
-	pthread_mutex_unlock(&data->auth_tab_mtx);
+	pthread_mutex_lock(&data->filo[filo_id].state_mtx);
+	data->filo[filo_id].state = state;
+	pthread_mutex_unlock(&data->filo[filo_id].state_mtx);
 }
 
 int	no_neighbours_are_eating(t_data *data, int id)

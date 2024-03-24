@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:49:03 by dan               #+#    #+#             */
-/*   Updated: 2024/03/24 12:46:47 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/24 19:26:31 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,10 +92,13 @@ int	initialize_mutex(t_data **data)
 		return (0);
 	if (pthread_mutex_init(&((*data)->auth_tab_mtx), NULL) != 0)
 		return (0);
+		
 	i = 0;
 	while (i < (*data)->fil_nbr)
 	{
 		if (pthread_mutex_init(&((*data)->fork[i]), NULL) != 0)
+			return (0);
+		if (pthread_mutex_init(&((*data)->filo[i].state_mtx), NULL) != 0)
 			return (0);
 		i++;
 	}
