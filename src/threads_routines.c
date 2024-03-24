@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 07:39:03 by dan               #+#    #+#             */
-/*   Updated: 2024/03/24 12:30:12 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/24 12:51:34 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ void	eat_and_sleep(t_filo *filo)
 	change_filo_state(filo->data, filo->id, 0);
 	xpress_mssg(filo, thinking);
 	
+	filo->is_registered = 0;
 	filo->meals_taken++;
 }
 
@@ -140,9 +141,16 @@ void	update_auth_lst_queue(t_data *data, int id)
 
 	i = 0;
 	pthread_mutex_lock(&data->auth_tab_mtx);
-	while (data->auth_tab[1][i] != id && data->auth_tab[1][i] != -1)
+	while (data->auth_tab[1][i] != id)
 		i++;
-	
+	// printf("%i ", data->auth_tab[1][i]);
+	while (data->auth_tab[1][i + 1] != -1)
+	{
+		data->auth_tab[1][i] = data->auth_tab[1][i + 1];
+		i++;
+	}
+	data->auth_tab[1][i] = -1;
+	// printf("%i\n", data->auth_tab[1][i]);
 	pthread_mutex_unlock(&data->auth_tab_mtx);
 
 }
@@ -189,14 +197,13 @@ void	*coor_rtn(void *arg)
 	j = 0;
 	while (1)
 	{
-		usleep(100000);
-		display_auth_tab(data);
+		usleep(500);
+		// display_auth_tab(data);
 		if (one_filo_died(data))
 			break ;
 		if (all_filos_are_out(data))
 			break ;
 		authorize_filos_to_eat(data);
-		// display_auth_tab(data);
 		j++;
 	}
 	return (NULL);
