@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 17:04:11 by dan               #+#    #+#             */
-/*   Updated: 2024/03/24 20:10:45 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/24 20:26:17 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,9 @@ int	no_neighbours_are_eating(t_data *data, int id)
 	else
 		r_neighbour = id - 1;
 	pthread_mutex_lock(&data->auth_tab_mtx);
-	if (data->auth_tab[0][l_neighbour] == 2)
+	if (data->auth_tab[l_neighbour] == 2)
 		is_not_eating = 0;
-	if (data->auth_tab[0][r_neighbour] == 2)
+	if (data->auth_tab[r_neighbour] == 2)
 		is_not_eating = 0;
 	pthread_mutex_unlock(&data->auth_tab_mtx);
 	return (is_not_eating);
@@ -58,16 +58,16 @@ void	update_auth_lst_queue(t_data *data, int id)
 	int	i;
 
 	i = 0;
-	pthread_mutex_lock(&data->auth_tab_queue_mtx);
-	while (data->auth_tab[1][i] != id)
+	pthread_mutex_lock(&data->queue_mtx);
+	while (data->queue[i] != id)
 		i++;
-	while (data->auth_tab[1][i + 1] != -1)
+	while (data->queue[i + 1] != -1)
 	{
-		data->auth_tab[1][i] = data->auth_tab[1][i + 1];
+		data->queue[i] = data->queue[i + 1];
 		i++;
 	}
-	data->auth_tab[1][i] = -1;
-	pthread_mutex_unlock(&data->auth_tab_queue_mtx);
+	data->queue[i] = -1;
+	pthread_mutex_unlock(&data->queue_mtx);
 }
 
 t_data	*authorize_filos_to_eat(t_data *data)
@@ -79,13 +79,13 @@ t_data	*authorize_filos_to_eat(t_data *data)
 	i = 0;
 	while (i < data->fil_nbr)
 	{
-		pthread_mutex_lock(&data->auth_tab_queue_mtx);
-		id = data->auth_tab[1][i];
-		pthread_mutex_unlock(&data->auth_tab_queue_mtx);
+		pthread_mutex_lock(&data->queue_mtx);
+		id = data->queue[i];
+		pthread_mutex_unlock(&data->queue_mtx);
 		if (data->fil_nbr == 1)
 			return (0);
 		pthread_mutex_lock(&data->auth_tab_mtx);
-		yes_no = data->auth_tab[0][id];	
+		yes_no = data->auth_tab[id];	
 		pthread_mutex_unlock(&data->auth_tab_mtx);
 		if (!yes_no && no_neighbours_are_eating(data, id))
 		{

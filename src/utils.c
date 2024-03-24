@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 07:27:02 by dan               #+#    #+#             */
-/*   Updated: 2024/03/24 20:14:11 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/24 20:30:02 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	destroy_mutexes(t_data *data)
 {
 	int	i;
 	
-	pthread_mutex_destroy(&data->auth_tab_queue_mtx);
+	pthread_mutex_destroy(&data->queue_mtx);
 	pthread_mutex_destroy(&data->print_mtx);
 	pthread_mutex_destroy(&data->all_filos_live_mtx);
 	pthread_mutex_destroy(&data->auth_tab_mtx);
@@ -91,28 +91,28 @@ void	destroy_mutexes(t_data *data)
 	}
 }
 
-void	display_auth_tab(t_data *data)
-{
-	int	i;
-	int	j;
+// void	display_auth_tab(t_data *data)
+// {
+// 	int	i;
+// 	int	j;
 
-	pthread_mutex_lock(&data->print_mtx);
-	pthread_mutex_lock(&data->auth_tab_mtx);
-	i = 0;
-	while (i < 2)
-	{
-		j = 0;
-		while (j < data->fil_nbr)
-		{
-			printf("%3i ", data->auth_tab[i][j]);
-			j++;
-		}
-		printf("\n");
-		i++;
-	}
-	pthread_mutex_unlock(&data->auth_tab_mtx);
-	pthread_mutex_unlock(&data->print_mtx);
-}
+// 	pthread_mutex_lock(&data->print_mtx);
+// 	pthread_mutex_lock(&data->auth_tab_mtx);
+// 	i = 0;
+// 	while (i < 2)
+// 	{
+// 		j = 0;
+// 		while (j < data->fil_nbr)
+// 		{
+// 			printf("%3i ", data->auth_tab[i][j]);
+// 			j++;
+// 		}
+// 		printf("\n");
+// 		i++;
+// 	}
+// 	pthread_mutex_unlock(&data->auth_tab_mtx);
+// 	pthread_mutex_unlock(&data->print_mtx);
+// }
 
 void	add_id_to_auth_lst(t_filo *filo)
 {
@@ -122,11 +122,11 @@ void	add_id_to_auth_lst(t_filo *filo)
 
 	fil_nbr = filo->data->fil_nbr;
 	i = 0;
-	pthread_mutex_lock(&filo->data->auth_tab_queue_mtx);
-	fil_auth = filo->data->auth_tab[1];
+	pthread_mutex_lock(&filo->data->queue_mtx);
+	fil_auth = filo->data->queue;
 	while (fil_auth[i] != -1 && i < fil_nbr && fil_auth[i] != filo->id)
 		i++;
 	fil_auth[i] = filo->id;
-	pthread_mutex_unlock(&filo->data->auth_tab_queue_mtx);
+	pthread_mutex_unlock(&filo->data->queue_mtx);
 	filo->is_registered = 1;
 }

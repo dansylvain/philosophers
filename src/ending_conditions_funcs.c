@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 07:45:27 by dan               #+#    #+#             */
-/*   Updated: 2024/03/24 11:32:11 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/24 20:38:28 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,13 @@ int	one_filo_died(t_data *data)
 {
 	int	i;
 
-	pthread_mutex_lock(&data->auth_tab_mtx);
 	i = 0;
+	pthread_mutex_lock(&data->filo[i].state_mtx);
 	while (i < data->fil_nbr)
 	{
-		if (data->auth_tab[0][i] == -1)
-			return (pthread_mutex_unlock(&data->auth_tab_mtx), 1);
+		if (data->filo[i].state == -1)
+			return (pthread_mutex_unlock(&data->filo[i].state_mtx), 1);
+		pthread_mutex_unlock(&data->filo[i].state_mtx);
 		i++;
 	}
 	pthread_mutex_unlock(&data->auth_tab_mtx);
@@ -38,13 +39,13 @@ int	all_filos_are_out(t_data *data)
 	int	i;
 
 	i = 0;
-	pthread_mutex_lock(&data->auth_tab_mtx);
+	pthread_mutex_lock(&data->filo[i].state_mtx);
 	while (i < data->fil_nbr)
 	{
-		if (data->auth_tab[0][i] != -2)
-			return (pthread_mutex_unlock(&data->auth_tab_mtx), 0);
+		if (data->filo[i].state != -2)
+			return (pthread_mutex_unlock(&data->filo[i].state_mtx), 0);
 		i++;
 	}
-	pthread_mutex_unlock(&data->auth_tab_mtx);
+	pthread_mutex_unlock(&data->filo[i].state_mtx);
 	return (1);
 }

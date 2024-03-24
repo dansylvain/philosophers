@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 19:44:50 by dan               #+#    #+#             */
-/*   Updated: 2024/03/24 19:56:48 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/24 20:27:58 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,7 @@ void	get_time_now(long int	*time_now)
 
 void	free_data(t_data *data)
 {
-	int	i;
-
-	i = 0;
-	while (i < 2)
-		free(data->auth_tab[i++]);
+	free(data->queue);
 	free(data->auth_tab);
 	free(data->fork);
 	free(data->filo);
