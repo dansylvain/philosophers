@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:47:37 by dan               #+#    #+#             */
-/*   Updated: 2024/03/23 18:24:58 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/24 11:58:33 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ typedef struct s_Data	t_data;
 
 typedef struct s_filo
 {
+	int				is_registered;
 	int				id;
 	int				meals_taken;
 	long int		meal_time;

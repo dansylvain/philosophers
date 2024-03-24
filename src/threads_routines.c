@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 07:39:03 by dan               #+#    #+#             */
-/*   Updated: 2024/03/24 11:37:33 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/24 12:01:31 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,8 @@ void	*filo_rtn(void *arg)
 		usleep(200);
 	while (time_now < (filo->meal_time + filo->data->tt_die))
 	{
-		filo = add_id_to_auth_lst(filo);
+		if (filo->is_registered == 0)
+			filo = add_id_to_auth_lst(filo);
 		if (filo_can_eat(filo))
 			eat_and_sleep(filo);
 		if (filo_has_taken_all_his_meals(filo))
@@ -133,6 +134,27 @@ int	no_neighbours_are_eating(t_data *data, int id)
 	return (is_not_eating);
 }
 
+void	update_auth_lst_queue(t_data *data, int id)
+{
+	int	i;
+
+	i = 0;
+	pthread_mutex_lock(&data->auth_tab_mtx);
+	while (data->auth_tab[1][i] != id && data->auth_tab[1][i] != -1)
+		i++;
+	if (data->auth_tab[1][i] == id)
+	{
+		while (data->auth_tab[1][i] != -1 && data->auth_tab[1][i + 1])
+		{
+			data->auth_tab[1][i] = data->auth_tab[1][i + 1];
+			i++;
+		}
+		data->auth_tab[1][i] = -1;	
+	}
+	pthread_mutex_unlock(&data->auth_tab_mtx);
+
+}
+
 t_data	*authorize_filos_to_eat(t_data *data)
 {
 	int	i;
@@ -150,7 +172,7 @@ t_data	*authorize_filos_to_eat(t_data *data)
 		if (data->auth_tab[0][id] == 0 && no_neighbours_are_eating(data, id))
 		{
 			change_filo_state(data, id, 1);
-			// update_auth_lst_queue();
+			// update_auth_lst_queue(data, id);
 		}
 	
 		i++;
