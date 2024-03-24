@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:45:27 by dan               #+#    #+#             */
-/*   Updated: 2024/03/24 07:18:02 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/24 07:31:43 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void	destroy_mutexes(t_data *data);
 void	filo_dies(t_filo *filo);
 void	display_auth_tab(t_data *data);
 t_filo	*add_id_to_auth_lst(t_filo *filo);
+int		all_filos_are_out(t_data *data);
 
 /**========================================================================
  *                             DON'T FORGET!!!
@@ -76,7 +77,6 @@ void	*filo_rtn(void *arg)
 		filo = add_id_to_auth_lst(filo);
 		if (filo_can_eat(filo))
 			eat_and_sleep(filo);
-		printf("filo->meals_taken: %i == filo->data->max_meals: %i\n", filo->meals_taken, filo->data->max_meals);
 		if (filo->meals_taken == filo->data->max_meals)
 		{
 			pthread_mutex_lock(&filo->data->auth_tab_mtx);
@@ -93,58 +93,6 @@ void	*filo_rtn(void *arg)
 	return (NULL);
 }
 
-int forks_are_available(t_data *data, int id)
-{
-    int l_fork_status;
-    int r_fork_status;
-
-    l_fork_status = pthread_mutex_trylock(&data->fork[id]);
-    if (l_fork_status != 0)
-        return (0);
-	usleep(100);
-    r_fork_status = pthread_mutex_trylock(&data->fork[(id + 1) % data->fil_nbr]);
-    if (r_fork_status != 0)
-	{
-        
-        return (pthread_mutex_unlock(&data->fork[id]), usleep(100), 0);
-    }
-    return 1;
-}
-t_data	*authorize_filos_to_eat(t_data *data)
-{
-	int	i;
-	int	id;
-
-	usleep(500);
-	i = 0;
-	if (pthread_mutex_trylock(&data->auth_tab_mtx))
-		return (data);
-	while (i < data->fil_nbr)
-	{
-		id = data->auth_tab[1][i];
-		if (forks_are_available(data, id))
-			data->auth_tab[0][id] = 1;
-		i++;
-	}
-	pthread_mutex_unlock(&data->auth_tab_mtx);
-	return (data);
-}
-
-int	all_filo_are_out(t_data *data)
-{
-	int i;
-
-	i = 0;
-	pthread_mutex_lock(&data->auth_tab_mtx);
-	while (i < data->fil_nbr)
-	{
-		if (data->auth_tab[0][i] != -2)
-			return (pthread_mutex_unlock(&data->auth_tab_mtx), 0);
-		i++;
-	}
-	pthread_mutex_unlock(&data->auth_tab_mtx);
-	return (1);
-}
 /**========================================================================
  *                           coor_rtn
  *! it could be that the filo threads have not signed in to the auth_tab yet
@@ -159,17 +107,13 @@ void	*coor_rtn(void *arg)
 
 	data = (t_data *)arg;
 	j = 0;
-	while (j < 4)
+	while (1)
 	{
 		usleep(500);
-		// authorize_filos_to_eat(data);
-		// if (j % 1000 == 0)
-		// {
-		// 	display_auth_tab(data);
-		// }
+		
 		if (one_filo_died(data))
 			break ;
-		if (all_filo_are_out(data))
+		if (all_filos_are_out(data))
 			break ;
 		j++;
 	}
