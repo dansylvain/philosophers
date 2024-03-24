@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 07:27:02 by dan               #+#    #+#             */
-/*   Updated: 2024/03/24 12:03:02 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/24 13:21:01 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,12 +79,16 @@ void	destroy_mutexes(t_data *data)
 	int	i;
 
 	pthread_mutex_destroy(&data->print_mtx);
+	pthread_mutex_destroy(&data->all_filos_live_mtx);
+	pthread_mutex_destroy(&data->auth_tab_mtx);
 	i = 0;
 	while (i < data->fil_nbr)
 	{
 		pthread_mutex_destroy(&data->fork[i]);
 		i++;
 	}
+	
+	
 }
 
 void	display_auth_tab(t_data *data)
