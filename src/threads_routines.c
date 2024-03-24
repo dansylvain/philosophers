@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 07:39:03 by dan               #+#    #+#             */
-/*   Updated: 2024/03/24 12:51:34 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/24 12:59:15 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,8 +95,6 @@ void	*filo_rtn(void *arg)
 
 	time_now = 0;
 	filo = (t_filo *)arg;
-	if (filo->id % 2 == 0)
-		usleep(200);
 	while (time_now < (filo->meal_time + filo->data->tt_die))
 	{
 		if (filo->is_registered == 0)
@@ -197,7 +195,7 @@ void	*coor_rtn(void *arg)
 	j = 0;
 	while (1)
 	{
-		usleep(500);
+		usleep(10);
 		// display_auth_tab(data);
 		if (one_filo_died(data))
 			break ;
