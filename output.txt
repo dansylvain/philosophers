@@ -1,4 +1,4 @@
-[0;32mCompilation successful[0m
+make: Nothing to be done for 'all'.
 >>> Running with valgrind --leak-check=full --show-leak-kinds=all
 >>> Running with valgrind --tool=drd
 >>> Running with valgrind --tool=helgrind

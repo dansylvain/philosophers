@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:45:27 by dan               #+#    #+#             */
-/*   Updated: 2024/03/23 19:26:15 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/24 07:18:02 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,18 +73,19 @@ void	*filo_rtn(void *arg)
 	xpress_mssg(filo, got_born);
 	while (time_now < (filo->meal_time + filo->data->tt_die))
 	{
-		// filo = add_id_to_auth_lst(filo);
-		// if (filo_can_eat(filo))
-		// 	eat_and_sleep(filo);
-		// if (filo->meals_taken == filo->data->max_meals)
-		// {
-		// 	pthread_mutex_lock(&filo->data->auth_tab_mtx);
-		// 	filo->data->auth_tab[0][filo->id] = -2;
-		// 	pthread_mutex_unlock(&filo->data->auth_tab_mtx);
-		// 	return (NULL);
-		// }
-		// if (one_filo_died(filo->data))
-		// 	return (NULL);
+		filo = add_id_to_auth_lst(filo);
+		if (filo_can_eat(filo))
+			eat_and_sleep(filo);
+		printf("filo->meals_taken: %i == filo->data->max_meals: %i\n", filo->meals_taken, filo->data->max_meals);
+		if (filo->meals_taken == filo->data->max_meals)
+		{
+			pthread_mutex_lock(&filo->data->auth_tab_mtx);
+			filo->data->auth_tab[0][filo->id] = -2;
+			pthread_mutex_unlock(&filo->data->auth_tab_mtx);
+			return (NULL);
+		}
+		if (one_filo_died(filo->data))
+			return (NULL);
 		get_time_now(&time_now);
 	}
 	xpress_mssg(filo, dead);
@@ -166,10 +167,10 @@ void	*coor_rtn(void *arg)
 		// {
 		// 	display_auth_tab(data);
 		// }
-		// if (one_filo_died(data))
-		// 	break ;
-		// if (all_filo_are_out(data))
-		// 	break ;
+		if (one_filo_died(data))
+			break ;
+		if (all_filo_are_out(data))
+			break ;
 		j++;
 	}
 	return (NULL);
