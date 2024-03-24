@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 07:39:03 by dan               #+#    #+#             */
-/*   Updated: 2024/03/24 07:41:50 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/24 07:49:38 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,9 @@
 #include <unistd.h>
 
 int		one_filo_died(t_data *data);
-int		check_input(int argc, char **argv);
-void	free_data(t_data *data);
-void	display_error(char *str);
-int		create_and_initialize_data(t_data **data, char **argv);
-t_data	*run_threads(t_data *data);
 void	xpress_mssg(t_filo *filo, t_mssg mssg);
 t_data	*run_threads(t_data *data);
 void	get_time_now(long int	*time_now);
-void	destroy_mutexes(t_data *data);
 void	filo_dies(t_filo *filo);
 void	display_auth_tab(t_data *data);
 t_filo	*add_id_to_auth_lst(t_filo *filo);
