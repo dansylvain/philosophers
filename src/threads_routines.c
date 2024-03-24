@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 07:39:03 by dan               #+#    #+#             */
-/*   Updated: 2024/03/24 10:41:26 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/24 11:37:33 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,21 +49,29 @@ void	eat_and_sleep(t_filo *filo)
 	lfork = &filo->data->fork[filo->id];
 	rfork = &filo->data->fork[(filo->id + 1) % filo->data->fil_nbr];
 	
+	
 	get_time_now(&filo->meal_time);
 	
-	change_filo_state(filo->data, filo->id, 2);
 	
-	xpress_mssg(filo, eating);
 	pthread_mutex_lock(lfork);
 	pthread_mutex_lock(rfork);
+	
+	change_filo_state(filo->data, filo->id, 2);
+	xpress_mssg(filo, eating);
+	
 	usleep(filo->data->tt_eat * 1000);
+	
 	pthread_mutex_unlock(lfork);
 	pthread_mutex_unlock(rfork);
+	
+	change_filo_state(filo->data, filo->id, 3);
 	xpress_mssg(filo, sleeping);
+	
 	usleep(filo->data->tt_sleep * 1000);
-	xpress_mssg(filo, thinking);
 	
 	change_filo_state(filo->data, filo->id, 0);
+	xpress_mssg(filo, thinking);
+	
 	filo->meals_taken++;
 }
 
@@ -86,7 +94,8 @@ void	*filo_rtn(void *arg)
 
 	time_now = 0;
 	filo = (t_filo *)arg;
-	xpress_mssg(filo, got_born);
+	if (filo->id % 2 == 0)
+		usleep(200);
 	while (time_now < (filo->meal_time + filo->data->tt_die))
 	{
 		filo = add_id_to_auth_lst(filo);
@@ -99,8 +108,29 @@ void	*filo_rtn(void *arg)
 		get_time_now(&time_now);
 	}
 	xpress_mssg(filo, dead);
-	filo_dies(filo);
+	change_filo_state(filo->data, filo->id, -1);
 	return (NULL);
+}
+
+int	no_neighbours_are_eating(t_data *data, int id)
+{
+	int	is_not_eating;
+	int	l_neighbour;
+	int	r_neighbour;
+	
+	is_not_eating = 1;
+	l_neighbour = (id + 1) % data->fil_nbr;
+	if (id == 0)
+		r_neighbour = data->fil_nbr - 1;
+	else
+		r_neighbour = id - 1;
+	pthread_mutex_lock(&data->auth_tab_mtx);
+	if (data->auth_tab[0][l_neighbour] == 2)
+		is_not_eating = 0;
+	if (data->auth_tab[0][r_neighbour] == 2)
+		is_not_eating = 0;
+	pthread_mutex_unlock(&data->auth_tab_mtx);
+	return (is_not_eating);
 }
 
 t_data	*authorize_filos_to_eat(t_data *data)
@@ -111,21 +141,21 @@ t_data	*authorize_filos_to_eat(t_data *data)
 	i = 0;
 	while (i < data->fil_nbr)
 	{
+		pthread_mutex_lock(&data->auth_tab_mtx);
 		id = data->auth_tab[1][i];
+		pthread_mutex_unlock(&data->auth_tab_mtx);
 		
-		if (data->auth_tab[0][id] == 0 && data->auth_tab[0][(id + 1) % data->fil_nbr] != 2 && data->auth_tab[0][(id - 1) % data->fil_nbr] != 2)
+		if (data->fil_nbr == 1)
+			return (0);
+		if (data->auth_tab[0][id] == 0 && no_neighbours_are_eating(data, id))
 		{
-			data->auth_tab[0][id] = 1;
-			// printf("%i may eat!!!\n", id);
+			change_filo_state(data, id, 1);
+			// update_auth_lst_queue();
 		}
-
-
-
-		
+	
 		i++;
 	}
-	// if (data->auth_tab[0][2] == 0)
-	// 	change_filo_state(data, 2, 1);
+
 	return (data);
 }
 
@@ -145,7 +175,7 @@ void	*coor_rtn(void *arg)
 	j = 0;
 	while (1)
 	{
-		usleep(500000);
+		usleep(1000);
 		if (one_filo_died(data))
 			break ;
 		if (all_filos_are_out(data))
