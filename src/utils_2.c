@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 19:44:50 by dan               #+#    #+#             */
-/*   Updated: 2024/03/24 17:01:32 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/24 19:56:48 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,9 @@ int	filo_has_taken_all_his_meals(t_filo *filo)
 {
 	if (filo->meals_taken == filo->data->max_meals)
 	{
-		pthread_mutex_lock(&filo->data->auth_tab_mtx);
-		filo->data->auth_tab[0][filo->id] = -2;
-		pthread_mutex_unlock(&filo->data->auth_tab_mtx);
+		pthread_mutex_lock(&filo->state_mtx);
+		filo->state = -2;
+		pthread_mutex_unlock(&filo->state_mtx);
 		return (1);
 	}
 	return (0);

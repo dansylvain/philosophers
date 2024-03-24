@@ -18,4 +18,4 @@ valgrind --tool=drd ./philo 4 800 200 200 4 2>&1 | { grep -q "0x" && cat || echo
 
 # Exécution avec valgrind --tool=helgrind
 echo ">>> Running with valgrind --tool=helgrind" >> "$output_file"
-valgrind --tool=helgrind ./philo 4 800 200 200 4 2>&1 | { grep -q "0x" && cat || echo "No helgrind problem detected."; } 
+valgrind --tool=helgrind ./philo 4 800 200 200 4 2>&1 | { grep -q "0x" && cat || echo "No helgrind proble detected."; } 
