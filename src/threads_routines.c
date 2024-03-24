@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 07:39:03 by dan               #+#    #+#             */
-/*   Updated: 2024/03/24 07:49:38 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/24 09:56:50 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	filo_dies(t_filo *filo);
 void	display_auth_tab(t_data *data);
 t_filo	*add_id_to_auth_lst(t_filo *filo);
 int		all_filos_are_out(t_data *data);
+int		filo_has_taken_all_his_meals(t_filo *filo);
 
 /**========================================================================
  *                             DON'T FORGET!!!
@@ -67,13 +68,8 @@ void	*filo_rtn(void *arg)
 		filo = add_id_to_auth_lst(filo);
 		if (filo_can_eat(filo))
 			eat_and_sleep(filo);
-		if (filo->meals_taken == filo->data->max_meals)
-		{
-			pthread_mutex_lock(&filo->data->auth_tab_mtx);
-			filo->data->auth_tab[0][filo->id] = -2;
-			pthread_mutex_unlock(&filo->data->auth_tab_mtx);
+		if (filo_has_taken_all_his_meals(filo))
 			return (NULL);
-		}
 		if (one_filo_died(filo->data))
 			return (NULL);
 		get_time_now(&time_now);
@@ -99,11 +95,12 @@ void	*coor_rtn(void *arg)
 	j = 0;
 	while (1)
 	{
-		usleep(500);
+		usleep(500000);
 		if (one_filo_died(data))
 			break ;
 		if (all_filos_are_out(data))
 			break ;
+		display_auth_tab(data);
 		j++;
 	}
 	return (NULL);
