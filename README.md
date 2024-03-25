@@ -18,3 +18,5 @@ data race:
 valgrind --tool=drd ./philo 4 800 200 200 4
 
 valgrind --tool=helgrind ./philo 4 800 200 200 4
+
+change PHILO NUmbers!!! must start with 0NE
