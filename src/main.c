@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:45:27 by dan               #+#    #+#             */
-/*   Updated: 2024/03/25 16:56:59 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/25 18:27:17 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,18 @@ void	get_forks(t_filo *filo)
 	}
 }
 
-void	eat_and_sleep(t_filo *filo)
+int	time_is_up(t_filo *filo)
+{
+	struct timeval	now;
+	long int		time_now;
+
+	get_time_now(&time_now);
+	if (time_now > filo->meal_time + filo->data->tt_die)
+		return (1);
+	return (0);
+}
+
+int	eat_and_sleep(t_filo *filo)
 {
 	pthread_mutex_t	*lfork;
 	pthread_mutex_t	*rfork;
@@ -59,9 +70,13 @@ void	eat_and_sleep(t_filo *filo)
 	if (filo->data->fil_nbr > 1 && filo->rfork_taken == true
 		&& filo->lfork_taken == true)
 	{
+		if (time_is_up(filo) || filo->data->stop == true)
+			return (0);
 		xpress_mssg(filo, eating);
 		get_time_now(&filo->meal_time);
 		usleep(filo->data->tt_eat * 1000);
+		if (filo->data->stop == true)
+			return (0);
 		pthread_mutex_unlock(lfork);
 		pthread_mutex_unlock(rfork);
 		filo->lfork_taken = false;
@@ -69,8 +84,11 @@ void	eat_and_sleep(t_filo *filo)
 		filo->meals_taken++;
 		xpress_mssg(filo, sleeping);
 		usleep(filo->data->tt_sleep * 1000);
+		if (filo->data->stop == true)
+			return (0);
 		xpress_mssg(filo, thinking);
 	}
+	return (1);
 }
 
 void	*filo_rtn(void *arg)
@@ -85,15 +103,20 @@ void	*filo_rtn(void *arg)
 		usleep (filo->data->tt_eat / 2 * 1000);
 	while (time_now < filo->meal_time + filo->data->tt_die)
 	{
+		if (filo->data->stop == true)
+			return (NULL);
 		if (filo->meals_taken == filo->max_meals)
 			return (NULL);
 		get_forks(filo);
-		eat_and_sleep(filo);
+		if (eat_and_sleep(filo) == 0)
+			return (NULL);
 		gettimeofday(&now, NULL);
 		time_now = time_to_ms(now);
 	}
-	xpress_mssg(filo, dead);
-	return (NULL);
+	if (filo->data->stop != true)
+		return (filo->data->stop = true, xpress_mssg(filo, dead), NULL);
+	else
+		return (NULL);
 }
 
 int	main(int argc, char **argv)
