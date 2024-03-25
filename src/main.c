@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:45:27 by dan               #+#    #+#             */
-/*   Updated: 2024/03/25 09:01:36 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/25 09:14:26 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ t_Data	*run_threads(t_Data *data);
 void	xpress_mssg(t_filo *filo, mssg mssg);
 long	time_to_ms(struct timeval time_struct);
 t_Data *run_threads(t_Data *data);
+void	get_time_now(long int	*time_now);
 
 
 void	*filo_rtn(void *arg)
@@ -48,6 +49,7 @@ void	*filo_rtn(void *arg)
 		pthread_mutex_trylock(rfork);
 		xpress_mssg(filo, take_fork);
 		xpress_mssg(filo, eating);
+		get_time_now(&filo->meal_time);
 		usleep(filo->data->tt_eat * 1000);
 		pthread_mutex_unlock(lfork);
 		pthread_mutex_unlock(rfork);

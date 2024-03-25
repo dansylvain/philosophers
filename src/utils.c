@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 07:27:02 by dan               #+#    #+#             */
-/*   Updated: 2024/03/25 07:57:19 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/25 09:13:35 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,14 @@ void	display_error(char *str)
 long	time_to_ms(struct timeval time_struct)
 {
 	return (time_struct.tv_sec * 1000 + time_struct.tv_usec / 1000);
+}
+
+void	get_time_now(long int	*time_now)
+{
+	struct timeval	now;
+
+	gettimeofday(&now, NULL);
+	*time_now = time_to_ms(now);
 }
 
 void	xpress_mssg(t_filo *filo, mssg mssg)
