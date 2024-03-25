@@ -6,31 +6,30 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:45:27 by dan               #+#    #+#             */
-/*   Updated: 2024/03/25 16:45:09 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/25 16:56:59 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include "philosophers.h"
 #include <pthread.h>
-# include <sys/time.h>
+#include <sys/time.h>
 #include <unistd.h>
 
 int		check_input(int argc, char **argv);
-void	free_data(t_Data *data);
+void	free_data(t_data *data);
 void	display_error(char *str);
-int		create_and_initialize_data(t_Data **data, char **argv);
-t_Data	*run_threads(t_Data *data);
-void	xpress_mssg(t_filo *filo, mssg mssg);
+int		create_and_initialize_data(t_data **data, char **argv);
+t_data	*run_threads(t_data *data);
+void	xpress_mssg(t_filo *filo, t_mssg mssg);
 long	time_to_ms(struct timeval time_struct);
-t_Data *run_threads(t_Data *data);
+t_data	*run_threads(t_data *data);
 void	get_time_now(long int	*time_now);
-
 
 void	get_forks(t_filo *filo)
 {
-	pthread_mutex_t *lfork;
-	pthread_mutex_t *rfork;
+	pthread_mutex_t	*lfork;
+	pthread_mutex_t	*rfork;
 
 	lfork = &filo->data->fork[filo->id];
 	rfork = NULL;
@@ -50,15 +49,15 @@ void	get_forks(t_filo *filo)
 
 void	eat_and_sleep(t_filo *filo)
 {
-	pthread_mutex_t *lfork;
-	pthread_mutex_t *rfork;
-	
+	pthread_mutex_t	*lfork;
+	pthread_mutex_t	*rfork;
+
 	lfork = &filo->data->fork[filo->id];
 	rfork = NULL;
 	if (filo->data->fil_nbr > 1)
 		rfork = &filo->data->fork[(filo->id + 1) % filo->data->fil_nbr];
 	if (filo->data->fil_nbr > 1 && filo->rfork_taken == true
-			&& filo->lfork_taken == true)
+		&& filo->lfork_taken == true)
 	{
 		xpress_mssg(filo, eating);
 		get_time_now(&filo->meal_time);
@@ -73,9 +72,10 @@ void	eat_and_sleep(t_filo *filo)
 		xpress_mssg(filo, thinking);
 	}
 }
+
 void	*filo_rtn(void *arg)
 {
-	t_filo 			*filo;
+	t_filo			*filo;
 	long int		time_now;
 	struct timeval	now;
 
@@ -96,9 +96,9 @@ void	*filo_rtn(void *arg)
 	return (NULL);
 }
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
-	t_Data	*data;
+	t_data	*data;
 	int		i;
 
 	if (check_input(argc, argv) == 0)
@@ -113,4 +113,25 @@ int main(int argc, char **argv)
 	return (0);
 }
 
+t_data	*run_threads(t_data *data)
+{
+	int	i;
 
+	i = 0;
+	while (i < data->fil_nbr)
+	{
+		data->filo[i].id = i;
+		if (pthread_create(&data->filo[i].filo, NULL,
+				filo_rtn, &data->filo[i]) != 0)
+			return (NULL);
+		i++;
+	}
+	i = 0;
+	while (i < data->fil_nbr)
+	{
+		if (pthread_join(data->filo[i].filo, NULL) != 0)
+			return (NULL);
+		i++;
+	}
+	return (data);
+}

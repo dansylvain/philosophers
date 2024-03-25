@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:49:03 by dan               #+#    #+#             */
-/*   Updated: 2024/03/25 16:31:27 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/25 16:51:38 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,17 @@
 #include <limits.h>
 #include <sys/time.h>
 
-int		create_and_initialize_data(t_Data **data, char **argv);
-int		alloc_memory_for_data(t_Data **data, char **argv);
+int		create_and_initialize_data(t_data **data, char **argv);
+int		alloc_memory_for_data(t_data **data, char **argv);
 long	time_to_ms(struct timeval time_struct);
-void	add_argv_data(t_Data **data, char **argv);
-int		initialize_mutex(t_Data **data);
-void	initialize_filos(t_Data **data);
+void	add_argv_data(t_data **data, char **argv);
+int		initialize_mutex(t_data **data);
+void	initialize_filos(t_data **data);
 
 /**========================================================================
  *                           create_and_initialize_data
  *========================================================================**/
-int	create_and_initialize_data(t_Data **data, char **argv)
+int	create_and_initialize_data(t_data **data, char **argv)
 {
 	if (alloc_memory_for_data(data, argv) == 0)
 		return (0);
@@ -38,9 +38,9 @@ int	create_and_initialize_data(t_Data **data, char **argv)
 /**========================================================================
  *                           alloc_memory_for_data
  *========================================================================**/
-int	alloc_memory_for_data(t_Data **data, char **argv)
+int	alloc_memory_for_data(t_data **data, char **argv)
 {
-	(*data) = (t_Data *)ft_calloc(1, sizeof(t_Data));
+	(*data) = (t_data *)ft_calloc(1, sizeof(t_data));
 	add_argv_data(data, argv);
 	(*data)->filo = (t_filo *)ft_calloc((*data)->fil_nbr, sizeof(t_filo));
 	(*data)->fork = (pthread_mutex_t *)ft_calloc((*data)->fil_nbr,
@@ -53,7 +53,7 @@ int	alloc_memory_for_data(t_Data **data, char **argv)
 /**========================================================================
  *                           add_argv_data
  *========================================================================**/
-void	add_argv_data(t_Data **data, char **argv)
+void	add_argv_data(t_data **data, char **argv)
 {
 	(*data)->fil_nbr = ft_atoi(argv[1]);
 	(*data)->tt_die = ft_atoi(argv[2]);
@@ -68,7 +68,7 @@ void	add_argv_data(t_Data **data, char **argv)
 /**========================================================================
  *                           initialize_mutex
  *========================================================================**/
-int	initialize_mutex(t_Data **data)
+int	initialize_mutex(t_data **data)
 {
 	int	i;
 
@@ -87,7 +87,7 @@ int	initialize_mutex(t_Data **data)
 /**========================================================================
  *                           initialize_filos
  *========================================================================**/
-void	initialize_filos(t_Data **data)
+void	initialize_filos(t_data **data)
 {
 	int				i;
 	struct timeval	now;
