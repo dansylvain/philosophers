@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:49:03 by dan               #+#    #+#             */
-/*   Updated: 2024/03/18 07:38:35 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/25 07:57:50 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,9 @@ int	alloc_memory_for_data(t_Data **data, char **argv)
 	(*data) = (t_Data *)ft_calloc(1, sizeof(t_Data));
 	add_argv_data(data, argv);
 	(*data)->filo = (t_filo *)ft_calloc((*data)->fil_nbr, sizeof(t_filo));
-	(*data)->auth_tab = (int *)ft_calloc((*data)->fil_nbr + 1, sizeof(int));
 	(*data)->fork = (pthread_mutex_t *)ft_calloc((*data)->fil_nbr,
 			sizeof(pthread_mutex_t));
-	if (!*data || !(*data)->filo || !(*data)->auth_tab || !(*data)->fork)
+	if (!*data || !(*data)->filo || !(*data)->fork)
 		return (0);
 	return (1);
 }
@@ -73,16 +72,12 @@ int	initialize_mutex(t_Data **data)
 {
 	int	i;
 
-	if (pthread_mutex_init(&((*data)->auth_mtx), NULL) != 0)
-		return (0);
 	if (pthread_mutex_init(&((*data)->print_mtx), NULL) != 0)
 		return (0);
 	i = 0;
 	while (i < (*data)->fil_nbr)
 	{
 		if (pthread_mutex_init(&((*data)->fork[i]), NULL) != 0)
-			return (0);
-		if (pthread_mutex_init(&((*data)->filo[i].can_eat_mtx), NULL) != 0)
 			return (0);
 		i++;
 	}

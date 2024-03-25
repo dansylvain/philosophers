@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:45:27 by dan               #+#    #+#             */
-/*   Updated: 2024/03/18 07:27:30 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/25 07:53:36 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,23 +43,6 @@ void	*filo_rtn(void *arg)
 	return (NULL);
 }
 
-void	*coor_rtn(void *arg)
-{
-	t_Data *data;
-	int	i;
-	
-	data = (t_Data *)arg;
-	while (i < 3)
-	{
-		sleep(1);
-		pthread_mutex_lock(&data->print_mtx);
-		printf("%i: I'm watching you...\n", data->fil_nbr);
-		pthread_mutex_unlock(&data->print_mtx);	
-		i++;
-	}
-	return (NULL);
-}
-
 int main(int argc, char **argv)
 {
 	t_Data	*data;
@@ -69,9 +52,7 @@ int main(int argc, char **argv)
 		return (display_error("Error\n"), 1);
 	if (create_and_initialize_data(&data, argv) == 0)
 		return (free_data(data), display_error("Error\n"), 2);
-	
-	printf("welcome to the jungle\n");
-	
+		
 	data = run_threads(data);
 	if (data == NULL)
 		return (free_data(data), display_error("Error\n"), 3);
