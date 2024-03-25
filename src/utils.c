@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 07:27:02 by dan               #+#    #+#             */
-/*   Updated: 2024/03/18 07:43:51 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/25 07:48:27 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,8 @@ t_Data *run_threads(t_Data *data)
 {
 	int	i;
 	
-	if(pthread_create(&data->coor, NULL, coor_rtn, data) != 0)
-		return (NULL);
+	// if(pthread_create(&data->coor, NULL, coor_rtn, data) != 0)
+	// 	return (NULL);
 	i = 0;
 	while (i < data->fil_nbr)
 	{
@@ -87,7 +87,7 @@ t_Data *run_threads(t_Data *data)
 			return (NULL);
 		i++;
 	}
-	if(pthread_join(data->coor, NULL) != 0)
-			return (NULL);
+	// if(pthread_join(data->coor, NULL) != 0)
+	// 		return (NULL);
 	return (data);	
 }
