@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:49:03 by dan               #+#    #+#             */
-/*   Updated: 2024/03/25 07:57:50 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/25 09:30:07 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,8 @@ void	initialize_filos(t_Data **data)
 	{
 		gettimeofday(&now, NULL);
 		(*data)->filo[i].meal_time = time_to_ms(now);
+		(*data)->filo[i].meals_taken = 0;
+		(*data)->filo[i].max_meals = (*data)->max_meals;
 		(*data)->filo[i].data = *data;
 		i++;
 	}

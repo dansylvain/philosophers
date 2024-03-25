@@ -1,7 +1,4 @@
-src/check_input.c                                                               [0;32mcompiled[0m
-src/utils.c                                                                     [0;32mcompiled[0m
-src/create_and_initialize_data.c                                                [0;32mcompiled[0m
-[0;32mCompilation successful[0m
+make: Nothing to be done for 'all'.
 >>> Running with valgrind --leak-check=full --show-leak-kinds=all
 >>> Running with valgrind --tool=drd
 >>> Running with valgrind --tool=helgrind

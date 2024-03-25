@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:45:27 by dan               #+#    #+#             */
-/*   Updated: 2024/03/25 09:14:26 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/25 09:31:50 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,24 +38,32 @@ void	*filo_rtn(void *arg)
 	
 	filo = (t_filo *)arg;
 	lfork = &filo->data->fork[filo->id];
-	rfork = &filo->data->fork[(filo->id + 1) % filo->data->fil_nbr];
+	rfork = NULL;
+	if (filo->data->fil_nbr > 1)
+		rfork = &filo->data->fork[(filo->id + 1) % filo->data->fil_nbr];
 	xpress_mssg(filo, thinking);
 	if (filo->id % 2 == 0)
 		usleep (filo->data->tt_eat / 2 * 1000);
-	while (time_now < filo->meal_time * 1000 + filo->data->tt_die * 1000)
+	while (time_now < filo->meal_time + filo->data->tt_die)
 	{
-		pthread_mutex_lock(lfork);
-		xpress_mssg(filo, take_fork);
-		pthread_mutex_trylock(rfork);
-		xpress_mssg(filo, take_fork);
-		xpress_mssg(filo, eating);
-		get_time_now(&filo->meal_time);
-		usleep(filo->data->tt_eat * 1000);
-		pthread_mutex_unlock(lfork);
-		pthread_mutex_unlock(rfork);
-		xpress_mssg(filo, sleeping);
-		usleep(filo->data->tt_sleep * 1000);
-		xpress_mssg(filo, thinking);
+		if (filo->meals_taken == filo->max_meals)
+			return (NULL);
+		if (pthread_mutex_trylock(lfork) == 0)
+			xpress_mssg(filo, take_fork);
+		if (filo->data->fil_nbr > 1)
+		{
+			pthread_mutex_trylock(rfork);
+			xpress_mssg(filo, take_fork);
+			xpress_mssg(filo, eating);
+			get_time_now(&filo->meal_time);
+			usleep(filo->data->tt_eat * 1000);
+			pthread_mutex_unlock(lfork);
+			pthread_mutex_unlock(rfork);
+			filo->meals_taken++;
+			xpress_mssg(filo, sleeping);
+			usleep(filo->data->tt_sleep * 1000);
+			xpress_mssg(filo, thinking);
+		}
 		gettimeofday(&now, NULL);
 		time_now = time_to_ms(now);
 	}
