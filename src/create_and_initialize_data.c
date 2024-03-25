@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:49:03 by dan               #+#    #+#             */
-/*   Updated: 2024/03/25 09:30:07 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/25 16:31:27 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,8 @@ void	initialize_filos(t_Data **data)
 		(*data)->filo[i].meals_taken = 0;
 		(*data)->filo[i].max_meals = (*data)->max_meals;
 		(*data)->filo[i].data = *data;
+		(*data)->filo[i].lfork_taken = false;
+		(*data)->filo[i].rfork_taken = false;
 		i++;
 	}
 }

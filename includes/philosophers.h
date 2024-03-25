@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:47:37 by dan               #+#    #+#             */
-/*   Updated: 2024/03/25 09:29:29 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/25 16:30:56 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ typedef struct s_Data t_Data;
 
 typedef struct s_filo
 {
+	bool			lfork_taken;
+	bool			rfork_taken;
 	mssg			state;
 	int				id;
 	int				max_meals;
