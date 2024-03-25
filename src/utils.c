@@ -6,16 +6,20 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 07:27:02 by dan               #+#    #+#             */
-/*   Updated: 2024/03/25 18:46:42 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/25 19:00:12 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 #include <stdlib.h>
-#include "libft.h"
 #include <stdio.h>
 #include <errno.h>
 #include <sys/time.h>
+#include <unistd.h>
+
+void	*ft_memset(void *s, int c, size_t n);
+
+size_t	ft_strlen(const char *s);
 
 void	*coor_rtn(void *arg);
 void	*filo_rtn(void *arg);
@@ -84,4 +88,14 @@ void	*ft_calloc(size_t nmemb, size_t size)
 		return (NULL);
 	ft_memset(ptr, 0, nmemb * size);
 	return (ptr);
+}
+
+void	*ft_memset(void *s, int c, size_t n)
+{
+	size_t			i;
+
+	i = 0;
+	while (i < n)
+		((unsigned char *)s)[i++] = (unsigned char)c;
+	return (s);
 }

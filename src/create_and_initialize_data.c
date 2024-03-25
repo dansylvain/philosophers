@@ -6,15 +6,16 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:49:03 by dan               #+#    #+#             */
-/*   Updated: 2024/03/25 18:16:20 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/25 18:54:32 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
-#include "libft.h"
 #include <limits.h>
 #include <sys/time.h>
 
+void	*ft_calloc(size_t nmemb, size_t size);
+int		ft_atoi(const char *nptr);
 int		create_and_initialize_data(t_data **data, char **argv);
 int		alloc_memory_for_data(t_data **data, char **argv);
 long	time_to_ms(struct timeval time_struct);
