@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:45:27 by dan               #+#    #+#             */
-/*   Updated: 2024/03/25 07:53:36 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/25 08:10:06 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,9 @@ void	*filo_rtn(void *arg)
 	struct timeval now;
 
 	filo = (t_filo *)arg;
-	xpress_mssg(filo, got_born);
+	xpress_mssg(filo, thinking);
+	if (filo->id % 2 == 0)
+		usleep (filo->data->tt_eat / 2 * 1000);
 	while (time_now < filo->meal_time + filo->data->tt_die)
 	{
 		gettimeofday(&now, NULL);
