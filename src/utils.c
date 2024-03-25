@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 07:27:02 by dan               #+#    #+#             */
-/*   Updated: 2024/03/25 16:56:42 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/25 18:46:42 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,4 +71,17 @@ void	xpress_mssg(t_filo *filo, t_mssg mssg)
 	pthread_mutex_lock(mut);
 	printf("%li %i %s\n", t, filo->id, mssg_str);
 	pthread_mutex_unlock(mut);
+}
+
+void	*ft_calloc(size_t nmemb, size_t size)
+{
+	void	*ptr;
+
+	if (size && nmemb * size / size != nmemb)
+		return (NULL);
+	ptr = (void *)malloc(nmemb * size);
+	if (ptr == NULL)
+		return (NULL);
+	ft_memset(ptr, 0, nmemb * size);
+	return (ptr);
 }
