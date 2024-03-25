@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:45:27 by dan               #+#    #+#             */
-/*   Updated: 2024/03/25 18:27:17 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/25 18:36:33 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	xpress_mssg(t_filo *filo, t_mssg mssg);
 long	time_to_ms(struct timeval time_struct);
 t_data	*run_threads(t_data *data);
 void	get_time_now(long int	*time_now);
+int		time_is_up(t_filo *filo);
 
 void	get_forks(t_filo *filo)
 {
@@ -47,26 +48,8 @@ void	get_forks(t_filo *filo)
 	}
 }
 
-int	time_is_up(t_filo *filo)
-{
-	struct timeval	now;
-	long int		time_now;
-
-	get_time_now(&time_now);
-	if (time_now > filo->meal_time + filo->data->tt_die)
-		return (1);
-	return (0);
-}
-
 int	eat_and_sleep(t_filo *filo)
 {
-	pthread_mutex_t	*lfork;
-	pthread_mutex_t	*rfork;
-
-	lfork = &filo->data->fork[filo->id];
-	rfork = NULL;
-	if (filo->data->fil_nbr > 1)
-		rfork = &filo->data->fork[(filo->id + 1) % filo->data->fil_nbr];
 	if (filo->data->fil_nbr > 1 && filo->rfork_taken == true
 		&& filo->lfork_taken == true)
 	{
@@ -77,8 +60,9 @@ int	eat_and_sleep(t_filo *filo)
 		usleep(filo->data->tt_eat * 1000);
 		if (filo->data->stop == true)
 			return (0);
-		pthread_mutex_unlock(lfork);
-		pthread_mutex_unlock(rfork);
+		pthread_mutex_unlock(&filo->data->fork[filo->id]);
+		pthread_mutex_unlock(&filo->data->fork
+		[(filo->id + 1) % filo->data->fil_nbr]);
 		filo->lfork_taken = false;
 		filo->rfork_taken = false;
 		filo->meals_taken++;

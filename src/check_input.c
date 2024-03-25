@@ -6,14 +6,16 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 11:51:59 by dan               #+#    #+#             */
-/*   Updated: 2024/03/18 07:43:32 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/25 18:36:40 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 #include "libft.h"
+#include <sys/time.h>
 
-int	is_valid_number(char *str);
+void	get_time_now(long int	*time_now);
+int		is_valid_number(char *str);
 
 /**========================================================================
  *                           check_input
@@ -55,4 +57,15 @@ int	is_valid_number(char *str)
 		i++;
 	}
 	return (1);
+}
+
+int	time_is_up(t_filo *filo)
+{
+	struct timeval	now;
+	long int		time_now;
+
+	get_time_now(&time_now);
+	if (time_now > filo->meal_time + filo->data->tt_die)
+		return (1);
+	return (0);
 }
