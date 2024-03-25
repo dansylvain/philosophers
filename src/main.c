@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:45:27 by dan               #+#    #+#             */
-/*   Updated: 2024/03/25 08:10:06 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/25 09:01:36 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,29 @@ void	*filo_rtn(void *arg)
 	t_filo 		*filo;
 	long int	time_now;
 	struct timeval now;
-
+	pthread_mutex_t *lfork;
+	pthread_mutex_t *rfork;
+	
+	
 	filo = (t_filo *)arg;
+	lfork = &filo->data->fork[filo->id];
+	rfork = &filo->data->fork[(filo->id + 1) % filo->data->fil_nbr];
 	xpress_mssg(filo, thinking);
 	if (filo->id % 2 == 0)
 		usleep (filo->data->tt_eat / 2 * 1000);
-	while (time_now < filo->meal_time + filo->data->tt_die)
+	while (time_now < filo->meal_time * 1000 + filo->data->tt_die * 1000)
 	{
+		pthread_mutex_lock(lfork);
+		xpress_mssg(filo, take_fork);
+		pthread_mutex_trylock(rfork);
+		xpress_mssg(filo, take_fork);
+		xpress_mssg(filo, eating);
+		usleep(filo->data->tt_eat * 1000);
+		pthread_mutex_unlock(lfork);
+		pthread_mutex_unlock(rfork);
+		xpress_mssg(filo, sleeping);
+		usleep(filo->data->tt_sleep * 1000);
+		xpress_mssg(filo, thinking);
 		gettimeofday(&now, NULL);
 		time_now = time_to_ms(now);
 	}
