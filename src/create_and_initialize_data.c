@@ -3,25 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   create_and_initialize_data.c                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsylvain <dsylvain@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:49:03 by dan               #+#    #+#             */
-/*   Updated: 2024/03/26 10:06:49 by dsylvain         ###   ########.fr       */
+/*   Updated: 2024/03/26 13:33:47 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosophers.h"
-#include <limits.h>
-#include <sys/time.h>
-
-void	*ft_calloc(size_t nmemb, size_t size);
-int		ft_atoi(const char *nptr);
-int		create_and_initialize_data(t_data **data, char **argv);
-int		alloc_memory_for_data(t_data **data, char **argv);
-long	time_to_ms(struct timeval time_struct);
-void	add_argv_data(t_data **data, char **argv);
-int		initialize_mutex(t_data **data);
-void	initialize_filos(t_data **data);
+#include "create_and_initialize_data.h"
 
 /**========================================================================
  *                           create_and_initialize_data

@@ -9,6 +9,9 @@
 		"array": "c",
 		"string": "c",
 		"string_view": "c",
-		"stdlib.h": "c"
+		"stdlib.h": "c",
+		"limits.h": "c",
+		"stddef.h": "c",
+		"create_and_initialize_data.h": "c"
 	}
 }

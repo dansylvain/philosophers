@@ -6,18 +6,11 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 11:51:59 by dan               #+#    #+#             */
-/*   Updated: 2024/03/26 13:00:14 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/26 13:32:18 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosophers.h"
-#include <sys/time.h>
-
-int		ft_isdigit(int c);
-int		ft_atoi(const char *nptr);
-size_t	ft_strlen(const char *s);
-void	get_time_now(long int	*time_now);
-int		is_valid_number(char *str);
+#include "check_input.h"
 
 /**========================================================================
  *                           check_input
