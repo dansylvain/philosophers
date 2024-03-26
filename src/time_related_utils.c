@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 13:01:17 by dan               #+#    #+#             */
-/*   Updated: 2024/03/26 13:01:32 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/26 13:12:26 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ void	get_time_now(long int	*time_now);
 int		time_is_up(t_filo *filo);
 void	check_death_condition(t_filo *filo);
 void	*filo_rtn(void *arg);
-
 
 long	time_to_ms(struct timeval time_struct)
 {

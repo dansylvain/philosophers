@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 12:44:04 by dan               #+#    #+#             */
-/*   Updated: 2024/03/26 12:49:11 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/26 13:12:14 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,11 @@ void	get_time_now(long int	*time_now);
 int		time_is_up(t_filo *filo);
 void	check_death_condition(t_filo *filo);
 void	get_forks(t_filo *filo);
-int	eat_and_sleep(t_filo *filo);
+int		eat_and_sleep(t_filo *filo);
 
+/**========================================================================
+ *                           filo_rtn 
+ *========================================================================**/
 void	*filo_rtn(void *arg)
 {
 	t_filo			*filo;
@@ -57,6 +60,9 @@ void	*filo_rtn(void *arg)
 	return (NULL);
 }
 
+/**========================================================================
+ *                           get_forks 
+ *========================================================================**/
 void	get_forks(t_filo *filo)
 {
 	pthread_mutex_t	*lfork;
@@ -78,6 +84,9 @@ void	get_forks(t_filo *filo)
 	}
 }
 
+/**========================================================================
+ *                           eat_and_sleep 
+ *========================================================================**/
 int	eat_and_sleep(t_filo *filo)
 {
 	long int		time_now;
@@ -105,4 +114,3 @@ int	eat_and_sleep(t_filo *filo)
 	}
 	return (1);
 }
-
