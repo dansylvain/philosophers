@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsylvain <dsylvain@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 07:27:02 by dan               #+#    #+#             */
-/*   Updated: 2024/03/26 10:08:05 by dsylvain         ###   ########.fr       */
+/*   Updated: 2024/03/26 10:55:26 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	xpress_mssg(t_filo *filo, t_mssg mssg)
 	t = time_to_ms(now) - filo->data->starting_time;
 	mut = &filo->data->print_mtx;
 	pthread_mutex_lock(mut);
-	printf("%li %i %s\n", t, filo->id, mssg_str);
+	printf("%li %i %s\n", t, filo->id + 1, mssg_str);
 	pthread_mutex_unlock(mut);
 }
 
