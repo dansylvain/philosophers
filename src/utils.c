@@ -6,20 +6,49 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 07:27:02 by dan               #+#    #+#             */
-/*   Updated: 2024/03/24 20:30:02 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/25 19:00:12 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 #include <stdlib.h>
-#include "libft.h"
 #include <stdio.h>
 #include <errno.h>
 #include <sys/time.h>
+#include <unistd.h>
+
+void	*ft_memset(void *s, int c, size_t n);
+
+size_t	ft_strlen(const char *s);
 
 void	*coor_rtn(void *arg);
 void	*filo_rtn(void *arg);
-void	get_time_now(long int	*time_now);
+
+void	free_data(t_data *data)
+{
+	free(data->fork);
+	free(data->filo);
+	free(data);
+}
+
+void	display_error(char *str)
+{
+	if (write (2, str, ft_strlen(str)) == -1)
+		perror("display_error");
+}
+
+long	time_to_ms(struct timeval time_struct)
+{
+	return (time_struct.tv_sec * 1000 + time_struct.tv_usec / 1000);
+}
+
+void	get_time_now(long int	*time_now)
+{
+	struct timeval	now;
+
+	gettimeofday(&now, NULL);
+	*time_now = time_to_ms(now);
+}
 
 void	xpress_mssg(t_filo *filo, t_mssg mssg)
 {
@@ -40,93 +69,33 @@ void	xpress_mssg(t_filo *filo, t_mssg mssg)
 		mssg_str = "died";
 	if (mssg == got_born)
 		mssg_str = "got born";
-	get_time_now(&t);
+	gettimeofday(&now, NULL);
+	t = time_to_ms(now);
 	mut = &filo->data->print_mtx;
 	pthread_mutex_lock(mut);
 	printf("%li %i %s\n", t, filo->id, mssg_str);
 	pthread_mutex_unlock(mut);
 }
 
-t_data	*run_threads(t_data *data)
+void	*ft_calloc(size_t nmemb, size_t size)
 {
-	int	i;
+	void	*ptr;
 
-	if (pthread_create(&data->coor, NULL, coor_rtn, data) != 0)
+	if (size && nmemb * size / size != nmemb)
 		return (NULL);
-	i = 0;
-	while (i < data->fil_nbr)
-	{
-		data->filo[i].id = i;
-		if (pthread_create(&data->filo[i].filo,
-				NULL, filo_rtn, &data->filo[i]) != 0)
-			return (NULL);
-		i++;
-	}
-	i = 0;
-	while (i < data->fil_nbr)
-	{
-		if (pthread_join(data->filo[i].filo, NULL) != 0)
-			return (NULL);
-		i++;
-	}
-	if (pthread_join(data->coor, NULL) != 0)
+	ptr = (void *)malloc(nmemb * size);
+	if (ptr == NULL)
 		return (NULL);
-	return (data);
+	ft_memset(ptr, 0, nmemb * size);
+	return (ptr);
 }
 
-void	destroy_mutexes(t_data *data)
+void	*ft_memset(void *s, int c, size_t n)
 {
-	int	i;
-	
-	pthread_mutex_destroy(&data->queue_mtx);
-	pthread_mutex_destroy(&data->print_mtx);
-	pthread_mutex_destroy(&data->all_filos_live_mtx);
-	pthread_mutex_destroy(&data->auth_tab_mtx);
+	size_t			i;
+
 	i = 0;
-	while (i < data->fil_nbr)
-	{
-		pthread_mutex_destroy(&data->fork[i]);
-		pthread_mutex_destroy(&data->filo[i].state_mtx);
-		i++;
-	}
-}
-
-// void	display_auth_tab(t_data *data)
-// {
-// 	int	i;
-// 	int	j;
-
-// 	pthread_mutex_lock(&data->print_mtx);
-// 	pthread_mutex_lock(&data->auth_tab_mtx);
-// 	i = 0;
-// 	while (i < 2)
-// 	{
-// 		j = 0;
-// 		while (j < data->fil_nbr)
-// 		{
-// 			printf("%3i ", data->auth_tab[i][j]);
-// 			j++;
-// 		}
-// 		printf("\n");
-// 		i++;
-// 	}
-// 	pthread_mutex_unlock(&data->auth_tab_mtx);
-// 	pthread_mutex_unlock(&data->print_mtx);
-// }
-
-void	add_id_to_auth_lst(t_filo *filo)
-{
-	int	i;
-	int	*fil_auth;
-	int	fil_nbr;
-
-	fil_nbr = filo->data->fil_nbr;
-	i = 0;
-	pthread_mutex_lock(&filo->data->queue_mtx);
-	fil_auth = filo->data->queue;
-	while (fil_auth[i] != -1 && i < fil_nbr && fil_auth[i] != filo->id)
-		i++;
-	fil_auth[i] = filo->id;
-	pthread_mutex_unlock(&filo->data->queue_mtx);
-	filo->is_registered = 1;
+	while (i < n)
+		((unsigned char *)s)[i++] = (unsigned char)c;
+	return (s);
 }

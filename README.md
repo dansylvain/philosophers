@@ -12,19 +12,11 @@ Une solution pour philo:
 en effet, le travail que j'ai effectué ce matin ne correspond pas au sujet demandé: les threads ne devraient pas prendre de décisions basée sur les informations issues d'autres threads, mais seulement basé sur les informations directement à sa disposition.
 
 memory:
+valgrind --trace-children=yes --leak-check=full --show-leak-kinds=all ./philo 4 800 200 200 4
 
 data race:
-
-
-
-valgrind --leak-check=full --show-leak-kinds=all ./philo 4 800 200 200 4
-
 valgrind --tool=drd ./philo 4 800 200 200 4
+
 valgrind --tool=helgrind ./philo 4 800 200 200 4
-# TO BE TESTED
 
--fsanitize=thread
-
--fsanitize=address
-
-https://nafuka11.github.io/philosophers-visualizer/
+change PHILO NUmbers!!! must start with 0NE

@@ -6,16 +6,16 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:49:03 by dan               #+#    #+#             */
-/*   Updated: 2024/03/24 20:40:32 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/25 18:54:32 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
-#include "libft.h"
 #include <limits.h>
 #include <sys/time.h>
-#include <stdio.h>
 
+void	*ft_calloc(size_t nmemb, size_t size);
+int		ft_atoi(const char *nptr);
 int		create_and_initialize_data(t_data **data, char **argv);
 int		alloc_memory_for_data(t_data **data, char **argv);
 long	time_to_ms(struct timeval time_struct);
@@ -41,17 +41,12 @@ int	create_and_initialize_data(t_data **data, char **argv)
  *========================================================================**/
 int	alloc_memory_for_data(t_data **data, char **argv)
 {
-	int	i;
-
 	(*data) = (t_data *)ft_calloc(1, sizeof(t_data));
 	add_argv_data(data, argv);
 	(*data)->filo = (t_filo *)ft_calloc((*data)->fil_nbr, sizeof(t_filo));
 	(*data)->fork = (pthread_mutex_t *)ft_calloc((*data)->fil_nbr,
 			sizeof(pthread_mutex_t));
-	(*data)->auth_tab = (int *)ft_calloc((*data)->fil_nbr, sizeof(int));
-	(*data)->queue = (int *)ft_calloc((*data)->fil_nbr + 1, sizeof(int));
-	if (!*data || !(*data)->filo || !(*data)->fork
-			|| !(*data)->queue || !(*data)->auth_tab)
+	if (!*data || !(*data)->filo || !(*data)->fork)
 		return (0);
 	return (1);
 }
@@ -65,11 +60,11 @@ void	add_argv_data(t_data **data, char **argv)
 	(*data)->tt_die = ft_atoi(argv[2]);
 	(*data)->tt_eat = ft_atoi(argv[3]);
 	(*data)->tt_sleep = ft_atoi(argv[4]);
-	(*data)->all_filos_live = true;
 	if (argv[5])
 		(*data)->max_meals = ft_atoi(argv[5]);
 	else
 		(*data)->max_meals = INT_MAX;
+	(*data)->stop = false;
 }
 
 /**========================================================================
@@ -81,19 +76,10 @@ int	initialize_mutex(t_data **data)
 
 	if (pthread_mutex_init(&((*data)->print_mtx), NULL) != 0)
 		return (0);
-	if (pthread_mutex_init(&((*data)->all_filos_live_mtx), NULL) != 0)
-		return (0);
-	if (pthread_mutex_init(&((*data)->auth_tab_mtx), NULL) != 0)
-		return (0);
-	if (pthread_mutex_init(&((*data)->queue_mtx), NULL) != 0)
-		return (0);
-		
 	i = 0;
 	while (i < (*data)->fil_nbr)
 	{
 		if (pthread_mutex_init(&((*data)->fork[i]), NULL) != 0)
-			return (0);
-		if (pthread_mutex_init(&((*data)->filo[i].state_mtx), NULL) != 0)
 			return (0);
 		i++;
 	}
@@ -112,13 +98,12 @@ void	initialize_filos(t_data **data)
 	while (i < (*data)->fil_nbr)
 	{
 		gettimeofday(&now, NULL);
-		(*data)->queue[i] = -1;
-		(*data)->auth_tab[i] = 0;
 		(*data)->filo[i].meal_time = time_to_ms(now);
-		(*data)->filo[i].data = *data;
 		(*data)->filo[i].meals_taken = 0;
-		(*data)->filo[i].is_registered = 0;
+		(*data)->filo[i].max_meals = (*data)->max_meals;
+		(*data)->filo[i].data = *data;
+		(*data)->filo[i].lfork_taken = false;
+		(*data)->filo[i].rfork_taken = false;
 		i++;
 	}
-	(*data)->queue[i] = -1;
 }

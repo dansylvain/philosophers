@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:47:37 by dan               #+#    #+#             */
-/*   Updated: 2024/03/24 20:17:06 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/25 18:15:49 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,38 +20,33 @@ typedef enum mssg
 	thinking,
 	dead,
 	take_fork,
-	got_born,
+	got_born
 }	t_mssg;
 
-typedef struct s_Data	t_data;
+typedef struct s_data	t_data;
 
 typedef struct s_filo
 {
-	int				state;
-	int				is_registered;
+	bool			lfork_taken;
+	bool			rfork_taken;
+	t_mssg			state;
 	int				id;
+	int				max_meals;
 	int				meals_taken;
 	long int		meal_time;
 	pthread_t		filo;
 	t_data			*data;
-	pthread_mutex_t	state_mtx;
 }	t_filo;
 
-typedef struct s_Data
+typedef struct s_data
 {
-	pthread_mutex_t	all_filos_live_mtx;
-	bool			all_filos_live;
+	bool			stop;
 	int				fil_nbr;
 	int				tt_die;
 	int				tt_eat;
 	int				tt_sleep;
 	int				max_meals;
-	int				*auth_tab;
-	int				*queue;
 	t_filo			*filo;
-	pthread_t		coor;
-	pthread_mutex_t	auth_tab_mtx;
-	pthread_mutex_t	queue_mtx;
 	pthread_mutex_t	print_mtx;
 	pthread_mutex_t	*fork;
 }	t_data;
