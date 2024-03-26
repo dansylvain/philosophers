@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:45:27 by dan               #+#    #+#             */
-/*   Updated: 2024/03/26 11:32:36 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/26 12:02:46 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ long	time_to_ms(struct timeval time_struct);
 t_data	*run_threads(t_data *data);
 void	get_time_now(long int	*time_now);
 int		time_is_up(t_filo *filo);
+void	check_death_condition(t_filo *filo);
 
 void	get_forks(t_filo *filo)
 {
@@ -71,9 +72,6 @@ int	eat_and_sleep(t_filo *filo)
 		filo->meals_taken++;
 		xpress_mssg(filo, sleeping);
 		usleep(filo->data->tt_sleep * 1000);
-		get_time_now(&time_now);
-		if (time_now > filo->meal_time + filo->data->tt_die)
-			return (printf("too late\n"), 0);
 		xpress_mssg(filo, thinking);
 	}
 	return (1);
@@ -102,14 +100,8 @@ void	*filo_rtn(void *arg)
 		gettimeofday(&now, NULL);
 		time_now = time_to_ms(now);
 	}
-	if (filo->data->stop != true)
-	{
-		usleep(100);
-		if (filo->data->stop != true)
-			return (filo->data->stop = true, xpress_mssg(filo, dead), NULL);
-	}
-	else
-		return (NULL);
+	check_death_condition(filo);
+	return (NULL);
 }
 
 int	main(int argc, char **argv)

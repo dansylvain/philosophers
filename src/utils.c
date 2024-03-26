@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 07:27:02 by dan               #+#    #+#             */
-/*   Updated: 2024/03/26 10:55:26 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/26 12:08:39 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,37 +18,12 @@
 #include <unistd.h>
 
 void	*ft_memset(void *s, int c, size_t n);
+long	time_to_ms(struct timeval time_struct);
 
 size_t	ft_strlen(const char *s);
 
 void	*coor_rtn(void *arg);
 void	*filo_rtn(void *arg);
-
-void	free_data(t_data *data)
-{
-	free(data->fork);
-	free(data->filo);
-	free(data);
-}
-
-void	display_error(char *str)
-{
-	if (write (2, str, ft_strlen(str)) == -1)
-		perror("display_error");
-}
-
-long	time_to_ms(struct timeval time_struct)
-{
-	return (time_struct.tv_sec * 1000 + time_struct.tv_usec / 1000);
-}
-
-void	get_time_now(long int	*time_now)
-{
-	struct timeval	now;
-
-	gettimeofday(&now, NULL);
-	*time_now = time_to_ms(now);
-}
 
 void	xpress_mssg(t_filo *filo, t_mssg mssg)
 {
@@ -77,25 +52,15 @@ void	xpress_mssg(t_filo *filo, t_mssg mssg)
 	pthread_mutex_unlock(mut);
 }
 
-void	*ft_calloc(size_t nmemb, size_t size)
+void	check_death_condition(t_filo *filo)
 {
-	void	*ptr;
-
-	if (size && nmemb * size / size != nmemb)
-		return (NULL);
-	ptr = (void *)malloc(nmemb * size);
-	if (ptr == NULL)
-		return (NULL);
-	ft_memset(ptr, 0, nmemb * size);
-	return (ptr);
-}
-
-void	*ft_memset(void *s, int c, size_t n)
-{
-	size_t			i;
-
-	i = 0;
-	while (i < n)
-		((unsigned char *)s)[i++] = (unsigned char)c;
-	return (s);
+	if (filo->data->stop != true)
+	{
+		usleep(1);
+		if (filo->data->stop != true)
+		{
+			filo->data->stop = true;
+			xpress_mssg(filo, dead);
+		}
+	}
 }
