@@ -1,0 +1,5 @@
+philo
+src/check_input.o
+src/create_and_initialize_data.o
+src/main.o
+src/utils.o
