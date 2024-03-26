@@ -6,16 +6,16 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 13:28:39 by dan               #+#    #+#             */
-/*   Updated: 2024/03/26 13:35:32 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/26 13:37:57 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FILO_ROUTINE_H
 # define FILO_ROUTINE_H
 
-#include "philosophers.h"
-#include <sys/time.h>
-#include <unistd.h>
+# include "philosophers.h"
+# include <sys/time.h>
+# include <unistd.h>
 
 void	xpress_mssg(t_filo *filo, t_mssg mssg);
 long	time_to_ms(struct timeval time_struct);

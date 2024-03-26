@@ -6,12 +6,15 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:47:37 by dan               #+#    #+#             */
-/*   Updated: 2024/03/26 13:21:25 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/26 13:39:04 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <pthread.h>
-#include <stdbool.h>
+#ifndef PHILOSOPHERS_H
+# define PHILOSOPHERS_H
+
+# include <pthread.h>
+# include <stdbool.h>
 
 typedef enum mssg
 {
@@ -51,3 +54,5 @@ typedef struct s_data
 	pthread_mutex_t	print_mtx;
 	pthread_mutex_t	*fork;
 }	t_data;
+
+#endif

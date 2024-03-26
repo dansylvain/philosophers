@@ -6,16 +6,16 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 13:28:35 by dan               #+#    #+#             */
-/*   Updated: 2024/03/26 13:33:34 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/26 13:40:18 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CREATE_AND_INITIALIZE_DATA
-# define CREATE_AND_INITIALIZE_DATA
+#ifndef CREATE_AND_INITIALIZE_DATA_H
+# define CREATE_AND_INITIALIZE_DATA_H
 
-#include "philosophers.h"
-#include <limits.h>
-#include <sys/time.h>
+# include "philosophers.h"
+# include <limits.h>
+# include <sys/time.h>
 
 void	*ft_calloc(size_t nmemb, size_t size);
 int		ft_atoi(const char *nptr);
