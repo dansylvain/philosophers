@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   time_related_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/17 07:27:02 by dan               #+#    #+#             */
-/*   Updated: 2024/03/26 13:00:52 by dan              ###   ########.fr       */
+/*   Created: 2024/03/26 13:01:17 by dan               #+#    #+#             */
+/*   Updated: 2024/03/26 13:01:32 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,38 +33,26 @@ void	check_death_condition(t_filo *filo);
 void	*filo_rtn(void *arg);
 
 
-void	free_data(t_data *data)
+long	time_to_ms(struct timeval time_struct)
 {
-	free(data->fork);
-	free(data->filo);
-	free(data);
+	return (time_struct.tv_sec * 1000 + time_struct.tv_usec / 1000);
 }
 
-void	display_error(char *str)
+void	get_time_now(long int	*time_now)
 {
-	if (write (2, str, ft_strlen(str)) == -1)
-		perror("display_error");
+	struct timeval	now;
+
+	gettimeofday(&now, NULL);
+	*time_now = time_to_ms(now);
 }
 
-t_data	*run_threads(t_data *data)
+int	time_is_up(t_filo *filo)
 {
-	int	i;
+	struct timeval	now;
+	long int		time_now;
 
-	i = 0;
-	while (i < data->fil_nbr)
-	{
-		data->filo[i].id = i;
-		if (pthread_create(&data->filo[i].filo, NULL,
-				filo_rtn, &data->filo[i]) != 0)
-			return (NULL);
-		i++;
-	}
-	i = 0;
-	while (i < data->fil_nbr)
-	{
-		if (pthread_join(data->filo[i].filo, NULL) != 0)
-			return (NULL);
-		i++;
-	}
-	return (data);
+	get_time_now(&time_now);
+	if (time_now > filo->meal_time + filo->data->tt_die)
+		return (1);
+	return (0);
 }

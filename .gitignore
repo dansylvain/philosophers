@@ -4,3 +4,6 @@ src/create_and_initialize_data.o
 src/main.o
 src/utils.o
 src/filo_routine.o
+src/run_threads.o
+src/utils_2.o
+src/utils_tmp.o

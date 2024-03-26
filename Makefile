@@ -6,7 +6,7 @@
 #    By: dan <dan@student.42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/06 05:50:42 by dsylvain          #+#    #+#              #
-#    Updated: 2024/03/26 12:59:15 by dan              ###   ########.fr        #
+#    Updated: 2024/03/26 13:01:46 by dan              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,7 @@ SRC =	src/main.c \
 		src/create_and_initialize_data.c \
 		src/run_threads.c \
 		src/utils_tmp.c \
+		src/time_related_utils.c \
 		
 OBJ = $(SRC:.c=.o)
 
