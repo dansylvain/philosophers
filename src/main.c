@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: dsylvain <dsylvain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:45:27 by dan               #+#    #+#             */
-/*   Updated: 2024/03/25 18:36:33 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/26 10:01:38 by dsylvain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ void	*filo_rtn(void *arg)
 	xpress_mssg(filo, thinking);
 	if (filo->id % 2 == 0)
 		usleep (filo->data->tt_eat / 2 * 1000);
+	time_now = time_to_ms(now);
 	while (time_now < filo->meal_time + filo->data->tt_die)
 	{
 		if (filo->data->stop == true)
