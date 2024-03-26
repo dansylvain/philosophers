@@ -6,7 +6,7 @@
 #    By: dan <dan@student.42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/06 05:50:42 by dsylvain          #+#    #+#              #
-#    Updated: 2024/03/26 12:51:07 by dan              ###   ########.fr        #
+#    Updated: 2024/03/26 12:59:15 by dan              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,10 +22,10 @@ SRC =	src/main.c \
 		src/check_input.c \
 		src/utils.c \
 		src/utils_2.c \
-		src/utils_3.c \
 		src/filo_routine.c \
 		src/create_and_initialize_data.c \
 		src/run_threads.c \
+		src/utils_tmp.c \
 		
 OBJ = $(SRC:.c=.o)
 

@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 12:50:40 by dan               #+#    #+#             */
-/*   Updated: 2024/03/26 12:50:53 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/26 12:56:18 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,25 +29,4 @@ int		time_is_up(t_filo *filo);
 void	check_death_condition(t_filo *filo);
 void	*filo_rtn(void *arg);
 
-t_data	*run_threads(t_data *data)
-{
-	int	i;
 
-	i = 0;
-	while (i < data->fil_nbr)
-	{
-		data->filo[i].id = i;
-		if (pthread_create(&data->filo[i].filo, NULL,
-				filo_rtn, &data->filo[i]) != 0)
-			return (NULL);
-		i++;
-	}
-	i = 0;
-	while (i < data->fil_nbr)
-	{
-		if (pthread_join(data->filo[i].filo, NULL) != 0)
-			return (NULL);
-		i++;
-	}
-	return (data);
-}
