@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_and_initialize_data.c                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: dsylvain <dsylvain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:49:03 by dan               #+#    #+#             */
-/*   Updated: 2024/03/25 18:54:32 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/26 10:06:49 by dsylvain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,4 +106,5 @@ void	initialize_filos(t_data **data)
 		(*data)->filo[i].rfork_taken = false;
 		i++;
 	}
+	(*data)->starting_time = time_to_ms(now);
 }

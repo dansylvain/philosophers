@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: dsylvain <dsylvain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 07:27:02 by dan               #+#    #+#             */
-/*   Updated: 2024/03/25 19:00:12 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/26 10:08:05 by dsylvain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	xpress_mssg(t_filo *filo, t_mssg mssg)
 	if (mssg == got_born)
 		mssg_str = "got born";
 	gettimeofday(&now, NULL);
-	t = time_to_ms(now);
+	t = time_to_ms(now) - filo->data->starting_time;
 	mut = &filo->data->print_mtx;
 	pthread_mutex_lock(mut);
 	printf("%li %i %s\n", t, filo->id, mssg_str);
