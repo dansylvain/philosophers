@@ -20,3 +20,8 @@ valgrind --tool=drd ./philo 4 800 200 200 4
 valgrind --tool=helgrind ./philo 4 800 200 200 4
 
 change PHILO NUmbers!!! must start with 0NE
+
+# Changes to be done
+- change timestamp (start at 0)
+- change fil number (start at 1)
+- handle double death for test 4 310 200 100
