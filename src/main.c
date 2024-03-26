@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsylvain <dsylvain@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:45:27 by dan               #+#    #+#             */
-/*   Updated: 2024/03/26 10:01:38 by dsylvain         ###   ########.fr       */
+/*   Updated: 2024/03/26 11:32:36 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,9 @@ void	get_forks(t_filo *filo)
 
 int	eat_and_sleep(t_filo *filo)
 {
+	long int		time_now;
+	struct timeval	now;
+
 	if (filo->data->fil_nbr > 1 && filo->rfork_taken == true
 		&& filo->lfork_taken == true)
 	{
@@ -68,8 +71,9 @@ int	eat_and_sleep(t_filo *filo)
 		filo->meals_taken++;
 		xpress_mssg(filo, sleeping);
 		usleep(filo->data->tt_sleep * 1000);
-		if (filo->data->stop == true)
-			return (0);
+		get_time_now(&time_now);
+		if (time_now > filo->meal_time + filo->data->tt_die)
+			return (printf("too late\n"), 0);
 		xpress_mssg(filo, thinking);
 	}
 	return (1);
@@ -99,7 +103,11 @@ void	*filo_rtn(void *arg)
 		time_now = time_to_ms(now);
 	}
 	if (filo->data->stop != true)
-		return (filo->data->stop = true, xpress_mssg(filo, dead), NULL);
+	{
+		usleep(100);
+		if (filo->data->stop != true)
+			return (filo->data->stop = true, xpress_mssg(filo, dead), NULL);
+	}
 	else
 		return (NULL);
 }
