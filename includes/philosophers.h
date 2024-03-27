@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:47:37 by dan               #+#    #+#             */
-/*   Updated: 2024/03/26 13:39:04 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/27 15:04:34 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ typedef struct s_data
 	int				tt_sleep;
 	int				max_meals;
 	t_filo			*filo;
+	pthread_mutex_t	stop_mtx;
 	pthread_mutex_t	print_mtx;
 	pthread_mutex_t	*fork;
 }	t_data;

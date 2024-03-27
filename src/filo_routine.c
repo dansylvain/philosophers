@@ -6,12 +6,12 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 12:44:04 by dan               #+#    #+#             */
-/*   Updated: 2024/03/26 13:35:03 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/27 15:07:10 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "filo_routine.h"
-
+#include <pthread.h>
 /**========================================================================
  *                           filo_rtn 
  *========================================================================**/
@@ -28,8 +28,10 @@ void	*filo_rtn(void *arg)
 	time_now = time_to_ms(now);
 	while (time_now < filo->meal_time + filo->data->tt_die)
 	{
+		pthread_mutex_lock(&filo->data->stop_mtx);
 		if (filo->data->stop == true)
 			return (NULL);
+		pthread_mutex_unlock(&filo->data->stop_mtx);
 		if (filo->meals_taken == filo->max_meals)
 			return (NULL);
 		get_forks(filo);
@@ -77,13 +79,17 @@ int	eat_and_sleep(t_filo *filo)
 	if (filo->data->fil_nbr > 1 && filo->rfork_taken == true
 		&& filo->lfork_taken == true)
 	{
+		pthread_mutex_lock(&filo->data->stop_mtx);
 		if (time_is_up(filo) || filo->data->stop == true)
 			return (0);
+		pthread_mutex_unlock(&filo->data->stop_mtx);
 		xpress_mssg(filo, eating);
 		get_time_now(&filo->meal_time);
 		usleep(filo->data->tt_eat * 1000);
+		pthread_mutex_lock(&filo->data->stop_mtx);
 		if (filo->data->stop == true)
 			return (0);
+		pthread_mutex_unlock(&filo->data->stop_mtx);
 		pthread_mutex_unlock(&filo->data->fork[filo->id]);
 		pthread_mutex_unlock(&filo->data->fork
 		[(filo->id + 1) % filo->data->fil_nbr]);

@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 07:27:02 by dan               #+#    #+#             */
-/*   Updated: 2024/03/26 13:29:32 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/27 15:07:47 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ void	xpress_mssg(t_filo *filo, t_mssg mssg)
 
 void	check_death_condition(t_filo *filo)
 {
+	pthread_mutex_lock(&filo->data->stop_mtx);
 	if (filo->data->stop != true)
 	{
 		usleep(1);
@@ -95,4 +96,5 @@ void	check_death_condition(t_filo *filo)
 			xpress_mssg(filo, dead);
 		}
 	}
+	pthread_mutex_unlock(&filo->data->stop_mtx);
 }
