@@ -6,12 +6,14 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 12:44:04 by dan               #+#    #+#             */
-/*   Updated: 2024/03/27 15:07:10 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/27 15:36:41 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "filo_routine.h"
 #include <pthread.h>
+void	unlock_forks(t_filo *filo);
+
 /**========================================================================
  *                           filo_rtn 
  *========================================================================**/
@@ -30,17 +32,32 @@ void	*filo_rtn(void *arg)
 	{
 		pthread_mutex_lock(&filo->data->stop_mtx);
 		if (filo->data->stop == true)
+		{
+			pthread_mutex_unlock(&filo->data->stop_mtx);
+			unlock_forks(filo);
 			return (NULL);
+		}
 		pthread_mutex_unlock(&filo->data->stop_mtx);
+		
 		if (filo->meals_taken == filo->max_meals)
+		{
+			unlock_forks(filo);
 			return (NULL);
+		}
+		
 		get_forks(filo);
+		
 		if (eat_and_sleep(filo) == 0)
+		{
+			unlock_forks(filo);
 			return (NULL);
+		}
+			
 		gettimeofday(&now, NULL);
 		time_now = time_to_ms(now);
 	}
 	check_death_condition(filo);
+	unlock_forks(filo);
 	return (NULL);
 }
 
@@ -67,6 +84,17 @@ void	get_forks(t_filo *filo)
 		xpress_mssg(filo, take_fork);
 	}
 }
+/**========================================================================
+ *                           unlock_forks
+ *========================================================================**/
+void	unlock_forks(t_filo *filo)
+{
+	if (filo->lfork_taken)
+		pthread_mutex_unlock(&filo->data->fork[filo->id]);
+	if (filo->rfork_taken)
+		pthread_mutex_unlock(&filo->data->fork
+	[(filo->id + 1) % filo->data->fil_nbr]);
+}
 
 /**========================================================================
  *                           eat_and_sleep 
@@ -81,18 +109,25 @@ int	eat_and_sleep(t_filo *filo)
 	{
 		pthread_mutex_lock(&filo->data->stop_mtx);
 		if (time_is_up(filo) || filo->data->stop == true)
+		{
+			pthread_mutex_unlock(&filo->data->stop_mtx);
 			return (0);
+		}
 		pthread_mutex_unlock(&filo->data->stop_mtx);
+		
 		xpress_mssg(filo, eating);
 		get_time_now(&filo->meal_time);
 		usleep(filo->data->tt_eat * 1000);
 		pthread_mutex_lock(&filo->data->stop_mtx);
 		if (filo->data->stop == true)
+		{
+			pthread_mutex_unlock(&filo->data->stop_mtx);
 			return (0);
+		}
 		pthread_mutex_unlock(&filo->data->stop_mtx);
-		pthread_mutex_unlock(&filo->data->fork[filo->id]);
-		pthread_mutex_unlock(&filo->data->fork
-		[(filo->id + 1) % filo->data->fil_nbr]);
+		
+		unlock_forks(filo);
+		
 		filo->lfork_taken = false;
 		filo->rfork_taken = false;
 		filo->meals_taken++;
