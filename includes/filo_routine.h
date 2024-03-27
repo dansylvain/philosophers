@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 13:28:39 by dan               #+#    #+#             */
-/*   Updated: 2024/03/26 13:37:57 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/27 16:06:58 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,10 @@
 # include "philosophers.h"
 # include <sys/time.h>
 # include <unistd.h>
+# include <pthread.h>
 
+void	unlock_forks(t_filo *filo);
+int		check_stop_condition(t_filo *filo);
 void	xpress_mssg(t_filo *filo, t_mssg mssg);
 long	time_to_ms(struct timeval time_struct);
 void	get_time_now(long int	*time_now);
