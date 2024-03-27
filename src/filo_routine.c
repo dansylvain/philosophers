@@ -6,24 +6,11 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 12:44:04 by dan               #+#    #+#             */
-/*   Updated: 2024/03/27 16:06:29 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/27 16:13:34 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "filo_routine.h"
-
-int	check_stop_condition(t_filo *filo)
-{
-	pthread_mutex_lock(&filo->data->stop_mtx);
-	if (filo->data->stop == true)
-	{
-		pthread_mutex_unlock(&filo->data->stop_mtx);
-		unlock_forks(filo);
-		return (0);
-	}
-	pthread_mutex_unlock(&filo->data->stop_mtx);
-	return (1);
-}
 
 /**========================================================================
  *                           filo_rtn 
@@ -54,6 +41,22 @@ void	*filo_rtn(void *arg)
 	check_death_condition(filo);
 	unlock_forks(filo);
 	return (NULL);
+}
+
+/**========================================================================
+ *                           check_stop_condition	
+ *========================================================================**/
+int	check_stop_condition(t_filo *filo)
+{
+	pthread_mutex_lock(&filo->data->stop_mtx);
+	if (filo->data->stop == true)
+	{
+		pthread_mutex_unlock(&filo->data->stop_mtx);
+		unlock_forks(filo);
+		return (0);
+	}
+	pthread_mutex_unlock(&filo->data->stop_mtx);
+	return (1);
 }
 
 /**========================================================================
