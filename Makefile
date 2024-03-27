@@ -6,7 +6,7 @@
 #    By: dan <dan@student.42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/06 05:50:42 by dsylvain          #+#    #+#              #
-#    Updated: 2024/03/26 13:11:55 by dan              ###   ########.fr        #
+#    Updated: 2024/03/28 00:55:01 by dan              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,8 +14,7 @@ NAME = philo
 
 CC = cc
 
-CFLAGS = -g -Iincludes/ -pthread
-# -Wall -Wextra -Werror
+CFLAGS = -g -Iincludes/ -pthread -Wall -Wextra -Werror
 
 # Source files
 SRC =	src/main.c \
