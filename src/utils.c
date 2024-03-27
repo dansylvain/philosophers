@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 07:27:02 by dan               #+#    #+#             */
-/*   Updated: 2024/03/27 15:27:15 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/27 15:55:11 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,5 +99,4 @@ void	check_death_condition(t_filo *filo)
 			pthread_mutex_unlock(&filo->data->fork[filo->id]);
 	}
 	pthread_mutex_unlock(&filo->data->stop_mtx);
-	
 }
