@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 12:44:04 by dan               #+#    #+#             */
-/*   Updated: 2024/03/27 16:13:34 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/27 17:16:36 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	*filo_rtn(void *arg)
 	filo = (t_filo *)arg;
 	xpress_mssg(filo, thinking);
 	if (filo->id % 2 == 0)
-		usleep (filo->data->tt_eat / 2 * 1000);
+		usleep (50);
 	get_time_now(&time_now);
 	while (time_now < filo->meal_time + filo->data->tt_die)
 	{
