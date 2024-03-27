@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 13:01:17 by dan               #+#    #+#             */
-/*   Updated: 2024/03/26 13:42:48 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/28 00:12:47 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ void	get_time_now(long int	*time_now)
  *========================================================================**/
 int	time_is_up(t_filo *filo)
 {
-	struct timeval	now;
 	long int		time_now;
 
 	get_time_now(&time_now);

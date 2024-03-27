@@ -6,7 +6,7 @@
 /*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 08:45:27 by dan               #+#    #+#             */
-/*   Updated: 2024/03/26 13:36:09 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/28 00:12:24 by dan              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@
 int	main(int argc, char **argv)
 {
 	t_data	*data;
-	int		i;
 
 	if (check_input(argc, argv) == 0)
 		return (display_error("Error\n"), 1);
