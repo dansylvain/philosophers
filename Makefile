@@ -6,7 +6,7 @@
 #    By: dan <dan@student.42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/06 05:50:42 by dsylvain          #+#    #+#              #
-#    Updated: 2024/03/28 00:55:01 by dan              ###   ########.fr        #
+#    Updated: 2024/03/28 02:02:25 by dan              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,16 +14,16 @@ NAME = philo
 
 CC = cc
 
-CFLAGS = -g -Iincludes/ -pthread -Wall -Wextra -Werror
+CFLAGS = -g -pthread -Wall -Wextra -Werror
 
 # Source files
-SRC =	src/main.c \
-		src/check_input.c \
-		src/utils.c \
-		src/utils_2.c \
-		src/filo_routine.c \
-		src/create_and_initialize_data.c \
-		src/time_related_utils.c \
+SRC =	main.c \
+		check_input.c \
+		utils.c \
+		utils_2.c \
+		filo_routine.c \
+		create_and_initialize_data.c \
+		time_related_utils.c \
 		
 OBJ = $(SRC:.c=.o)
 
