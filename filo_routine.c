@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   filo_routine.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dan <dan@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: dsylvain <dsylvain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 12:44:04 by dan               #+#    #+#             */
-/*   Updated: 2024/03/28 02:13:09 by dan              ###   ########.fr       */
+/*   Updated: 2024/03/28 08:51:33 by dsylvain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	*filo_rtn(void *arg)
 	filo = (t_filo *)arg;
 	xpress_mssg(filo, thinking);
 	if (filo->id % 2 == 0)
-		usleep (1000);
+		usleep (700);
 	get_time_now(&time_now);
 	while (time_now < filo->meal_time + filo->data->tt_die)
 	{
