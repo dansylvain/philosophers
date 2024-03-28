@@ -1,2 +1,2 @@
 philo
-src/*.o
+*.o
